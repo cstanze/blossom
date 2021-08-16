@@ -1,0 +1,10 @@
+[book]
+authors = ["cstanze"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Blossom Lang"
+
+[output.html]
+
+[output.linkcheck]
