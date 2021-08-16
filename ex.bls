@@ -1,5 +1,0 @@
-let sys = import("std/sys")
-let os = import("std/os")
-
-println(sys.eval("os.name"))
-
