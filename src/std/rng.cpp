@@ -22,7 +22,7 @@ gmp_randstate_t rngstate;
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-VarBase* rng_seed(VMState& vm, const FnData& fd) {
+VarBase *rng_seed(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(fd.src_id, fd.idx, "expected seed value to be integer, found: %s",
             vm.type_name(fd.args[1]).c_str());
@@ -33,14 +33,14 @@ VarBase* rng_seed(VMState& vm, const FnData& fd) {
 }
 
 // [0, to)
-VarBase* rng_get(VMState& vm, const FnData& fd) {
+VarBase *rng_get(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected upper bound to be an integer, found: %s",
             vm.type_name(fd.args[1]).c_str());
     return nullptr;
   }
-  VarInt* res = make<VarInt>(0);
+  VarInt *res = make<VarInt>(0);
   mpz_urandomm(res->get(), rngstate, INT(fd.args[1])->get());
   return res;
 }
@@ -48,7 +48,7 @@ VarBase* rng_get(VMState& vm, const FnData& fd) {
 INIT_MODULE(rng) {
   gmp_randinit_default(rngstate);
 
-  VarSrc* src = vm.current_source();
+  VarSrc *src = vm.current_source();
 
   src->add_native_fn("seed", rng_seed, 1);
   src->add_native_fn("get_native", rng_get, 1);

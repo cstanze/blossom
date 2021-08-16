@@ -4,25 +4,25 @@
 #include "VM/Vars.hpp"
 
 struct jump_data_t {
-  const char* name;
+  const char *name;
   size_t pos;
 };
 
 namespace vm {
 // declared in VM.hpp
-int exec(VMState& vm, const Bytecode* custom_bcode, const size_t& begin,
-         const size_t& end) {
+int exec(VMState &vm, const Bytecode *custom_bcode, const size_t &begin,
+         const size_t &end) {
   ++vm.exec_stack_count;
-  VarSrc* src = vm.current_source();
-  Vars* vars = src->vars();
-  SrcFile* src_file = src->src();
+  VarSrc *src = vm.current_source();
+  Vars *vars = src->vars();
+  SrcFile *src_file = src->src();
   size_t src_id = src_file->id();
-  VMStack* vms = vm.vm_stack;
-  const auto& bc = custom_bcode ? custom_bcode->get() : src_file->bcode().get();
+  VMStack *vms = vm.vm_stack;
+  const auto &bc = custom_bcode ? custom_bcode->get() : src_file->bcode().get();
   size_t bc_sz = end == 0 ? bc.size() : end;
 
   std::vector<FnBodySpan> bodies;
-  std::vector<VarBase*> args;
+  std::vector<VarBase *> args;
   std::vector<FnAssnArg> assn_args;
   std::unordered_map<std::string, size_t> assn_args_loc;
 
@@ -32,7 +32,7 @@ int exec(VMState& vm, const Bytecode* custom_bcode, const size_t& begin,
     vars->push_fn();
 
   for (size_t i = begin; i < bc_sz; ++i) {
-    const Op& op = bc[i];
+    const Op &op = bc[i];
     if (vm.exec_stack_count >= vm.exec_stack_max) {
       vm.fail(bc[i].src_id, bc[i].idx,
               "exceeded call stack size, currently: %zu", vm.exec_stack_count);
@@ -44,7 +44,7 @@ int exec(VMState& vm, const Bytecode* custom_bcode, const size_t& begin,
     fprintf(stdout,
             "InThread(%s) %s [%zu]: %*s: ", vm.is_thread_copy() ? "yes" : "no",
             src_file->path().c_str(), i, 12, OpCodeStrs[op.op]);
-    for (auto& e : vms->get()) {
+    for (auto &e : vms->get()) {
       fprintf(stdout, "%s ", vm.type_name(e).c_str());
     }
     fprintf(stdout, "\n");
@@ -52,14 +52,14 @@ int exec(VMState& vm, const Bytecode* custom_bcode, const size_t& begin,
     switch (op.op) {
     case OP_LOAD: {
       if (op.dtype != ODT_IDEN) {
-        VarBase* res = consts::get(vm, op.dtype, op.data, op.src_id, op.idx);
+        VarBase *res = consts::get(vm, op.dtype, op.data, op.src_id, op.idx);
         if (res == nullptr) {
           vm.fail(op.src_id, op.idx, "invalid data received as const");
           goto handle_error;
         }
         vms->push(res);
       } else {
-        VarBase* res = vars->get(op.data.s);
+        VarBase *res = vars->get(op.data.s);
         if (res == nullptr) {
           res = vm.gget(op.data.s);
           if (res == nullptr) {
@@ -79,11 +79,11 @@ int exec(VMState& vm, const Bytecode* custom_bcode, const size_t& begin,
     case OP_CREATE: {
       const std::string name = STR(vms->back())->get();
       vms->pop();
-      VarBase* in = nullptr;
+      VarBase *in = nullptr;
       if (op.data.b) {
         in = vms->pop(false);
       }
-      VarBase* val = vms->pop(false);
+      VarBase *val = vms->pop(false);
       if (!in) {
         // only copy if reference count > 1 (no point in copying unique
         // values) or if load_as_ref() of value is false
@@ -134,8 +134,8 @@ int exec(VMState& vm, const Bytecode* custom_bcode, const size_t& begin,
                 vms->size());
         goto handle_error;
       }
-      VarBase* var = vms->pop(false);
-      VarBase* val = vms->pop(false);
+      VarBase *var = vms->pop(false);
+      VarBase *val = vms->pop(false);
       if (var->type() != val->type()) {
         vm.fail(op.src_id, op.idx,
                 "type mismatch for assignment: %s cannot be assigned to "
@@ -165,7 +165,7 @@ int exec(VMState& vm, const Bytecode* custom_bcode, const size_t& begin,
     case OP_JMPTPOP: // fallthrough
     case OP_JMPT: {
       assert(!vms->empty());
-      VarBase* var = vms->back();
+      VarBase *var = vms->back();
       bool res = false;
       if (!var->to_bool(vm, res, op.src_id, op.idx)) {
         vm.fail(op.src_id, op.idx, "'bool()' not implemented for type: %s",
@@ -182,7 +182,7 @@ int exec(VMState& vm, const Bytecode* custom_bcode, const size_t& begin,
     case OP_JMPFPOP: // fallthrough
     case OP_JMPF: {
       assert(!vms->empty());
-      VarBase* var = vms->back();
+      VarBase *var = vms->back();
       bool res = false;
       if (!var->to_bool(vm, res, op.src_id, op.idx)) {
         vm.fail(op.src_id, op.idx, "'bool()' not implemented for type: %s",
@@ -212,7 +212,7 @@ int exec(VMState& vm, const Bytecode* custom_bcode, const size_t& begin,
       std::string kw_arg;
       std::string var_arg;
       std::vector<std::string> args;
-      std::unordered_map<std::string, VarBase*> assn_args;
+      std::unordered_map<std::string, VarBase *> assn_args;
       if (op.data.s[0] == '1') {
         kw_arg = STR(vms->back())->get();
         vms->pop();
@@ -257,14 +257,14 @@ int exec(VMState& vm, const Bytecode* custom_bcode, const size_t& begin,
           const size_t idx = vms->back()->idx();
           const std::string name = STR(vms->back())->get();
           vms->pop();
-          VarBase* val = vms->pop(false);
+          VarBase *val = vms->pop(false);
           assn_args.push_back({src_id, idx, name, val});
           assn_args_loc[name] = assn_args.size() - 1;
         }
       }
-      VarBase* in_base = nullptr; // only for mem_call
-      VarBase* fn_base = nullptr;
-      VarBase* res = nullptr;
+      VarBase *in_base = nullptr; // only for mem_call
+      VarBase *fn_base = nullptr;
+      VarBase *res = nullptr;
       std::string fn_name;
       if (va_unpack) {
         if (!args.back()->istype<VarVec>()) {
@@ -272,9 +272,9 @@ int exec(VMState& vm, const Bytecode* custom_bcode, const size_t& begin,
                   "variadic unpack requires a vector to unpack");
           goto fncall_fail;
         }
-        VarVec* vec = VEC(args.back());
+        VarVec *vec = VEC(args.back());
         args.pop_back();
-        for (auto& e : vec->get()) {
+        for (auto &e : vec->get()) {
           var_iref(e);
           args.push_back(e);
         }
@@ -322,9 +322,9 @@ int exec(VMState& vm, const Bytecode* custom_bcode, const size_t& begin,
       if (!res->istype<VarNil>()) {
         vms->push(res, false);
       }
-      for (auto& arg : args)
+      for (auto &arg : args)
         var_dref(arg);
-      for (auto& arg : assn_args)
+      for (auto &arg : assn_args)
         var_dref(arg.val);
       if (!mem_call)
         var_dref(fn_base);
@@ -332,9 +332,9 @@ int exec(VMState& vm, const Bytecode* custom_bcode, const size_t& begin,
         goto done;
       break;
     fncall_fail:
-      for (auto& arg : args)
+      for (auto &arg : args)
         var_dref(arg);
-      for (auto& arg : assn_args)
+      for (auto &arg : assn_args)
         var_dref(arg.val);
       if (!mem_call)
         var_dref(fn_base);
@@ -342,8 +342,8 @@ int exec(VMState& vm, const Bytecode* custom_bcode, const size_t& begin,
     }
     case OP_ATTR: {
       const std::string attr = op.data.s;
-      VarBase* in_base = vms->pop(false);
-      VarBase* val = nullptr;
+      VarBase *in_base = vms->pop(false);
+      VarBase *val = nullptr;
       if (in_base->attr_based())
         val = in_base->attr_get(attr);
       if (val == nullptr)

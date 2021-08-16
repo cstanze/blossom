@@ -61,8 +61,7 @@ class StmtBlock : public StmtBase {
   bool m_no_brace;
 
 public:
-  StmtBlock(const std::vector<const StmtBase *> &stmts,
-               const size_t &idx);
+  StmtBlock(const std::vector<const StmtBase *> &stmts, const size_t &idx);
   ~StmtBlock();
 
   void set_no_brace(const bool &no_brace);
@@ -87,8 +86,8 @@ class StmtExpr : public StmtBase {
   bool m_with_cols;
 
 public:
-  StmtExpr(const StmtBase *lhs, const lex::tok_t *oper,
-              const StmtBase *rhs, const size_t &idx);
+  StmtExpr(const StmtBase *lhs, const lex::tok_t *oper, const StmtBase *rhs,
+           const size_t &idx);
   ~StmtExpr();
 
   void set_or_blk(StmtBase *or_blk, const lex::tok_t *or_blk_var);
@@ -115,7 +114,7 @@ class StmtVarDeclBase : public StmtBase {
 
 public:
   StmtVarDeclBase(const StmtSimple *lhs, const StmtBase *in,
-                       const StmtBase *rhs);
+                  const StmtBase *rhs);
   ~StmtVarDeclBase();
 
   void disp(const bool has_next) const;
@@ -134,7 +133,7 @@ class StmtVarDecl : public StmtBase {
 
 public:
   StmtVarDecl(const std::vector<const StmtVarDeclBase *> &decls,
-                  const size_t &idx);
+              const size_t &idx);
   ~StmtVarDecl();
 
   void disp(const bool has_next) const;
@@ -150,8 +149,8 @@ class StmtFnDefArgs : public StmtBase {
 
 public:
   StmtFnDefArgs(const std::vector<const StmtBase *> &args,
-                     const StmtSimple *kwarg, const StmtSimple *vaarg,
-                     const size_t &idx);
+                const StmtSimple *kwarg, const StmtSimple *vaarg,
+                const size_t &idx);
   ~StmtFnDefArgs();
 
   void disp(const bool has_next) const;
@@ -170,8 +169,8 @@ class StmtFnDef : public StmtBase {
   const bool m_isAnon;
 
 public:
-  StmtFnDef(const StmtFnDefArgs *args, const StmtBlock *body, const StmtSimple *name,
-            const bool isAnon, const size_t &idx);
+  StmtFnDef(const StmtFnDefArgs *args, const StmtBlock *body,
+            const StmtSimple *name, const bool isAnon, const size_t &idx);
   ~StmtFnDef();
 
   void disp(const bool has_next) const;
@@ -224,8 +223,8 @@ class StmtFnCallArgs : public StmtBase {
 
 public:
   StmtFnCallArgs(const std::vector<const StmtBase *> &args,
-                      const std::vector<const StmtFnAssnArg *> &assn_args,
-                      const bool &va_unpack, const size_t &idx);
+                 const std::vector<const StmtFnAssnArg *> &assn_args,
+                 const bool &va_unpack, const size_t &idx);
   ~StmtFnCallArgs();
 
   void disp(const bool has_next) const;
@@ -251,8 +250,7 @@ class StmtSingleOpStmt : public StmtBase {
   const StmtBase *m_operand;
 
 public:
-  StmtSingleOpStmt(const lex::tok_t *sost,
-                             const StmtBase *operand);
+  StmtSingleOpStmt(const lex::tok_t *sost, const StmtBase *operand);
   ~StmtSingleOpStmt();
 
   void disp(const bool has_next) const;
@@ -273,8 +271,7 @@ class StmtConditional : public StmtBase {
   const std::vector<conditional_t> m_conds;
 
 public:
-  StmtConditional(const std::vector<conditional_t> &conds,
-                     const size_t &idx);
+  StmtConditional(const std::vector<conditional_t> &conds, const size_t &idx);
   ~StmtConditional();
 
   void disp(const bool has_next) const;
@@ -289,9 +286,8 @@ class StmtFor : public StmtBase {
   const StmtBase *m_body;
 
 public:
-  StmtFor(const StmtBase *init, const StmtBase *cond,
-             const StmtBase *incr, const StmtBase *body,
-             const size_t &idx);
+  StmtFor(const StmtBase *init, const StmtBase *cond, const StmtBase *incr,
+          const StmtBase *body, const size_t &idx);
   ~StmtFor();
 
   void disp(const bool has_next) const;
@@ -311,7 +307,7 @@ class StmtForEach : public StmtBase {
 
 public:
   StmtForEach(const lex::tok_t *loop_var, const StmtBase *expr,
-                 const StmtBase *body, const size_t &idx);
+              const StmtBase *body, const size_t &idx);
   ~StmtForEach();
 
   void disp(const bool has_next) const;
@@ -328,8 +324,7 @@ class StmtWhile : public StmtBase {
   const StmtBase *m_body;
 
 public:
-  StmtWhile(const StmtBase *expr, const StmtBase *body,
-               const size_t &idx);
+  StmtWhile(const StmtBase *expr, const StmtBase *body, const size_t &idx);
   ~StmtWhile();
 
   void disp(const bool has_next) const;

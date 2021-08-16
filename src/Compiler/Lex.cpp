@@ -2,7 +2,7 @@
 
 #include "Compiler/Lex.hpp"
 
-const char* TokStrs[_TOK_LAST] = {
+const char *TokStrs[_TOK_LAST] = {
     "Int",
     "Float",
 
@@ -117,19 +117,19 @@ const char* TokStrs[_TOK_LAST] = {
   op_type = type;                                                              \
   break
 
-static std::string get_name(const std::string& src, size_t& i);
-static int classify_str(const std::string& str);
-static std::string get_num(const std::string& src, size_t& i, int& num_type);
-static Errors get_const_str(const std::string& src, size_t& i,
-                            std::string& buf);
-static int get_operator(const std::string& src, size_t& i);
+static std::string get_name(const std::string &src, size_t &i);
+static int classify_str(const std::string &str);
+static std::string get_num(const std::string &src, size_t &i, int &num_type);
+static Errors get_const_str(const std::string &src, size_t &i,
+                            std::string &buf);
+static int get_operator(const std::string &src, size_t &i);
 static inline bool is_valid_num_char(const char c);
-static void remove_back_slash(std::string& s);
+static void remove_back_slash(std::string &s);
 
 namespace lex {
-Errors tokenize(const std::string& src, lex::toks_t& toks,
-                const std::string& src_dir, const std::string& src_path,
-                const size_t& begin_idx, size_t end_idx) {
+Errors tokenize(const std::string &src, lex::toks_t &toks,
+                const std::string &src_dir, const std::string &src_path,
+                const size_t &begin_idx, size_t end_idx) {
   if (src.empty())
     return E_OK;
 
@@ -251,7 +251,7 @@ Errors tokenize(const std::string& src, lex::toks_t& toks,
 
 } // namespace lex
 
-static std::string get_name(const std::string& src, size_t& i) {
+static std::string get_name(const std::string &src, size_t &i) {
   size_t src_len = src.size();
   std::string buf;
   buf.push_back(src[i++]);
@@ -266,29 +266,45 @@ static std::string get_name(const std::string& src, size_t& i) {
   return buf;
 }
 
-static int classify_str(const std::string& str) {
-  if (str == TokStrs[TOK_LET]) return TOK_LET;
-  if (str == TokStrs[TOK_FUNC]) return TOK_FUNC;
-  if (str == TokStrs[TOK_IMPL]) return TOK_IMPL;
-  if (str == TokStrs[TOK_IF]) return TOK_IF;
-  if (str == TokStrs[TOK_ELIF]) return TOK_ELIF;
-  if (str == TokStrs[TOK_ELSE]) return TOK_ELSE;
-  if (str == TokStrs[TOK_FOR]) return TOK_FOR;
-  if (str == TokStrs[TOK_IN]) return TOK_IN;
-  if (str == TokStrs[TOK_WHILE]) return TOK_WHILE;
-  if (str == TokStrs[TOK_RETURN]) return TOK_RETURN;
-  if (str == TokStrs[TOK_CONTINUE]) return TOK_CONTINUE;
-  if (str == TokStrs[TOK_BREAK]) return TOK_BREAK;
-  if (str == TokStrs[TOK_TRUE]) return TOK_TRUE;
-  if (str == TokStrs[TOK_FALSE]) return TOK_FALSE;
-  if (str == TokStrs[TOK_NIL]) return TOK_NIL;
-  if (str == TokStrs[TOK_OR]) return TOK_OR;
+static int classify_str(const std::string &str) {
+  if (str == TokStrs[TOK_LET])
+    return TOK_LET;
+  if (str == TokStrs[TOK_FUNC])
+    return TOK_FUNC;
+  if (str == TokStrs[TOK_IMPL])
+    return TOK_IMPL;
+  if (str == TokStrs[TOK_IF])
+    return TOK_IF;
+  if (str == TokStrs[TOK_ELIF])
+    return TOK_ELIF;
+  if (str == TokStrs[TOK_ELSE])
+    return TOK_ELSE;
+  if (str == TokStrs[TOK_FOR])
+    return TOK_FOR;
+  if (str == TokStrs[TOK_IN])
+    return TOK_IN;
+  if (str == TokStrs[TOK_WHILE])
+    return TOK_WHILE;
+  if (str == TokStrs[TOK_RETURN])
+    return TOK_RETURN;
+  if (str == TokStrs[TOK_CONTINUE])
+    return TOK_CONTINUE;
+  if (str == TokStrs[TOK_BREAK])
+    return TOK_BREAK;
+  if (str == TokStrs[TOK_TRUE])
+    return TOK_TRUE;
+  if (str == TokStrs[TOK_FALSE])
+    return TOK_FALSE;
+  if (str == TokStrs[TOK_NIL])
+    return TOK_NIL;
+  if (str == TokStrs[TOK_OR])
+    return TOK_OR;
 
   // if string begins with dot, it's an atom (str), otherwise an identifier
   return str[0] == '.' ? TOK_STRING : TOK_IDENT;
 }
 
-static std::string get_num(const std::string& src, size_t& i, int& num_type) {
+static std::string get_num(const std::string &src, size_t &i, int &num_type) {
   size_t src_len = src.size();
   std::string buf;
   size_t first_digit_at = i;
@@ -402,8 +418,8 @@ static std::string get_num(const std::string& src, size_t& i, int& num_type) {
   return buf;
 }
 
-static Errors get_const_str(const std::string& src, size_t& i,
-                            std::string& buf) {
+static Errors get_const_str(const std::string &src, size_t &i,
+                            std::string &buf) {
   size_t src_len = src.size();
   buf.clear();
   const char quote_type = CURR(src);
@@ -433,7 +449,7 @@ static Errors get_const_str(const std::string& src, size_t& i,
   return E_OK;
 }
 
-static int get_operator(const std::string& src, size_t& i) {
+static int get_operator(const std::string &src, size_t &i) {
   size_t src_len = src.size();
   int op_type = -1;
   switch (CURR(src)) {
@@ -635,7 +651,7 @@ static int get_operator(const std::string& src, size_t& i) {
   return op_type;
 }
 
-static void remove_back_slash(std::string& s) {
+static void remove_back_slash(std::string &s) {
   for (auto it = s.begin(); it != s.end(); ++it) {
     if (*it == '\\') {
       if (it + 1 >= s.end())

@@ -2,7 +2,7 @@
 
 #include "Compiler/CodeGen/Internal.hpp"
 
-bool StmtSimple::codegen(Bytecode& bc) const {
+bool StmtSimple::codegen(Bytecode &bc) const {
   if (!m_val)
     return true;
 

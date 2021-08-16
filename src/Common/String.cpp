@@ -6,7 +6,7 @@
 #include <vector>
 
 namespace String {
-std::vector<std::string> split(const std::string& data, const char delim,
+std::vector<std::string> split(const std::string &data, const char delim,
                                const bool keep_delim) {
   if (data.empty())
     return {};
@@ -31,9 +31,9 @@ std::vector<std::string> split(const std::string& data, const char delim,
   return vec;
 }
 
-std::string stringify(const std::vector<std::string>& vec) {
+std::string stringify(const std::vector<std::string> &vec) {
   std::string res = "[";
-  for (auto& e : vec) {
+  for (auto &e : vec) {
     res += e + ", ";
   }
   if (vec.size() > 0) {

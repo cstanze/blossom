@@ -3,78 +3,78 @@
 #include "Compiler/CodeGen/Internal.hpp"
 
 Errors parseFail(StmtBase *args, StmtBase *body, StmtBase *name) {
-  if(args) delete args;
-  if(body) delete body;
-  if(name) delete name;
+  if (args)
+    delete args;
+  if (body)
+    delete body;
+  if (name)
+    delete name;
 
   return E_PARSE_FAIL;
 }
 
-Errors parse_func_decl(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_func_decl(ParseHelper &ph, StmtBase *&loc) {
   bool argsDone = false;
   bool isAnon = true;
-  StmtBase *args = nullptr,
-           *body = nullptr,
-           *name = nullptr;
+  StmtBase *args = nullptr, *body = nullptr, *name = nullptr;
   size_t idx = ph.peak()->pos;
 
-  if(!ph.accept(TOK_FUNC)) {
-    Err::set(E_PARSE_FAIL, ph.peak()->pos,
-             "Expected 'func' keyword");
+  if (!ph.accept(TOK_FUNC)) {
+    Err::set(E_PARSE_FAIL, ph.peak()->pos, "Expected 'func' keyword");
     return parseFail(args, body, name);
   }
   ph.next();
 
-  if(!ph.accept(TOK_LPAREN) && !ph.accept(TOK_IDENT)) {
+  if (!ph.accept(TOK_LPAREN) && !ph.accept(TOK_IDENT)) {
     Err::set(E_PARSE_FAIL, ph.peak()->pos,
              "Expected '(' or identifier (function name)");
     return parseFail(args, body, name);
   }
 
-  if(ph.accept(TOK_IDENT)) {
+  if (ph.accept(TOK_IDENT)) {
     isAnon = false;
     ph.sett(TOK_STRING);
     name = new StmtSimple(ph.peak());
     ph.next();
   }
 
-  if(!ph.accept(TOK_LPAREN)) {
-    Err::set(E_PARSE_FAIL, ph.peak()->pos,
-             "Expected '('");
+  if (!ph.accept(TOK_LPAREN)) {
+    Err::set(E_PARSE_FAIL, ph.peak()->pos, "Expected '('");
     return parseFail(args, body, name);
   }
 
   ph.next();
 
-  while(true) {
-    if(ph.accept(TOK_RPAREN)) {
+  while (true) {
+    if (ph.accept(TOK_RPAREN)) {
       ph.next();
       break;
     }
 
-    if(argsDone) {
+    if (argsDone) {
       Err::set(E_PARSE_FAIL, ph.peak()->pos,
                "Expected ')' to close function arguments");
       return parseFail(args, body, name);
     }
 
-    if(parse_fn_decl_args(ph, args) != E_OK) {
+    if (parse_fn_decl_args(ph, args) != E_OK) {
       return parseFail(args, body, name);
     }
     argsDone = true;
   }
 
-  if(!ph.accept(TOK_LBRACE)) {
+  if (!ph.accept(TOK_LBRACE)) {
     Err::set(E_PARSE_FAIL, ph.peak()->pos,
              "Expected '{' to start function body");
     return parseFail(args, body, name);
   }
 
-  if(parse_block(ph, body) != E_OK) {
+  if (parse_block(ph, body) != E_OK) {
     return parseFail(args, body, name);
   }
 
-  loc = new StmtFnDef((StmtFnDefArgs*)args, (StmtBlock*)body, (StmtSimple *)name, isAnon, idx);
+  loc = new StmtFnDef((StmtFnDefArgs *)args, (StmtBlock *)body,
+                      (StmtSimple *)name, isAnon, idx);
   return E_OK;
 }
 

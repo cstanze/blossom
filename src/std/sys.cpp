@@ -6,7 +6,7 @@
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-VarBase* _exit(VMState& vm, const FnData& fd) {
+VarBase *_exit(VMState &vm, const FnData &fd) {
   vm.exit_called = true;
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(fd.src_id, fd.idx,
@@ -17,7 +17,7 @@ VarBase* _exit(VMState& vm, const FnData& fd) {
   return vm.nil;
 }
 
-VarBase* var_exists(VMState& vm, const FnData& fd) {
+VarBase *var_exists(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarString>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected string argument for variable name, found: %s",
@@ -29,7 +29,7 @@ VarBase* var_exists(VMState& vm, const FnData& fd) {
              : vm.fals;
 }
 
-VarBase* set_call_stack_max(VMState& vm, const FnData& fd) {
+VarBase *set_call_stack_max(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(fd.src_id, fd.idx, "expected int argument for max count, found: %s",
             vm.type_name(fd.args[1]).c_str());
@@ -39,7 +39,7 @@ VarBase* set_call_stack_max(VMState& vm, const FnData& fd) {
   return vm.nil;
 }
 
-VarBase* get_call_stack_max(VMState& vm, const FnData& fd) {
+VarBase *get_call_stack_max(VMState &vm, const FnData &fd) {
   return make<VarInt>(vm.exec_stack_max);
 }
 
@@ -86,7 +86,7 @@ bool _eval(VMState &vm, const std::string &data, std::string &res,
   return false;
 }
 
-VarBase* eval(VMState& vm, const FnData& fd) {
+VarBase *eval(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarString>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected string argument for expression, found: %s",
@@ -102,7 +102,7 @@ VarBase* eval(VMState& vm, const FnData& fd) {
 }
 
 INIT_MODULE(sys) {
-  VarSrc* src = vm.current_source();
+  VarSrc *src = vm.current_source();
 
   src->add_native_fn("eval", eval, 1);
   src->add_native_fn("exit_native", _exit, 1);

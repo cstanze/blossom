@@ -16,8 +16,8 @@
 #include "Common/FS.hpp"
 
 namespace Env {
-std::string get(const std::string& key) {
-  const char* env = getenv(key.c_str());
+std::string get(const std::string &key) {
+  const char *env = getenv(key.c_str());
   return env == NULL ? "" : env;
 }
 

@@ -12,10 +12,10 @@
 #include "Compiler/LoadFile.hpp"
 #include "VM/VM.hpp"
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   std::unordered_map<std::string, std::string> args;
   std::vector<std::string> code_args;
-  size_t flags = args::parse(argc, (const char**)argv, args, code_args);
+  size_t flags = args::parse(argc, (const char **)argv, args, code_args);
 
   if (flags & OPT_V) {
     fprintf(stdout, "Blossom %d.%d.%d\nBuilt with %s\nOn %s\n",
@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
   std::string src_dir;
   src_file = FS::absPath(src_file, &src_dir);
 
-  SrcFile* main_src = bmod_load(src_file, src_dir, flags, true, err);
+  SrcFile *main_src = bmod_load(src_file, src_dir, flags, true, err);
   if (err != E_OK) {
     return err;
   }

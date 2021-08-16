@@ -3,8 +3,8 @@
 #ifndef LIBRARY_CORE_STR_HPP
 #define LIBRARY_CORE_STR_HPP
 
-#include <algorithm>
 #include "VM/VM.hpp"
+#include <algorithm>
 
 VarBase *str_add(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarString>()) {

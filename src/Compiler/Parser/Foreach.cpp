@@ -2,10 +2,10 @@
 
 #include "Compiler/CodeGen/Internal.hpp"
 
-Errors parse_foreach(ParseHelper& ph, StmtBase*& loc) {
-  const lex::tok_t* loop_var = nullptr;
-  StmtBase* expr = nullptr;
-  StmtBase* body = nullptr;
+Errors parse_foreach(ParseHelper &ph, StmtBase *&loc) {
+  const lex::tok_t *loop_var = nullptr;
+  StmtBase *expr = nullptr;
+  StmtBase *body = nullptr;
 
   size_t idx = ph.peak()->pos;
   ph.next();

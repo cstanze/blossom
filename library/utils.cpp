@@ -9,19 +9,19 @@ class var_int_iterable_t : public VarBase {
 
 public:
   var_int_iterable_t(const mpz_t begin, const mpz_t end, const mpz_t step,
-                     const size_t& src_id, const size_t& idx);
+                     const size_t &src_id, const size_t &idx);
   ~var_int_iterable_t();
 
-  VarBase* copy(const size_t& src_id, const size_t& idx);
-  void set(VarBase* from);
+  VarBase *copy(const size_t &src_id, const size_t &idx);
+  void set(VarBase *from);
 
-  bool next(mpz_t& val);
+  bool next(mpz_t &val);
 };
-#define INT_ITERABLE(x) static_cast<var_int_iterable_t*>(x)
+#define INT_ITERABLE(x) static_cast<var_int_iterable_t *>(x)
 
 var_int_iterable_t::var_int_iterable_t(const mpz_t begin, const mpz_t end,
-                                       const mpz_t step, const size_t& src_id,
-                                       const size_t& idx)
+                                       const mpz_t step, const size_t &src_id,
+                                       const size_t &idx)
     : VarBase(type_id<var_int_iterable_t>(), src_id, idx, false, false),
       m_started(false), m_is_reverse(mpz_cmp_si(step, 0) < 0) {
   mpz_init_set(m_begin, begin);
@@ -33,17 +33,17 @@ var_int_iterable_t::~var_int_iterable_t() {
   mpz_clears(m_begin, m_end, m_step, m_curr, NULL);
 }
 
-VarBase* var_int_iterable_t::copy(const size_t& src_id, const size_t& idx) {
+VarBase *var_int_iterable_t::copy(const size_t &src_id, const size_t &idx) {
   return new var_int_iterable_t(m_begin, m_end, m_step, src_id, idx);
 }
-void var_int_iterable_t::set(VarBase* from) {
+void var_int_iterable_t::set(VarBase *from) {
   mpz_set(m_begin, INT_ITERABLE(from)->m_begin);
   mpz_set(m_end, INT_ITERABLE(from)->m_end);
   mpz_set(m_step, INT_ITERABLE(from)->m_step);
   mpz_set(m_curr, INT_ITERABLE(from)->m_curr);
 }
 
-bool var_int_iterable_t::next(mpz_t& val) {
+bool var_int_iterable_t::next(mpz_t &val) {
   if (m_is_reverse) {
     if (mpz_cmp(m_curr, m_end) <= 0)
       return false;
@@ -78,10 +78,10 @@ bool var_int_iterable_t::next(mpz_t& val) {
   return true;
 }
 
-VarBase* range(VMState& vm, const FnData& fd) {
-  VarBase* lhs_base = fd.args[1];
-  VarBase* rhs_base = fd.args.size() > 2 ? fd.args[2] : nullptr;
-  VarBase* step_base = fd.args.size() > 3 ? fd.args[3] : nullptr;
+VarBase *range(VMState &vm, const FnData &fd) {
+  VarBase *lhs_base = fd.args[1];
+  VarBase *rhs_base = fd.args.size() > 2 ? fd.args[2] : nullptr;
+  VarBase *step_base = fd.args.size() > 3 ? fd.args[3] : nullptr;
 
   if (!lhs_base->istype<VarInt>()) {
     vm.fail(lhs_base->src_id(), lhs_base->idx(),
@@ -116,12 +116,12 @@ VarBase* range(VMState& vm, const FnData& fd) {
     mpz_set(step, INT(step_base)->get());
   else
     mpz_set_si(step, 1);
-  var_int_iterable_t* res = make<var_int_iterable_t>(begin, end, step);
+  var_int_iterable_t *res = make<var_int_iterable_t>(begin, end, step);
   mpz_clears(begin, end, step, NULL);
   return res;
 }
 
-VarBase* assertion(VMState& vm, const FnData& fd) {
+VarBase *assertion(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarBool>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected boolean argument for assertion, found: %s",
@@ -136,19 +136,19 @@ VarBase* assertion(VMState& vm, const FnData& fd) {
   return vm.nil;
 }
 
-VarBase* int_iterable_next(VMState& vm, const FnData& fd) {
-  var_int_iterable_t* it = INT_ITERABLE(fd.args[0]);
+VarBase *int_iterable_next(VMState &vm, const FnData &fd) {
+  var_int_iterable_t *it = INT_ITERABLE(fd.args[0]);
   mpz_t _res;
   if (!it->next(_res))
     return vm.nil;
-  VarInt* res = make<VarInt>(_res);
+  VarInt *res = make<VarInt>(_res);
   mpz_clear(_res);
   res->set_load_as_ref();
   return res;
 }
 
 INIT_MODULE(utils) {
-  const std::string& src_name = vm.current_source_file()->path();
+  const std::string &src_name = vm.current_source_file()->path();
 
   vm.gadd("range",
           new VarFn(src_name, "", ".", {""}, {}, {.native = range}, true,

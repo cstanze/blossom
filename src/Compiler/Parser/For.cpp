@@ -2,9 +2,9 @@
 
 #include "Compiler/CodeGen/Internal.hpp"
 
-Errors parse_for(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_for(ParseHelper &ph, StmtBase *&loc) {
   StmtBase *init = nullptr, *cond = nullptr, *incr = nullptr;
-  StmtBase* body = nullptr;
+  StmtBase *body = nullptr;
 
   size_t idx = ph.peak()->pos;
   ph.next();

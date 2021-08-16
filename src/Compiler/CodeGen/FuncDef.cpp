@@ -4,7 +4,7 @@
 
 std::vector<std::string> fn_args;
 
-bool StmtFnDef::codegen(Bytecode& bc) const {
+bool StmtFnDef::codegen(Bytecode &bc) const {
   size_t body_till_pos = bc.size();
   bc.addsz(idx(), OP_BODY_TILL, 0);
   if (!m_body->codegen(bc))
@@ -21,11 +21,10 @@ bool StmtFnDef::codegen(Bytecode& bc) const {
   bc.adds(idx(), OP_MKFN, ODT_STRING, m_args ? fn_args.back() : "00");
   if (m_args)
     fn_args.pop_back();
-  
 
-  if(!m_isAnon) {
-    if(m_name) {
-      if(!m_name->codegen(bc))
+  if (!m_isAnon) {
+    if (m_name) {
+      if (!m_name->codegen(bc))
         return false;
       bc.addb(idx(), OP_CREATE, false);
     } else {
@@ -37,7 +36,7 @@ bool StmtFnDef::codegen(Bytecode& bc) const {
   return true;
 }
 
-bool StmtFnDefArgs::codegen(Bytecode& bc) const {
+bool StmtFnDefArgs::codegen(Bytecode &bc) const {
   std::string arg_info;
   arg_info += m_kwarg ? "1" : "0";
   arg_info += m_vaarg ? "1" : "0";
@@ -47,7 +46,7 @@ bool StmtFnDefArgs::codegen(Bytecode& bc) const {
       return false;
   }
 
-  for (auto& arg : m_args) {
+  for (auto &arg : m_args) {
     arg_info += arg->type() == GT_FN_ASSN_ARG ? "1" : "0";
   }
 

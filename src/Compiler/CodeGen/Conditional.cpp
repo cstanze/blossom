@@ -2,7 +2,7 @@
 
 #include "Compiler/CodeGen/Internal.hpp"
 
-bool StmtConditional::codegen(Bytecode& bc) const {
+bool StmtConditional::codegen(Bytecode &bc) const {
   std::vector<size_t> body_jmps;
   for (size_t i = 0; i < m_conds.size(); ++i) {
     size_t false_jmp_pos = 0;
@@ -23,7 +23,7 @@ bool StmtConditional::codegen(Bytecode& bc) const {
   }
 
   size_t jmp_to = bc.size();
-  for (auto& jmp : body_jmps) {
+  for (auto &jmp : body_jmps) {
     bc.updatesz(jmp, jmp_to);
   }
 

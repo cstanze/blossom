@@ -2,7 +2,7 @@
 
 #include "Compiler/CodeGen/Internal.hpp"
 
-bool StmtSingleOpStmt::codegen(Bytecode& bc) const {
+bool StmtSingleOpStmt::codegen(Bytecode &bc) const {
   size_t blk_till_pos = bc.size();
 
   if (m_operand)

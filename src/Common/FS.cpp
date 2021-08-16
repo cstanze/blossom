@@ -12,10 +12,10 @@
 #include "Common/Env.hpp"
 
 namespace FS {
-bool exists(const std::string& loc) { return access(loc.c_str(), F_OK) != -1; }
+bool exists(const std::string &loc) { return access(loc.c_str(), F_OK) != -1; }
 
-std::string absPath(const std::string& loc, std::string* dir,
-                    const bool& dir_add_double_dot) {
+std::string absPath(const std::string &loc, std::string *dir,
+                    const bool &dir_add_double_dot) {
   static char abs[MAX_PATH_CHARS];
   static char abs_tmp[MAX_PATH_CHARS];
   realpath(loc.c_str(), abs);

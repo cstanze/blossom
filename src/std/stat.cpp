@@ -13,7 +13,7 @@
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-VarBase* stat_native(VMState& vm, const FnData& fd) {
+VarBase *stat_native(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarStruct>()) {
     vm.fail(fd.args[1]->src_id(), fd.args[1]->idx(),
             "expected a struct (of type stat_t) as first argument, found: %s",
@@ -23,9 +23,9 @@ VarBase* stat_native(VMState& vm, const FnData& fd) {
   static const std::vector<std::string> reqd_keys = {
       "dev",  "ino",   "mode",  "nlink", "uid",     "gid",   "rdev",
       "size", "atime", "mtime", "ctime", "blksize", "blocks"};
-  VarStruct* st = STRUCT(fd.args[1]);
-  for (auto& key : reqd_keys) {
-    VarBase* val = st->attr_get(key);
+  VarStruct *st = STRUCT(fd.args[1]);
+  for (auto &key : reqd_keys) {
+    VarBase *val = st->attr_get(key);
     if (val == nullptr) {
       vm.fail(fd.args[1]->src_id(), fd.args[1]->idx(),
               "expected attribute '%s' in struct of type stat_t (provided "
@@ -75,50 +75,50 @@ VarBase* stat_native(VMState& vm, const FnData& fd) {
   return vm.nil;
 }
 
-VarBase* stat_isreg(VMState& vm, const FnData& fd) {
-  VarStruct* st = STRUCT(fd.args[1]);
+VarBase *stat_isreg(VMState &vm, const FnData &fd) {
+  VarStruct *st = STRUCT(fd.args[1]);
   int mode = mpz_get_si(INT(st->attr_get("mode"))->get());
   return S_ISREG(mode) ? vm.tru : vm.fals;
 }
 
-VarBase* stat_isdir(VMState& vm, const FnData& fd) {
-  VarStruct* st = STRUCT(fd.args[1]);
+VarBase *stat_isdir(VMState &vm, const FnData &fd) {
+  VarStruct *st = STRUCT(fd.args[1]);
   int mode = mpz_get_si(INT(st->attr_get("mode"))->get());
   return S_ISDIR(mode) ? vm.tru : vm.fals;
 }
 
-VarBase* stat_ischr(VMState& vm, const FnData& fd) {
-  VarStruct* st = STRUCT(fd.args[1]);
+VarBase *stat_ischr(VMState &vm, const FnData &fd) {
+  VarStruct *st = STRUCT(fd.args[1]);
   int mode = mpz_get_si(INT(st->attr_get("mode"))->get());
   return S_ISCHR(mode) ? vm.tru : vm.fals;
 }
 
-VarBase* stat_isblk(VMState& vm, const FnData& fd) {
-  VarStruct* st = STRUCT(fd.args[1]);
+VarBase *stat_isblk(VMState &vm, const FnData &fd) {
+  VarStruct *st = STRUCT(fd.args[1]);
   int mode = mpz_get_si(INT(st->attr_get("mode"))->get());
   return S_ISBLK(mode) ? vm.tru : vm.fals;
 }
 
-VarBase* stat_isfifo(VMState& vm, const FnData& fd) {
-  VarStruct* st = STRUCT(fd.args[1]);
+VarBase *stat_isfifo(VMState &vm, const FnData &fd) {
+  VarStruct *st = STRUCT(fd.args[1]);
   int mode = mpz_get_si(INT(st->attr_get("mode"))->get());
   return S_ISFIFO(mode) ? vm.tru : vm.fals;
 }
 
-VarBase* stat_islnk(VMState& vm, const FnData& fd) {
-  VarStruct* st = STRUCT(fd.args[1]);
+VarBase *stat_islnk(VMState &vm, const FnData &fd) {
+  VarStruct *st = STRUCT(fd.args[1]);
   int mode = mpz_get_si(INT(st->attr_get("mode"))->get());
   return S_ISLNK(mode) ? vm.tru : vm.fals;
 }
 
-VarBase* stat_issock(VMState& vm, const FnData& fd) {
-  VarStruct* st = STRUCT(fd.args[1]);
+VarBase *stat_issock(VMState &vm, const FnData &fd) {
+  VarStruct *st = STRUCT(fd.args[1]);
   int mode = mpz_get_si(INT(st->attr_get("mode"))->get());
   return S_ISSOCK(mode) ? vm.tru : vm.fals;
 }
 
 INIT_MODULE(stat) {
-  VarSrc* src = vm.current_source();
+  VarSrc *src = vm.current_source();
   src->add_native_fn("stat_native", stat_native, 2);
   src->add_native_fn("isreg_native", stat_isreg, 1);
   src->add_native_fn("isdir_native", stat_isdir, 1);

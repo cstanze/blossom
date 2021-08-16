@@ -7,7 +7,7 @@
 // used for AND and OR operations - all locations from where to jump
 static std::vector<size_t> jmp_locs;
 
-bool StmtExpr::codegen(Bytecode& bc) const {
+bool StmtExpr::codegen(Bytecode &bc) const {
   size_t before_jmp_locs_count = jmp_locs.size();
 
   size_t or_jmp_pos = 0;
@@ -138,7 +138,7 @@ bool StmtExpr::codegen(Bytecode& bc) const {
   } else if (m_oper->type == TOK_DOT) {
     assert(m_rhs->type() == GT_SIMPLE);
     bc.adds(m_oper->pos, OP_ATTR, ODT_STRING,
-            static_cast<const StmtSimple*>(m_rhs)->val()->data);
+            static_cast<const StmtSimple *>(m_rhs)->val()->data);
     goto done;
   } else if (m_oper->type == TOK_OPER_FN || m_oper->type == TOK_OPER_MEM_FN) {
     bc.adds(m_oper->pos, m_oper->type == TOK_OPER_FN ? OP_FNCL : OP_MEM_FNCL,

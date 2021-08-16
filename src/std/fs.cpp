@@ -18,16 +18,16 @@ enum WalkEntry {
   RECURSE = 1 << 2,
 };
 
-void get_entries_internal(const std::string& dir_str, std::vector<VarBase*>& v,
-                          const size_t& flags, const int src_id, const int idx,
-                          const std::regex& regex);
+void get_entries_internal(const std::string &dir_str, std::vector<VarBase *> &v,
+                          const size_t &flags, const int src_id, const int idx,
+                          const std::regex &regex);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// Functions
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-VarBase* fs_exists(VMState& vm, const FnData& fd) {
+VarBase *fs_exists(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarString>()) {
     vm.fail(fd.src_id, fd.idx, "expected string argument for path, found: %s",
             vm.type_name(fd.args[1]).c_str());
@@ -36,7 +36,7 @@ VarBase* fs_exists(VMState& vm, const FnData& fd) {
   return access(STR(fd.args[1])->get().c_str(), F_OK) != -1 ? vm.tru : vm.fals;
 }
 
-VarBase* fs_open(VMState& vm, const FnData& fd) {
+VarBase *fs_open(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarString>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected string argument for file name, found: %s",
@@ -49,9 +49,9 @@ VarBase* fs_open(VMState& vm, const FnData& fd) {
             vm.type_name(fd.args[2]).c_str());
     return nullptr;
   }
-  const std::string& file_name = STR(fd.args[1])->get();
-  const std::string& mode = STR(fd.args[2])->get();
-  FILE* file = fopen(file_name.c_str(), mode.c_str());
+  const std::string &file_name = STR(fd.args[1])->get();
+  const std::string &mode = STR(fd.args[2])->get();
+  FILE *file = fopen(file_name.c_str(), mode.c_str());
   if (!file) {
     vm.fail(fd.src_id, fd.idx, "failed to open file '%s' in mode: %s",
             file_name.c_str(), mode.c_str());
@@ -60,8 +60,8 @@ VarBase* fs_open(VMState& vm, const FnData& fd) {
   return make<VarFile>(file, mode);
 }
 
-VarBase* fs_walkdir(VMState& vm, const FnData& fd) {
-  std::vector<VarBase*> v;
+VarBase *fs_walkdir(VMState &vm, const FnData &fd) {
+  std::vector<VarBase *> v;
   if (!fd.args[1]->istype<VarString>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected string argument for directory name, found: %s",
@@ -89,8 +89,8 @@ VarBase* fs_walkdir(VMState& vm, const FnData& fd) {
   return make<VarVec>(v, false);
 }
 
-VarBase* fs_file_reopen(VMState& vm, const FnData& fd) {
-  VarFile* file = FILE(fd.args[0]);
+VarBase *fs_file_reopen(VMState &vm, const FnData &fd) {
+  VarFile *file = FILE(fd.args[0]);
   if (file->get() && file->owner())
     fclose(file->get());
 
@@ -106,8 +106,8 @@ VarBase* fs_file_reopen(VMState& vm, const FnData& fd) {
             vm.type_name(fd.args[2]).c_str());
     return nullptr;
   }
-  const std::string& file_name = STR(fd.args[1])->get();
-  const std::string& mode = STR(fd.args[2])->get();
+  const std::string &file_name = STR(fd.args[1])->get();
+  const std::string &mode = STR(fd.args[2])->get();
   file->get() = fopen(file_name.c_str(), mode.c_str());
   if (!file->get()) {
     vm.fail(fd.src_id, fd.idx, "failed to open file '%s' in mode: %s",
@@ -119,13 +119,13 @@ VarBase* fs_file_reopen(VMState& vm, const FnData& fd) {
   return fd.args[0];
 }
 
-VarBase* fs_file_lines(VMState& vm, const FnData& fd) {
-  FILE* const file = FILE(fd.args[0])->get();
-  char* line_ptr = NULL;
+VarBase *fs_file_lines(VMState &vm, const FnData &fd) {
+  FILE *const file = FILE(fd.args[0])->get();
+  char *line_ptr = NULL;
   size_t len = 0;
   ssize_t read = 0;
 
-  std::vector<VarBase*> lines;
+  std::vector<VarBase *> lines;
   while ((read = getline(&line_ptr, &len, file)) != -1) {
     std::string line = line_ptr;
     while (line.back() == '\n' || line.back() == '\r')
@@ -139,8 +139,8 @@ VarBase* fs_file_lines(VMState& vm, const FnData& fd) {
   return make<VarVec>(lines, false);
 }
 
-VarBase* fs_file_seek(VMState& vm, const FnData& fd) {
-  FILE* const file = FILE(fd.args[0])->get();
+VarBase *fs_file_seek(VMState &vm, const FnData &fd) {
+  FILE *const file = FILE(fd.args[0])->get();
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected int argument for file seek position, found: %s",
@@ -158,12 +158,12 @@ VarBase* fs_file_seek(VMState& vm, const FnData& fd) {
   return make<VarInt>(fseek(file, pos, origin));
 }
 
-VarBase* fs_file_each_line(VMState& vm, const FnData& fd) {
+VarBase *fs_file_each_line(VMState &vm, const FnData &fd) {
   return make<VarFileIterable>(FILE(fd.args[0]));
 }
 
-VarBase* fs_file_read_blocks(VMState& vm, const FnData& fd) {
-  FILE* const file = FILE(fd.args[0])->get();
+VarBase *fs_file_read_blocks(VMState &vm, const FnData &fd) {
+  FILE *const file = FILE(fd.args[0])->get();
 
   if (!fd.args[1]->istype<VarString>()) {
     vm.fail(fd.src_id, fd.idx,
@@ -178,17 +178,17 @@ VarBase* fs_file_read_blocks(VMState& vm, const FnData& fd) {
     return nullptr;
   }
 
-  const std::string& begin = STR(fd.args[1])->get();
-  const std::string& end = STR(fd.args[2])->get();
+  const std::string &begin = STR(fd.args[1])->get();
+  const std::string &end = STR(fd.args[2])->get();
   bool inside_block = false;
 
-  char* line_ptr = NULL;
+  char *line_ptr = NULL;
   size_t len = 0;
   ssize_t read = 0;
 
   std::string line;
   std::string block_content;
-  std::vector<VarBase*> blocks;
+  std::vector<VarBase *> blocks;
   while ((read = getline(&line_ptr, &len, file)) != -1) {
     line = line_ptr;
   begin_fetch:
@@ -235,9 +235,9 @@ VarBase* fs_file_read_blocks(VMState& vm, const FnData& fd) {
   return make<VarVec>(blocks, false);
 }
 
-VarBase* fs_file_iterable_next(VMState& vm, const FnData& fd) {
-  VarFileIterable* it = FILE_ITERABLE(fd.args[0]);
-  VarBase* res = nullptr;
+VarBase *fs_file_iterable_next(VMState &vm, const FnData &fd) {
+  VarFileIterable *it = FILE_ITERABLE(fd.args[0]);
+  VarBase *res = nullptr;
   if (!it->next(res))
     return vm.nil;
   return res;
@@ -251,7 +251,7 @@ VarBase* fs_file_iterable_next(VMState& vm, const FnData& fd) {
 // TODO: write tests
 
 // equivalent to open( path, O_WRONLY | O_CREAT | O_TRUNC, mode )
-VarBase* fs_fd_create(VMState& vm, const FnData& fd) {
+VarBase *fs_fd_create(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarString>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected string argument for file name, found: %s",
@@ -273,7 +273,7 @@ VarBase* fs_fd_create(VMState& vm, const FnData& fd) {
   return make<VarInt>(res);
 }
 
-VarBase* fs_fd_open(VMState& vm, const FnData& fd) {
+VarBase *fs_fd_open(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarString>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected string argument for file name, found: %s",
@@ -296,7 +296,7 @@ VarBase* fs_fd_open(VMState& vm, const FnData& fd) {
   return make<VarInt>(res);
 }
 
-VarBase* fs_fd_read(VMState& vm, const FnData& fd) {
+VarBase *fs_fd_read(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected int argument for file descriptor, found: %s",
@@ -309,7 +309,7 @@ VarBase* fs_fd_read(VMState& vm, const FnData& fd) {
             vm.type_name(fd.args[2]).c_str());
     return nullptr;
   }
-  VarByteBuffer* bb = BYTEBUFFER(fd.args[2]);
+  VarByteBuffer *bb = BYTEBUFFER(fd.args[2]);
   errno = 0;
   ssize_t res =
       read(mpz_get_si(INT(fd.args[1])->get()), bb->get_buf(), bb->get_size());
@@ -323,7 +323,7 @@ VarBase* fs_fd_read(VMState& vm, const FnData& fd) {
   return make<VarInt>(res);
 }
 
-VarBase* fs_fd_write(VMState& vm, const FnData& fd) {
+VarBase *fs_fd_write(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected int argument for file descriptor, found: %s",
@@ -336,7 +336,7 @@ VarBase* fs_fd_write(VMState& vm, const FnData& fd) {
             vm.type_name(fd.args[2]).c_str());
     return nullptr;
   }
-  VarByteBuffer* bb = BYTEBUFFER(fd.args[2]);
+  VarByteBuffer *bb = BYTEBUFFER(fd.args[2]);
   errno = 0;
   ssize_t res =
       write(mpz_get_si(INT(fd.args[1])->get()), bb->get_buf(), bb->get_len());
@@ -349,7 +349,7 @@ VarBase* fs_fd_write(VMState& vm, const FnData& fd) {
   return make<VarInt>(res);
 }
 
-VarBase* fs_fd_close(VMState& vm, const FnData& fd) {
+VarBase *fs_fd_close(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected int argument for file descriptor, found: %s",
@@ -367,7 +367,7 @@ VarBase* fs_fd_close(VMState& vm, const FnData& fd) {
 }
 
 INIT_MODULE(fs) {
-  VarSrc* src = vm.current_source();
+  VarSrc *src = vm.current_source();
 
   src->add_native_fn("exists", fs_exists, 1);
   src->add_native_fn("fopen_native", fs_open, 2);
@@ -428,11 +428,11 @@ INIT_MODULE(fs) {
   return true;
 }
 
-void get_entries_internal(const std::string& dir_str, std::vector<VarBase*>& v,
-                          const size_t& flags, const int src_id, const int idx,
-                          const std::regex& regex) {
-  DIR* dir;
-  struct dirent* ent;
+void get_entries_internal(const std::string &dir_str, std::vector<VarBase *> &v,
+                          const size_t &flags, const int src_id, const int idx,
+                          const std::regex &regex) {
+  DIR *dir;
+  struct dirent *ent;
   if ((dir = opendir(dir_str.c_str())) == NULL)
     return;
 

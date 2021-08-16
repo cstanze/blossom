@@ -1,8 +1,8 @@
 #include "VM/Consts.hpp"
 
 namespace consts {
-VarBase* get(VMState& vm, const OpDataType type, const OpData& opd,
-             const size_t& src_id, const size_t& idx) {
+VarBase *get(VMState &vm, const OpDataType type, const OpData &opd,
+             const size_t &src_id, const size_t &idx) {
   switch (type) {
   case ODT_BOOL:
     return opd.b ? vm.tru : vm.fals;

@@ -7,8 +7,8 @@
 ////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-VarFile::VarFile(FILE* const file, const std::string& mode,
-                 const size_t& src_id, const size_t& idx, const bool owner)
+VarFile::VarFile(FILE *const file, const std::string &mode,
+                 const size_t &src_id, const size_t &idx, const bool owner)
     : VarBase(type_id<VarFile>(), src_id, idx, false, false), m_file(file),
       m_mode(mode), m_owner(owner) {}
 VarFile::~VarFile() {
@@ -16,11 +16,11 @@ VarFile::~VarFile() {
     fclose(m_file);
 }
 
-VarBase* VarFile::copy(const size_t& src_id, const size_t& idx) {
+VarBase *VarFile::copy(const size_t &src_id, const size_t &idx) {
   return new VarFile(m_file, m_mode, src_id, idx, false);
 }
 
-void VarFile::set(VarBase* from) {
+void VarFile::set(VarBase *from) {
   if (m_owner)
     fclose(m_file);
   m_owner = false;
@@ -32,25 +32,25 @@ void VarFile::set(VarBase* from) {
 ///////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-VarFileIterable::VarFileIterable(VarFile* file, const size_t& src_id,
-                                 const size_t& idx)
+VarFileIterable::VarFileIterable(VarFile *file, const size_t &src_id,
+                                 const size_t &idx)
     : VarBase(type_id<VarFileIterable>(), src_id, idx, false, false),
       m_file(file) {
   var_iref(m_file);
 }
 VarFileIterable::~VarFileIterable() { var_dref(m_file); }
 
-VarBase* VarFileIterable::copy(const size_t& src_id, const size_t& idx) {
+VarBase *VarFileIterable::copy(const size_t &src_id, const size_t &idx) {
   return new VarFileIterable(m_file, src_id, idx);
 }
-void VarFileIterable::set(VarBase* from) {
+void VarFileIterable::set(VarBase *from) {
   var_dref(m_file);
   m_file = FILE_ITERABLE(from)->m_file;
   var_iref(m_file);
 }
 
-bool VarFileIterable::next(VarBase*& val) {
-  char* line_ptr = NULL;
+bool VarFileIterable::next(VarBase *&val) {
+  char *line_ptr = NULL;
   size_t len = 0;
   ssize_t read = 0;
 

@@ -7,7 +7,7 @@
 /////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-StmtBase::StmtBase(const GramType type, const size_t& idx)
+StmtBase::StmtBase(const GramType type, const size_t &idx)
     : m_idx(idx), m_type(type) {}
 StmtBase::~StmtBase() {}
 
@@ -19,7 +19,7 @@ GramType StmtBase::type() const { return m_type; }
 ////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-StmtSimple::StmtSimple(const lex::tok_t* val)
+StmtSimple::StmtSimple(const lex::tok_t *val)
     : StmtBase(GT_SIMPLE, val->pos), m_val(val) {}
 
 void StmtSimple::disp(const bool has_next) const {
@@ -34,22 +34,22 @@ void StmtSimple::disp(const bool has_next) const {
   io::trem(2);
 }
 
-const lex::tok_t* StmtSimple::val() const { return m_val; }
+const lex::tok_t *StmtSimple::val() const { return m_val; }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////// BLOCK
 ////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-StmtBlock::StmtBlock(const std::vector<const StmtBase*>& stmts,
-                           const size_t& idx)
+StmtBlock::StmtBlock(const std::vector<const StmtBase *> &stmts,
+                     const size_t &idx)
     : StmtBase(GT_BLOCK, idx), m_stmts(stmts), m_no_brace(false) {}
 StmtBlock::~StmtBlock() {
-  for (auto& s : m_stmts)
+  for (auto &s : m_stmts)
     delete s;
 }
 
-void StmtBlock::set_no_brace(const bool& no_brace) { m_no_brace = no_brace; }
+void StmtBlock::set_no_brace(const bool &no_brace) { m_no_brace = no_brace; }
 
 void StmtBlock::disp(const bool has_next) const {
   io::tadd(has_next);
@@ -61,10 +61,10 @@ void StmtBlock::disp(const bool has_next) const {
   io::trem();
 }
 
-const std::vector<const StmtBase*>& StmtBlock::stmts() const {
+const std::vector<const StmtBase *> &StmtBlock::stmts() const {
   return m_stmts;
 }
-const bool& StmtBlock::no_brace() const { return m_no_brace; }
+const bool &StmtBlock::no_brace() const { return m_no_brace; }
 
 void StmtBlock::clear_stmts() { m_stmts.clear(); }
 
@@ -73,8 +73,8 @@ void StmtBlock::clear_stmts() { m_stmts.clear(); }
 /////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-StmtExpr::StmtExpr(const StmtBase* lhs, const lex::tok_t* oper,
-                         const StmtBase* rhs, const size_t& idx)
+StmtExpr::StmtExpr(const StmtBase *lhs, const lex::tok_t *oper,
+                   const StmtBase *rhs, const size_t &idx)
     : StmtBase(GT_EXPR, idx), m_lhs(lhs), m_rhs(rhs), m_oper(oper),
       m_or_blk(nullptr), m_commas(0), m_with_cols(false) {}
 
@@ -87,23 +87,20 @@ StmtExpr::~StmtExpr() {
     delete m_or_blk;
 }
 
-void StmtExpr::set_or_blk(StmtBase* or_blk,
-                             const lex::tok_t* or_blk_var) {
+void StmtExpr::set_or_blk(StmtBase *or_blk, const lex::tok_t *or_blk_var) {
   m_or_blk = or_blk;
   m_or_blk_var = or_blk_var;
 }
-void StmtExpr::set_with_cols(const bool& with_cols) {
-  m_with_cols = with_cols;
-}
+void StmtExpr::set_with_cols(const bool &with_cols) { m_with_cols = with_cols; }
 
-const StmtBase* StmtExpr::lhs() const { return m_lhs; }
-const StmtBase* StmtExpr::rhs() const { return m_rhs; }
-const lex::tok_t* StmtExpr::oper() const { return m_oper; }
-const StmtBase* StmtExpr::or_blk() const { return m_or_blk; }
-const lex::tok_t* StmtExpr::or_blk_var() const { return m_or_blk_var; }
+const StmtBase *StmtExpr::lhs() const { return m_lhs; }
+const StmtBase *StmtExpr::rhs() const { return m_rhs; }
+const lex::tok_t *StmtExpr::oper() const { return m_oper; }
+const StmtBase *StmtExpr::or_blk() const { return m_or_blk; }
+const lex::tok_t *StmtExpr::or_blk_var() const { return m_or_blk_var; }
 size_t StmtExpr::commas() const { return m_commas; }
-const bool& StmtExpr::with_cols() const { return m_with_cols; }
-void StmtExpr::commas_set(const size_t& commas) { m_commas = commas; }
+const bool &StmtExpr::with_cols() const { return m_with_cols; }
+void StmtExpr::commas_set(const size_t &commas) { m_commas = commas; }
 
 void StmtExpr::disp(const bool has_next) const {
   io::tadd(has_next);
@@ -140,9 +137,8 @@ void StmtExpr::disp(const bool has_next) const {
 //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-StmtVarDeclBase::StmtVarDeclBase(const StmtSimple* lhs,
-                                           const StmtBase* in,
-                                           const StmtBase* rhs)
+StmtVarDeclBase::StmtVarDeclBase(const StmtSimple *lhs, const StmtBase *in,
+                                 const StmtBase *rhs)
     : StmtBase(GT_VAR_DECL_BASE, lhs->val()->pos), m_lhs(lhs), m_in(in),
       m_rhs(rhs) {}
 
@@ -172,9 +168,9 @@ void StmtVarDeclBase::disp(const bool has_next) const {
   io::trem(2);
 }
 
-const StmtSimple* StmtVarDeclBase::lhs() const { return m_lhs; }
-const StmtBase* StmtVarDeclBase::in() const { return m_in; }
-const StmtBase* StmtVarDeclBase::rhs() const { return m_rhs; }
+const StmtSimple *StmtVarDeclBase::lhs() const { return m_lhs; }
+const StmtBase *StmtVarDeclBase::in() const { return m_in; }
+const StmtBase *StmtVarDeclBase::rhs() const { return m_rhs; }
 
 bool StmtVarDeclBase::has_in() const { return m_in != nullptr; }
 
@@ -183,12 +179,12 @@ bool StmtVarDeclBase::has_in() const { return m_in != nullptr; }
 //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-StmtVarDecl::StmtVarDecl(
-    const std::vector<const StmtVarDeclBase*>& decls, const size_t& idx)
+StmtVarDecl::StmtVarDecl(const std::vector<const StmtVarDeclBase *> &decls,
+                         const size_t &idx)
     : StmtBase(GT_VAR_DECL, idx), m_decls(decls) {}
 
 StmtVarDecl::~StmtVarDecl() {
-  for (auto& decl : m_decls)
+  for (auto &decl : m_decls)
     delete decl;
 }
 
@@ -201,7 +197,7 @@ void StmtVarDecl::disp(const bool has_next) const {
   io::trem();
 }
 
-const std::vector<const StmtVarDeclBase*>& StmtVarDecl::decls() const {
+const std::vector<const StmtVarDeclBase *> &StmtVarDecl::decls() const {
   return m_decls;
 }
 
@@ -210,8 +206,7 @@ const std::vector<const StmtVarDeclBase*>& StmtVarDecl::decls() const {
 //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-StmtFnAssnArg::StmtFnAssnArg(const StmtSimple* lhs,
-                                       const StmtBase* rhs)
+StmtFnAssnArg::StmtFnAssnArg(const StmtSimple *lhs, const StmtBase *rhs)
     : StmtBase(GT_FN_ASSN_ARG, lhs->val()->pos), m_lhs(lhs), m_rhs(rhs) {}
 StmtFnAssnArg::~StmtFnAssnArg() {
   delete m_lhs;
@@ -234,21 +229,20 @@ void StmtFnAssnArg::disp(const bool has_next) const {
   io::trem();
 }
 
-const StmtSimple* StmtFnAssnArg::lhs() const { return m_lhs; }
-const StmtBase* StmtFnAssnArg::rhs() const { return m_rhs; }
+const StmtSimple *StmtFnAssnArg::lhs() const { return m_lhs; }
+const StmtBase *StmtFnAssnArg::rhs() const { return m_rhs; }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////// FUNC_DEF_ARGS
 //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-StmtFnDefArgs::StmtFnDefArgs(
-    const std::vector<const StmtBase*>& args, const StmtSimple* kwarg,
-    const StmtSimple* vaarg, const size_t& idx)
-    : StmtBase(GT_FN_ARGS, idx), m_args(args), m_kwarg(kwarg),
-      m_vaarg(vaarg) {}
+StmtFnDefArgs::StmtFnDefArgs(const std::vector<const StmtBase *> &args,
+                             const StmtSimple *kwarg, const StmtSimple *vaarg,
+                             const size_t &idx)
+    : StmtBase(GT_FN_ARGS, idx), m_args(args), m_kwarg(kwarg), m_vaarg(vaarg) {}
 StmtFnDefArgs::~StmtFnDefArgs() {
-  for (auto& a : m_args)
+  for (auto &a : m_args)
     delete a;
   if (m_kwarg)
     delete m_kwarg;
@@ -276,48 +270,51 @@ void StmtFnDefArgs::disp(const bool has_next) const {
   }
   io::trem();
 }
-const std::vector<const StmtBase*>& StmtFnDefArgs::args() const {
+const std::vector<const StmtBase *> &StmtFnDefArgs::args() const {
   return m_args;
 }
-const StmtSimple* StmtFnDefArgs::kwarg() const { return m_kwarg; }
-const StmtSimple* StmtFnDefArgs::vaarg() const { return m_vaarg; }
+const StmtSimple *StmtFnDefArgs::kwarg() const { return m_kwarg; }
+const StmtSimple *StmtFnDefArgs::vaarg() const { return m_vaarg; }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////// FUNC_DEF
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-StmtFnDef::StmtFnDef(const StmtFnDefArgs* args, const StmtBlock* body, const StmtSimple *name,
-                     const bool isAnon, const size_t& idx)
-    : StmtBase(GT_FN_DEF, idx), m_args(args), m_body(body), m_name(name), m_isAnon(isAnon) {}
+StmtFnDef::StmtFnDef(const StmtFnDefArgs *args, const StmtBlock *body,
+                     const StmtSimple *name, const bool isAnon,
+                     const size_t &idx)
+    : StmtBase(GT_FN_DEF, idx), m_args(args), m_body(body), m_name(name),
+      m_isAnon(isAnon) {}
 StmtFnDef::~StmtFnDef() {
   if (m_args)
     delete m_args;
-  if(m_name)
+  if (m_name)
     delete m_name;
   delete m_body;
 }
 
 void StmtFnDef::disp(const bool has_next) const {
   io::tadd(has_next);
-  io::print(has_next, "%sFunction definition at: %p\n", m_isAnon ? "Anonymous " : "", this);
+  io::print(has_next, "%sFunction definition at: %p\n",
+            m_isAnon ? "Anonymous " : "", this);
   if (m_args) {
     m_args->disp(true);
   }
-  if(m_name) {
+  if (m_name) {
     m_name->disp(true);
   }
   m_body->disp(false);
   io::trem();
 }
-const StmtFnDefArgs* StmtFnDef::args() const { return m_args; }
-const StmtBlock* StmtFnDef::body() const { return m_body; }
+const StmtFnDefArgs *StmtFnDef::args() const { return m_args; }
+const StmtBlock *StmtFnDef::body() const { return m_body; }
 
 StmtImplDef::StmtImplDef(const StmtFnDefArgs *args, const StmtBlock *body,
-                     const StmtSimple *in, const StmtSimple *name,
-                     const size_t &idx)
-    : StmtBase(GT_FN_DEF, idx), m_args(args), m_body(body), m_in(in), m_name(name)
-{}
+                         const StmtSimple *in, const StmtSimple *name,
+                         const size_t &idx)
+    : StmtBase(GT_FN_DEF, idx), m_args(args), m_body(body), m_in(in),
+      m_name(name) {}
 StmtImplDef::~StmtImplDef() {
   if (m_args)
     delete m_args;
@@ -347,15 +344,15 @@ const StmtSimple *StmtImplDef::in() const { return m_in; }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 StmtFnCallArgs::StmtFnCallArgs(
-    const std::vector<const StmtBase*>& args,
-    const std::vector<const StmtFnAssnArg*>& assn_args,
-    const bool& va_unpack, const size_t& idx)
+    const std::vector<const StmtBase *> &args,
+    const std::vector<const StmtFnAssnArg *> &assn_args, const bool &va_unpack,
+    const size_t &idx)
     : StmtBase(GT_FN_ARGS, idx), m_args(args), m_assn_args(assn_args),
       m_va_unpack(va_unpack) {}
 StmtFnCallArgs::~StmtFnCallArgs() {
-  for (auto& a : m_args)
+  for (auto &a : m_args)
     delete a;
-  for (auto& a : m_assn_args)
+  for (auto &a : m_assn_args)
     delete a;
 }
 
@@ -371,22 +368,21 @@ void StmtFnCallArgs::disp(const bool has_next) const {
   }
   io::trem();
 }
-const std::vector<const StmtBase*>& StmtFnCallArgs::args() const {
+const std::vector<const StmtBase *> &StmtFnCallArgs::args() const {
   return m_args;
 }
-const std::vector<const StmtFnAssnArg*>&
-StmtFnCallArgs::assn_args() const {
+const std::vector<const StmtFnAssnArg *> &StmtFnCallArgs::assn_args() const {
   return m_assn_args;
 }
-const bool& StmtFnCallArgs::va_unpack() const { return m_va_unpack; }
+const bool &StmtFnCallArgs::va_unpack() const { return m_va_unpack; }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// SINGLE_EXPR_STMT
 /////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-StmtSingleOpStmt::StmtSingleOpStmt(
-    const lex::tok_t* sost, const StmtBase* operand)
+StmtSingleOpStmt::StmtSingleOpStmt(const lex::tok_t *sost,
+                                   const StmtBase *operand)
     : StmtBase(GT_SINGLE_OPERAND_STMT, sost->pos), m_sost(sost),
       m_operand(operand) {}
 StmtSingleOpStmt::~StmtSingleOpStmt() {
@@ -406,21 +402,19 @@ void StmtSingleOpStmt::disp(const bool has_next) const {
   io::trem();
 }
 
-const lex::tok_t* StmtSingleOpStmt::sost() const { return m_sost; }
-const StmtBase* StmtSingleOpStmt::operand() const {
-  return m_operand;
-}
+const lex::tok_t *StmtSingleOpStmt::sost() const { return m_sost; }
+const StmtBase *StmtSingleOpStmt::operand() const { return m_operand; }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// CONDITIONAL_STMT
 /////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-StmtConditional::StmtConditional(const std::vector<conditional_t>& conds,
-                                       const size_t& idx)
+StmtConditional::StmtConditional(const std::vector<conditional_t> &conds,
+                                 const size_t &idx)
     : StmtBase(GT_CONDITIONAL, idx), m_conds(conds) {}
 StmtConditional::~StmtConditional() {
-  for (auto& c : m_conds) {
+  for (auto &c : m_conds) {
     if (c.condition)
       delete c.condition;
     delete c.body;
@@ -448,7 +442,7 @@ void StmtConditional::disp(const bool has_next) const {
   io::trem();
 }
 
-const std::vector<conditional_t>& StmtConditional::conds() const {
+const std::vector<conditional_t> &StmtConditional::conds() const {
   return m_conds;
 }
 
@@ -457,9 +451,8 @@ const std::vector<conditional_t>& StmtConditional::conds() const {
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-StmtFor::StmtFor(const StmtBase* init, const StmtBase* cond,
-                       const StmtBase* incr, const StmtBase* body,
-                       const size_t& idx)
+StmtFor::StmtFor(const StmtBase *init, const StmtBase *cond,
+                 const StmtBase *incr, const StmtBase *body, const size_t &idx)
     : StmtBase(GT_FOR, idx), m_init(init), m_cond(cond), m_incr(incr),
       m_body(body) {}
 StmtFor::~StmtFor() {
@@ -505,19 +498,18 @@ void StmtFor::disp(const bool has_next) const {
   io::trem(2);
 }
 
-const StmtBase* StmtFor::init() const { return m_init; }
-const StmtBase* StmtFor::cond() const { return m_cond; }
-const StmtBase* StmtFor::incr() const { return m_incr; }
-const StmtBase* StmtFor::body() const { return m_body; }
+const StmtBase *StmtFor::init() const { return m_init; }
+const StmtBase *StmtFor::cond() const { return m_cond; }
+const StmtBase *StmtFor::incr() const { return m_incr; }
+const StmtBase *StmtFor::body() const { return m_body; }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////// FOREACH_STMT
 /////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-StmtForEach::StmtForEach(const lex::tok_t* loop_var,
-                               const StmtBase* expr, const StmtBase* body,
-                               const size_t& idx)
+StmtForEach::StmtForEach(const lex::tok_t *loop_var, const StmtBase *expr,
+                         const StmtBase *body, const size_t &idx)
     : StmtBase(GT_FOREACH, idx), m_loop_var(loop_var), m_expr(expr),
       m_body(body) {}
 StmtForEach::~StmtForEach() {
@@ -546,17 +538,17 @@ void StmtForEach::disp(const bool has_next) const {
   io::trem(2);
 }
 
-const lex::tok_t* StmtForEach::loop_var() const { return m_loop_var; }
-const StmtBase* StmtForEach::expr() const { return m_expr; }
-const StmtBase* StmtForEach::body() const { return m_body; }
+const lex::tok_t *StmtForEach::loop_var() const { return m_loop_var; }
+const StmtBase *StmtForEach::expr() const { return m_expr; }
+const StmtBase *StmtForEach::body() const { return m_body; }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// WHILE_STMT
 //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-StmtWhile::StmtWhile(const StmtBase* expr, const StmtBase* body,
-                           const size_t& idx)
+StmtWhile::StmtWhile(const StmtBase *expr, const StmtBase *body,
+                     const size_t &idx)
     : StmtBase(GT_WHILE, idx), m_expr(expr), m_body(body) {}
 StmtWhile::~StmtWhile() {
   delete m_expr;
@@ -578,5 +570,5 @@ void StmtWhile::disp(const bool has_next) const {
   io::trem(2);
 }
 
-const StmtBase* StmtWhile::expr() const { return m_expr; }
-const StmtBase* StmtWhile::body() const { return m_body; }
+const StmtBase *StmtWhile::expr() const { return m_expr; }
+const StmtBase *StmtWhile::body() const { return m_body; }

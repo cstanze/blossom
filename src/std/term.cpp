@@ -12,7 +12,7 @@ static struct termios attrs_orig;
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-VarBase* term_get_attrs(VMState& vm, const FnData& fd) {
+VarBase *term_get_attrs(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected file descriptor id for get_attrs, found: %s",
@@ -24,7 +24,7 @@ VarBase* term_get_attrs(VMState& vm, const FnData& fd) {
   return make<VarTerm>(term);
 }
 
-VarBase* term_set_attrs(VMState& vm, const FnData& fd) {
+VarBase *term_set_attrs(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected file descriptor id for set_attrs, found: %s",
@@ -43,7 +43,7 @@ VarBase* term_set_attrs(VMState& vm, const FnData& fd) {
 }
 
 INIT_MODULE(term) {
-  VarSrc* src = vm.current_source();
+  VarSrc *src = vm.current_source();
 
   tcgetattr(STDIN_FILENO, &attrs_orig);
 

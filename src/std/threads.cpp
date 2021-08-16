@@ -19,7 +19,7 @@
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ThreadRes thread_exec(VMState* vm, VarFn*& fn, std::vector<VarBase*> args,
+ThreadRes thread_exec(VMState *vm, VarFn *&fn, std::vector<VarBase *> args,
                       const size_t src_id, const size_t idx) {
   ThreadRes res = {nullptr, nullptr};
   if (!fn->call(*vm, args, {}, {}, src_id, idx)) {
@@ -39,55 +39,55 @@ ThreadRes thread_exec(VMState* vm, VarFn*& fn, std::vector<VarBase*> args,
     res.res = vm->nil;
   }
   delete vm;
-  for (auto& arg : args)
+  for (auto &arg : args)
     var_dref(arg);
   return res;
 }
 
-VarBase* threads_max(VMState& vm, const FnData& fd) {
+VarBase *threads_max(VMState &vm, const FnData &fd) {
   return make<VarInt>(std::thread::hardware_concurrency());
 }
 
-VarBase* threads_new(VMState& vm, const FnData& fd) {
+VarBase *threads_new(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarFn>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected function to be executed as first parameter, found: %s",
             vm.type_name(fd.args[1]).c_str());
     return nullptr;
   }
-  VarFn* fn = FN(fd.args[1]);
+  VarFn *fn = FN(fd.args[1]);
   return make<VarThread>(nullptr, fn, nullptr, true);
 }
 
-VarBase* thread_start(VMState& vm, const FnData& fd) {
-  std::vector<VarBase*> args;
+VarBase *thread_start(VMState &vm, const FnData &fd) {
+  std::vector<VarBase *> args;
   args.push_back(nullptr); // for 'self'
   for (size_t i = 1; i < fd.args.size(); ++i) {
     var_iref(fd.args[i]);
     args.push_back(fd.args[i]);
   }
-  VarThread* t = THREAD(fd.args[0]);
+  VarThread *t = THREAD(fd.args[0]);
   if (t->get_id() == -1)
     t->init_id();
-  VarFn*& fn = t->get_fn();
-  std::packaged_task<ThreadRes(VMState*, VarFn*&, std::vector<VarBase*>,
+  VarFn *&fn = t->get_fn();
+  std::packaged_task<ThreadRes(VMState *, VarFn *&, std::vector<VarBase *>,
                                const size_t, const size_t)>
       task(thread_exec);
-  VMState* threadvm = vm.thread_copy(fd.src_id, fd.idx);
+  VMState *threadvm = vm.thread_copy(fd.src_id, fd.idx);
   t->get_future() = new std::shared_future<ThreadRes>(task.get_future());
   t->get_thread() = new std::thread(std::move(task), threadvm, std::ref(fn),
                                     args, fd.src_id, fd.idx);
   return vm.nil;
 }
 
-VarBase* thread_get_id(VMState& vm, const FnData& fd) {
+VarBase *thread_get_id(VMState &vm, const FnData &fd) {
   if (THREAD(fd.args[0])->get_id() == -1)
     THREAD(fd.args[0])->init_id();
   return make<VarInt>(THREAD(fd.args[0])->get_id());
 }
 
-VarBase* thread_is_done(VMState& vm, const FnData& fd) {
-  std::shared_future<ThreadRes>*& fut = THREAD(fd.args[0])->get_future();
+VarBase *thread_is_done(VMState &vm, const FnData &fd) {
+  std::shared_future<ThreadRes> *&fut = THREAD(fd.args[0])->get_future();
   if (!fut->valid())
     return vm.fals;
   return fut->wait_for(std::chrono::seconds(0)) == std::future_status::ready
@@ -95,8 +95,8 @@ VarBase* thread_is_done(VMState& vm, const FnData& fd) {
              : vm.fals;
 }
 
-VarBase* thread_join(VMState& vm, const FnData& fd) {
-  std::shared_future<ThreadRes>*& fut = THREAD(fd.args[0])->get_future();
+VarBase *thread_join(VMState &vm, const FnData &fd) {
+  std::shared_future<ThreadRes> *&fut = THREAD(fd.args[0])->get_future();
   if (!fut->valid())
     fut->wait();
   if (fut->get().err) {
@@ -107,7 +107,7 @@ VarBase* thread_join(VMState& vm, const FnData& fd) {
 }
 
 INIT_MODULE(threads) {
-  VarSrc* src = vm.current_source();
+  VarSrc *src = vm.current_source();
 
   src->add_native_fn("max", threads_max, 0);
   src->add_native_fn("new", threads_new, 1);

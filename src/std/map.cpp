@@ -8,14 +8,14 @@
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-VarBase* map_new(VMState& vm, const FnData& fd) {
+VarBase *map_new(VMState &vm, const FnData &fd) {
   if ((fd.args.size() - 1) % 2 != 0) {
     vm.fail(fd.src_id, fd.idx, "argument count must be even to create a map");
     return nullptr;
   }
   bool refs = false;
   if (fd.assn_args_loc.find("refs") != fd.assn_args_loc.end()) {
-    VarBase* refs_var = fd.assn_args[fd.assn_args_loc.at("refs")].val;
+    VarBase *refs_var = fd.assn_args[fd.assn_args_loc.at("refs")].val;
     if (!refs_var->istype<VarBool>()) {
       vm.fail(
           fd.src_id, fd.idx,
@@ -26,7 +26,7 @@ VarBase* map_new(VMState& vm, const FnData& fd) {
     }
     refs = BOOL(refs_var)->get();
   }
-  std::map<std::string, VarBase*> map_val;
+  std::map<std::string, VarBase *> map_val;
   for (size_t i = 1; i < fd.args.size(); ++i) {
     std::string key;
     if (!fd.args[i]->to_str(vm, key, fd.src_id, fd.idx)) {
@@ -44,20 +44,20 @@ VarBase* map_new(VMState& vm, const FnData& fd) {
   return make<VarMap>(map_val, refs);
 }
 
-VarBase* map_len(VMState& vm, const FnData& fd) {
+VarBase *map_len(VMState &vm, const FnData &fd) {
   return make<VarInt>(MAP(fd.args[0])->get().size());
 }
 
-VarBase* map_is_ref(VMState& vm, const FnData& fd) {
+VarBase *map_is_ref(VMState &vm, const FnData &fd) {
   return MAP(fd.args[0])->is_ref_map() ? vm.tru : vm.fals;
 }
 
-VarBase* map_empty(VMState& vm, const FnData& fd) {
+VarBase *map_empty(VMState &vm, const FnData &fd) {
   return MAP(fd.args[0])->get().empty() ? vm.tru : vm.fals;
 }
 
-VarBase* map_insert(VMState& vm, const FnData& fd) {
-  std::map<std::string, VarBase*>& map = MAP(fd.args[0])->get();
+VarBase *map_insert(VMState &vm, const FnData &fd) {
+  std::map<std::string, VarBase *> &map = MAP(fd.args[0])->get();
   std::string key;
   if (!fd.args[1]->to_str(vm, key, fd.src_id, fd.idx)) {
     return nullptr;
@@ -74,8 +74,8 @@ VarBase* map_insert(VMState& vm, const FnData& fd) {
   return fd.args[0];
 }
 
-VarBase* map_erase(VMState& vm, const FnData& fd) {
-  std::map<std::string, VarBase*>& map = MAP(fd.args[0])->get();
+VarBase *map_erase(VMState &vm, const FnData &fd) {
+  std::map<std::string, VarBase *> &map = MAP(fd.args[0])->get();
   std::string key;
   if (!fd.args[1]->to_str(vm, key, fd.src_id, fd.idx)) {
     return nullptr;
@@ -88,8 +88,8 @@ VarBase* map_erase(VMState& vm, const FnData& fd) {
   return fd.args[0];
 }
 
-VarBase* map_get(VMState& vm, const FnData& fd) {
-  std::map<std::string, VarBase*>& map = MAP(fd.args[0])->get();
+VarBase *map_get(VMState &vm, const FnData &fd) {
+  std::map<std::string, VarBase *> &map = MAP(fd.args[0])->get();
   std::string key;
   if (!fd.args[1]->to_str(vm, key, fd.src_id, fd.idx)) {
     return nullptr;
@@ -100,8 +100,8 @@ VarBase* map_get(VMState& vm, const FnData& fd) {
   return map[key];
 }
 
-VarBase* map_find(VMState& vm, const FnData& fd) {
-  std::map<std::string, VarBase*>& map = MAP(fd.args[0])->get();
+VarBase *map_find(VMState &vm, const FnData &fd) {
+  std::map<std::string, VarBase *> &map = MAP(fd.args[0])->get();
   std::string key;
   if (!fd.args[1]->to_str(vm, key, fd.src_id, fd.idx)) {
     return nullptr;
@@ -109,13 +109,13 @@ VarBase* map_find(VMState& vm, const FnData& fd) {
   return map.find(key) != map.end() ? vm.tru : vm.fals;
 }
 
-VarBase* map_each(VMState& vm, const FnData& fd) {
+VarBase *map_each(VMState &vm, const FnData &fd) {
   return make<VarMapIterable>(MAP(fd.args[0]));
 }
 
-VarBase* map_iterable_next(VMState& vm, const FnData& fd) {
-  VarMapIterable* it = MAP_ITERABLE(fd.args[0]);
-  VarBase* res = nullptr;
+VarBase *map_iterable_next(VMState &vm, const FnData &fd) {
+  VarMapIterable *it = MAP_ITERABLE(fd.args[0]);
+  VarBase *res = nullptr;
   if (!it->next(res, fd.src_id, fd.idx))
     return vm.nil;
   res->set_load_as_ref();
@@ -123,7 +123,7 @@ VarBase* map_iterable_next(VMState& vm, const FnData& fd) {
 }
 
 INIT_MODULE(map) {
-  VarSrc* src = vm.current_source();
+  VarSrc *src = vm.current_source();
 
   src->add_native_fn("new", map_new, 0, true);
 

@@ -29,6 +29,6 @@ std::string &str();
 
 // err_val is for things like idx, etc.
 void set(const size_t &err_code, const size_t &err_val, const char *msg, ...);
-} // namespace err
+} // namespace Err
 
 #endif // COMMON_ERRORS_HPP

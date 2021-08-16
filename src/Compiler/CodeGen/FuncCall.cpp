@@ -4,7 +4,7 @@
 
 std::vector<std::string> fn_call_args;
 
-bool StmtFnCallArgs::codegen(Bytecode& bc) const {
+bool StmtFnCallArgs::codegen(Bytecode &bc) const {
   fn_call_args.emplace_back();
 
   for (auto assn_arg = m_assn_args.rbegin(); assn_arg != m_assn_args.rend();
@@ -21,7 +21,7 @@ bool StmtFnCallArgs::codegen(Bytecode& bc) const {
   return true;
 }
 
-bool StmtFnAssnArg::codegen(Bytecode& bc) const {
+bool StmtFnAssnArg::codegen(Bytecode &bc) const {
   m_rhs->codegen(bc);
   m_lhs->codegen(bc);
   return true;

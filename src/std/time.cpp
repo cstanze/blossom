@@ -9,8 +9,8 @@
 ////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-VarBase* sysclk_now(VMState& vm, const FnData& fd) {
-  VarInt* res = make<VarInt>(0);
+VarBase *sysclk_now(VMState &vm, const FnData &fd) {
+  VarInt *res = make<VarInt>(0);
   mpz_set_ui(res->get(),
              std::chrono::duration_cast<std::chrono::nanoseconds>(
                  std::chrono::system_clock::now().time_since_epoch())
@@ -18,7 +18,7 @@ VarBase* sysclk_now(VMState& vm, const FnData& fd) {
   return res;
 }
 
-VarBase* time_format(VMState& vm, const FnData& fd) {
+VarBase *time_format(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected integer argument as time for formatting, found: %s",
@@ -36,7 +36,7 @@ VarBase* time_format(VMState& vm, const FnData& fd) {
   std::chrono::system_clock::time_point tp(
       std::chrono::duration_cast<std::chrono::system_clock::duration>(nsval));
   std::time_t time = std::chrono::system_clock::to_time_t(tp);
-  std::tm* t = std::localtime(&time);
+  std::tm *t = std::localtime(&time);
   char fmt[1024] = {0};
   if (std::strftime(fmt, sizeof(fmt), STR(fd.args[2])->get().c_str(), t)) {
     return make<VarString>(fmt);
@@ -45,7 +45,7 @@ VarBase* time_format(VMState& vm, const FnData& fd) {
 }
 
 INIT_MODULE(time) {
-  VarSrc* src = vm.current_source();
+  VarSrc *src = vm.current_source();
   src->add_native_fn("system_clock_now_native", sysclk_now);
   src->add_native_fn("format_native", time_format, 2);
   return true;

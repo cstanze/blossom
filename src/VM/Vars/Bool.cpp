@@ -5,11 +5,11 @@
 ////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-VarBool::VarBool(const bool val, const size_t& src_id, const size_t& idx)
+VarBool::VarBool(const bool val, const size_t &src_id, const size_t &idx)
     : VarBase(type_id<VarBool>(), src_id, idx, false, false), m_val(val) {}
 
-VarBase* VarBool::copy(const size_t& src_id, const size_t& idx) {
+VarBase *VarBool::copy(const size_t &src_id, const size_t &idx) {
   return new VarBool(m_val, src_id, idx);
 }
-bool& VarBool::get() { return m_val; }
-void VarBool::set(VarBase* from) { m_val = BOOL(from)->get(); }
+bool &VarBool::get() { return m_val; }
+void VarBool::set(VarBase *from) { m_val = BOOL(from)->get(); }

@@ -11,16 +11,16 @@
 #include "Compiler/Parser.hpp"
 #include "VM/VM.hpp"
 
-Errors bmod_read_code(const std::string& data, const std::string& src_dir,
-                      const std::string& src_path, Bytecode& bc,
-                      const size_t& flags, const bool is_main_src,
-                      const bool& expr_only, const size_t& begin_idx,
-                      const size_t& end_idx) {
+Errors bmod_read_code(const std::string &data, const std::string &src_dir,
+                      const std::string &src_path, Bytecode &bc,
+                      const size_t &flags, const bool is_main_src,
+                      const bool &expr_only, const size_t &begin_idx,
+                      const size_t &end_idx) {
   // lexical analysis
   lex::toks_t toks;
 
   ParseHelper ph(toks);
-  ParseTree* ptree = nullptr;
+  ParseTree *ptree = nullptr;
 
   Errors err = lex::tokenize(data, toks, src_dir, src_path, begin_idx, end_idx);
   if (err != E_OK) {
@@ -31,14 +31,14 @@ Errors bmod_read_code(const std::string& data, const std::string& src_dir,
   if (flags & OPT_T && (flags & OPT_R || is_main_src)) {
     fprintf(stdout, "Tokens (%zu):\n", toks.size());
     for (size_t i = 0; i < toks.size(); ++i) {
-      auto& tok = toks[i];
+      auto &tok = toks[i];
       fprintf(stdout, "ID: %zu\tIdx: %zu\tType: %s\tSymbol: %s\n", i, tok.pos,
               TokStrs[tok.type], tok.data.c_str());
     }
   }
 
   if (expr_only) {
-    err = parse_expr(ph, (StmtBase*&)ptree);
+    err = parse_expr(ph, (StmtBase *&)ptree);
   } else {
     err = parser::parse(ph, toks, ptree);
   }
@@ -60,7 +60,7 @@ Errors bmod_read_code(const std::string& data, const std::string& src_dir,
   // show bytecode
   if (flags & OPT_B && (flags & OPT_R || is_main_src)) {
     fprintf(stdout, "Byte Code (%zu):\n", bc.size());
-    const std::vector<Op>& bcode = bc.get();
+    const std::vector<Op> &bcode = bc.get();
     int id_padding = std::to_string(bcode.size()).size();
     for (size_t i = 0; i < bcode.size(); ++i) {
       fprintf(stdout, "ID: %-*zu  %*s ", id_padding, i, 12,
@@ -81,10 +81,10 @@ end:
   return err;
 }
 
-SrcFile* bmod_load(const std::string& src_path, const std::string& src_dir,
-                   const size_t& flags, const bool is_main_src, Errors& err,
-                   const size_t& begin_idx, const size_t& end_idx) {
-  SrcFile* src = new SrcFile(src_dir, src_path, is_main_src);
+SrcFile *bmod_load(const std::string &src_path, const std::string &src_dir,
+                   const size_t &flags, const bool is_main_src, Errors &err,
+                   const size_t &begin_idx, const size_t &end_idx) {
+  SrcFile *src = new SrcFile(src_dir, src_path, is_main_src);
   err = src->load_file();
   if (err != E_OK)
     goto fail;
@@ -94,7 +94,7 @@ SrcFile* bmod_load(const std::string& src_path, const std::string& src_dir,
     src->fail(Err::val(), Err::str().c_str());
     goto fail;
   }
-  for (auto& bc : src->bcode().getmut()) {
+  for (auto &bc : src->bcode().getmut()) {
     bc.src_id = src->id();
   }
   return src;

@@ -15,16 +15,16 @@
 
 static size_t thread_id = 0;
 
-VarThread::VarThread(std::thread* thread, VarFn* fn,
-                     std::shared_future<ThreadRes>* res, const bool& owner,
-                     const size_t& src_id, const size_t& idx)
+VarThread::VarThread(std::thread *thread, VarFn *fn,
+                     std::shared_future<ThreadRes> *res, const bool &owner,
+                     const size_t &src_id, const size_t &idx)
     : VarBase(type_id<VarThread>(), src_id, idx, false, false),
       m_thread(thread), m_fn(fn), m_res(res), m_id(-1), m_owner(owner) {
   var_iref(m_fn);
 }
-VarThread::VarThread(std::thread* thread, VarFn* fn,
-                     std::shared_future<ThreadRes>* res, const bool& owner,
-                     const size_t& id, const size_t& src_id, const size_t& idx)
+VarThread::VarThread(std::thread *thread, VarFn *fn,
+                     std::shared_future<ThreadRes> *res, const bool &owner,
+                     const size_t &id, const size_t &src_id, const size_t &idx)
     : VarBase(type_id<VarThread>(), src_id, idx, false, false),
       m_thread(thread), m_fn(fn), m_res(res), m_id(id), m_owner(owner) {
   var_iref(m_fn);
@@ -46,11 +46,11 @@ VarThread::~VarThread() {
   var_dref(m_fn);
 }
 
-VarBase* VarThread::copy(const size_t& src_id, const size_t& idx) {
+VarBase *VarThread::copy(const size_t &src_id, const size_t &idx) {
   return new VarThread(nullptr, m_fn, nullptr, true, src_id, idx);
 }
-void VarThread::set(VarBase* from) {
-  VarThread* t = THREAD(from);
+void VarThread::set(VarBase *from) {
+  VarThread *t = THREAD(from);
   if (m_owner) {
     if (m_thread) {
       m_thread->join();

@@ -7,10 +7,10 @@
 /////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-VarNil::VarNil(const size_t& src_id, const size_t& idx)
+VarNil::VarNil(const size_t &src_id, const size_t &idx)
     : VarBase(type_id<VarNil>(), src_id, idx, false, false) {}
 
-VarBase* VarNil::copy(const size_t& src_id, const size_t& idx) {
+VarBase *VarNil::copy(const size_t &src_id, const size_t &idx) {
   return new VarNil(src_id, idx);
 }
-void VarNil::set(VarBase* from) {}
+void VarNil::set(VarBase *from) {}

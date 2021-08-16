@@ -2,7 +2,7 @@
 
 #include "Compiler/CodeGen/Internal.hpp"
 
-Errors parse_expr_cols(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_cols(ParseHelper &ph, StmtBase *&loc) {
   if (parse_expr(ph, loc) != E_OK) {
     goto fail;
   }
@@ -26,7 +26,7 @@ fail:
 }
 
 // does NOT consume semicolon or RBRACE
-Errors parse_expr_cols_or_rbrace(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_cols_or_rbrace(ParseHelper &ph, StmtBase *&loc) {
   if (parse_expr(ph, loc) != E_OK) {
     goto fail;
   }
@@ -45,15 +45,15 @@ fail:
   return E_PARSE_FAIL;
 }
 
-Errors parse_expr(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr(ParseHelper &ph, StmtBase *&loc) {
   return parse_expr_16(ph, loc);
 }
 
 // Left Associative
 // ,
-Errors parse_expr_16(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_16(ParseHelper &ph, StmtBase *&loc) {
   StmtBase *lhs = nullptr, *rhs = nullptr;
-  const lex::tok_t* oper = nullptr;
+  const lex::tok_t *oper = nullptr;
 
   size_t idx = ph.peak()->pos;
   size_t commas = 0;
@@ -74,7 +74,7 @@ Errors parse_expr_16(ParseHelper& ph, StmtBase*& loc) {
     lhs = nullptr;
   }
   if (rhs->type() == GT_EXPR) {
-    static_cast<StmtExpr*>(rhs)->commas_set(commas);
+    static_cast<StmtExpr *>(rhs)->commas_set(commas);
   }
   loc = rhs;
   return E_OK;
@@ -88,15 +88,15 @@ fail:
 
 // Right Associative
 // =
-Errors parse_expr_15(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_15(ParseHelper &ph, StmtBase *&loc) {
   // used for generating expressions
   StmtBase *lhs = nullptr, *rhs = nullptr;
-  const lex::tok_t* oper = nullptr;
+  const lex::tok_t *oper = nullptr;
   // used to reverse the order of sequential assignments (a = b = c = d)
-  std::vector<StmtBase*> exprs;
-  std::vector<const lex::tok_t*> opers;
+  std::vector<StmtBase *> exprs;
+  std::vector<const lex::tok_t *> opers;
   // used for storing expressions from parse_expr_*()
-  StmtBase* tmp_expr = nullptr;
+  StmtBase *tmp_expr = nullptr;
 
   size_t idx = ph.peak()->pos;
 
@@ -137,7 +137,7 @@ Errors parse_expr_15(ParseHelper& ph, StmtBase*& loc) {
   loc = lhs;
   return E_OK;
 fail:
-  for (auto& e : exprs) {
+  for (auto &e : exprs) {
     delete e;
   }
   return E_PARSE_FAIL;
@@ -148,11 +148,11 @@ fail:
 // *= /= %=
 // <<= >>=
 // &= |= ^=
-Errors parse_expr_14(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_14(ParseHelper &ph, StmtBase *&loc) {
   StmtBase *lhs = nullptr, *rhs = nullptr;
-  const lex::tok_t* oper = nullptr;
-  StmtBase* or_blk = nullptr;
-  const lex::tok_t* or_blk_var = nullptr;
+  const lex::tok_t *oper = nullptr;
+  StmtBase *or_blk = nullptr;
+  const lex::tok_t *or_blk_var = nullptr;
 
   size_t idx = ph.peak()->pos;
 
@@ -192,7 +192,7 @@ Errors parse_expr_14(ParseHelper& ph, StmtBase*& loc) {
   if (loc->type() != GT_EXPR) {
     loc = new StmtExpr(lhs, nullptr, nullptr, idx);
   }
-  static_cast<StmtExpr*>(loc)->set_or_blk(or_blk, or_blk_var);
+  static_cast<StmtExpr *>(loc)->set_or_blk(or_blk, or_blk_var);
   return E_OK;
 fail:
   if (lhs)
@@ -204,9 +204,9 @@ fail:
 
 // Left Associative
 // ||
-Errors parse_expr_13(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_13(ParseHelper &ph, StmtBase *&loc) {
   StmtBase *lhs = nullptr, *rhs = nullptr;
-  const lex::tok_t* oper = nullptr;
+  const lex::tok_t *oper = nullptr;
 
   size_t idx = ph.peak()->pos;
 
@@ -236,9 +236,9 @@ fail:
 
 // Left Associative
 // &&
-Errors parse_expr_12(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_12(ParseHelper &ph, StmtBase *&loc) {
   StmtBase *lhs = nullptr, *rhs = nullptr;
-  const lex::tok_t* oper = nullptr;
+  const lex::tok_t *oper = nullptr;
 
   size_t idx = ph.peak()->pos;
 
@@ -268,9 +268,9 @@ fail:
 
 // Left Associative
 // |
-Errors parse_expr_11(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_11(ParseHelper &ph, StmtBase *&loc) {
   StmtBase *lhs = nullptr, *rhs = nullptr;
-  const lex::tok_t* oper = nullptr;
+  const lex::tok_t *oper = nullptr;
 
   size_t idx = ph.peak()->pos;
 
@@ -300,9 +300,9 @@ fail:
 
 // Left Associative
 // ^
-Errors parse_expr_10(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_10(ParseHelper &ph, StmtBase *&loc) {
   StmtBase *lhs = nullptr, *rhs = nullptr;
-  const lex::tok_t* oper = nullptr;
+  const lex::tok_t *oper = nullptr;
 
   size_t idx = ph.peak()->pos;
 
@@ -332,9 +332,9 @@ fail:
 
 // Left Associative
 // &
-Errors parse_expr_09(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_09(ParseHelper &ph, StmtBase *&loc) {
   StmtBase *lhs = nullptr, *rhs = nullptr;
-  const lex::tok_t* oper = nullptr;
+  const lex::tok_t *oper = nullptr;
 
   size_t idx = ph.peak()->pos;
 
@@ -364,9 +364,9 @@ fail:
 
 // Left Associative
 // == !=
-Errors parse_expr_08(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_08(ParseHelper &ph, StmtBase *&loc) {
   StmtBase *lhs = nullptr, *rhs = nullptr;
-  const lex::tok_t* oper = nullptr;
+  const lex::tok_t *oper = nullptr;
 
   size_t idx = ph.peak()->pos;
 
@@ -397,9 +397,9 @@ fail:
 // Left Associative
 // < <=
 // > >=
-Errors parse_expr_07(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_07(ParseHelper &ph, StmtBase *&loc) {
   StmtBase *lhs = nullptr, *rhs = nullptr;
-  const lex::tok_t* oper = nullptr;
+  const lex::tok_t *oper = nullptr;
 
   size_t idx = ph.peak()->pos;
 
@@ -429,9 +429,9 @@ fail:
 
 // Left Associative
 // << >>
-Errors parse_expr_06(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_06(ParseHelper &ph, StmtBase *&loc) {
   StmtBase *lhs = nullptr, *rhs = nullptr;
-  const lex::tok_t* oper = nullptr;
+  const lex::tok_t *oper = nullptr;
 
   size_t idx = ph.peak()->pos;
 
@@ -461,9 +461,9 @@ fail:
 
 // Left Associative
 // + -
-Errors parse_expr_05(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_05(ParseHelper &ph, StmtBase *&loc) {
   StmtBase *lhs = nullptr, *rhs = nullptr;
-  const lex::tok_t* oper = nullptr;
+  const lex::tok_t *oper = nullptr;
 
   size_t idx = ph.peak()->pos;
 
@@ -493,9 +493,9 @@ fail:
 
 // Left Associative
 // / * % ** //
-Errors parse_expr_04(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_04(ParseHelper &ph, StmtBase *&loc) {
   StmtBase *lhs = nullptr, *rhs = nullptr;
-  const lex::tok_t* oper = nullptr;
+  const lex::tok_t *oper = nullptr;
 
   size_t idx = ph.peak()->pos;
 
@@ -527,10 +527,10 @@ fail:
 // ++ -- (pre)
 // + - (unary)
 // ! ~ (log/bit)
-Errors parse_expr_03(ParseHelper& ph, StmtBase*& loc) {
-  StmtBase* lhs = nullptr;
-  const lex::tok_t* oper = nullptr;
-  std::vector<const lex::tok_t*> opers;
+Errors parse_expr_03(ParseHelper &ph, StmtBase *&loc) {
+  StmtBase *lhs = nullptr;
+  const lex::tok_t *oper = nullptr;
+  std::vector<const lex::tok_t *> opers;
 
   size_t idx = ph.peak()->pos;
 
@@ -552,7 +552,7 @@ Errors parse_expr_03(ParseHelper& ph, StmtBase*& loc) {
   if (parse_expr_02(ph, lhs) != E_OK) {
     goto fail;
   }
-  for (auto& op : opers) {
+  for (auto &op : opers) {
     lhs = new StmtExpr(lhs, op, nullptr, op->pos);
   }
   loc = lhs;
@@ -565,9 +565,9 @@ fail:
 
 // Left Associative
 // ++ -- (post)
-Errors parse_expr_02(ParseHelper& ph, StmtBase*& loc) {
-  StmtBase* lhs = nullptr;
-  const lex::tok_t* oper = nullptr;
+Errors parse_expr_02(ParseHelper &ph, StmtBase *&loc) {
+  StmtBase *lhs = nullptr;
+  const lex::tok_t *oper = nullptr;
 
   size_t idx = ph.peak()->pos;
 
@@ -595,9 +595,9 @@ fail:
 // x(FN_CALL_ARGS) y[EXPR]
 // x.y
 // '(' EXPR ')'
-Errors parse_expr_01(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_expr_01(ParseHelper &ph, StmtBase *&loc) {
   StmtBase *lhs = nullptr, *rhs = nullptr;
-  const lex::tok_t* oper = nullptr;
+  const lex::tok_t *oper = nullptr;
   bool is_mem_fn = false;
 
   size_t idx = ph.peak()->pos;
@@ -680,7 +680,7 @@ fail:
 }
 
 // Data
-Errors parse_term(ParseHelper& ph, StmtBase*& loc, const bool make_const) {
+Errors parse_term(ParseHelper &ph, StmtBase *&loc, const bool make_const) {
   if (ph.acceptd()) {
     if (make_const && ph.peakt() == TOK_IDENT)
       ph.sett(TOK_STRING);

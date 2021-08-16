@@ -15,14 +15,14 @@
 
 static size_t thread_id = 0;
 
-VarMultiproc::VarMultiproc(std::thread* thread, std::shared_future<int>* res,
-                           const size_t& src_id, const size_t& idx,
-                           const bool& owner)
+VarMultiproc::VarMultiproc(std::thread *thread, std::shared_future<int> *res,
+                           const size_t &src_id, const size_t &idx,
+                           const bool &owner)
     : VarBase(type_id<VarMultiproc>(), src_id, idx, false, false),
       m_thread(thread), m_res(res), m_id(thread_id++), m_owner(owner) {}
-VarMultiproc::VarMultiproc(std::thread* thread, std::shared_future<int>* res,
-                           const size_t& id, const size_t& src_id,
-                           const size_t& idx, const bool& owner)
+VarMultiproc::VarMultiproc(std::thread *thread, std::shared_future<int> *res,
+                           const size_t &id, const size_t &src_id,
+                           const size_t &idx, const bool &owner)
     : VarBase(type_id<VarMultiproc>(), src_id, idx, false, false),
       m_thread(thread), m_res(res), m_id(id), m_owner(owner) {}
 VarMultiproc::~VarMultiproc() {
@@ -36,11 +36,11 @@ VarMultiproc::~VarMultiproc() {
   }
 }
 
-VarBase* VarMultiproc::copy(const size_t& src_id, const size_t& idx) {
+VarBase *VarMultiproc::copy(const size_t &src_id, const size_t &idx) {
   return new VarMultiproc(m_thread, m_res, m_id, src_id, idx, false);
 }
-void VarMultiproc::set(VarBase* from) {
-  VarMultiproc* t = MULTIPROC(from);
+void VarMultiproc::set(VarBase *from) {
+  VarMultiproc *t = MULTIPROC(from);
   m_owner = false;
   m_thread = t->m_thread;
   m_res = t->m_res;

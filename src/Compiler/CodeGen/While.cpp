@@ -2,7 +2,7 @@
 
 #include "Compiler/CodeGen/Internal.hpp"
 
-bool StmtWhile::codegen(Bytecode& bc) const {
+bool StmtWhile::codegen(Bytecode &bc) const {
   bc.add(idx(), OP_PUSH_LOOP);
 
   // loop expression

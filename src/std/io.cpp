@@ -9,15 +9,15 @@
 #include "std/fs_type.hpp"
 
 const size_t MAX_C_STR_LEN = 1025;
-extern std::unordered_map<std::string, const char*> COL;
-int apply_colors(std::string& str);
+extern std::unordered_map<std::string, const char *> COL;
+int apply_colors(std::string &str);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// Functions
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-VarBase* print(VMState& vm, const FnData& fd) {
+VarBase *print(VMState &vm, const FnData &fd) {
   for (size_t i = 1; i < fd.args.size(); ++i) {
     std::string str;
     if (!fd.args[i]->to_str(vm, str, fd.src_id, fd.idx)) {
@@ -28,7 +28,7 @@ VarBase* print(VMState& vm, const FnData& fd) {
   return vm.nil;
 }
 
-VarBase* println(VMState& vm, const FnData& fd) {
+VarBase *println(VMState &vm, const FnData &fd) {
   for (size_t i = 1; i < fd.args.size(); ++i) {
     std::string str;
     if (!fd.args[i]->to_str(vm, str, fd.src_id, fd.idx)) {
@@ -40,7 +40,7 @@ VarBase* println(VMState& vm, const FnData& fd) {
   return vm.nil;
 }
 
-VarBase* fprint(VMState& vm, const FnData& fd) {
+VarBase *fprint(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarFile>()) {
     vm.fail(fd.args[1]->src_id(), fd.args[1]->idx(),
             "expected a file argument for fprint, found: %s",
@@ -63,7 +63,7 @@ VarBase* fprint(VMState& vm, const FnData& fd) {
   return vm.nil;
 }
 
-VarBase* fprintln(VMState& vm, const FnData& fd) {
+VarBase *fprintln(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarFile>()) {
     vm.fail(fd.args[1]->src_id(), fd.args[1]->idx(),
             "expected a file argument for fprintln, found: %s",
@@ -87,7 +87,7 @@ VarBase* fprintln(VMState& vm, const FnData& fd) {
   return vm.nil;
 }
 
-VarBase* col_print(VMState& vm, const FnData& fd) {
+VarBase *col_print(VMState &vm, const FnData &fd) {
   for (size_t i = 1; i < fd.args.size(); ++i) {
     std::string str;
     if (!fd.args[i]->to_str(vm, str, fd.src_id, fd.idx)) {
@@ -99,7 +99,7 @@ VarBase* col_print(VMState& vm, const FnData& fd) {
   return vm.nil;
 }
 
-VarBase* col_println(VMState& vm, const FnData& fd) {
+VarBase *col_println(VMState &vm, const FnData &fd) {
   for (size_t i = 1; i < fd.args.size(); ++i) {
     std::string str;
     if (!fd.args[i]->to_str(vm, str, fd.src_id, fd.idx)) {
@@ -112,7 +112,7 @@ VarBase* col_println(VMState& vm, const FnData& fd) {
   return vm.nil;
 }
 
-VarBase* col_dprint(VMState& vm, const FnData& fd) {
+VarBase *col_dprint(VMState &vm, const FnData &fd) {
   for (size_t i = 1; i < fd.args.size(); ++i) {
     std::string str;
     if (!fd.args[i]->to_str(vm, str, fd.src_id, fd.idx)) {
@@ -124,7 +124,7 @@ VarBase* col_dprint(VMState& vm, const FnData& fd) {
   return vm.nil;
 }
 
-VarBase* col_dprintln(VMState& vm, const FnData& fd) {
+VarBase *col_dprintln(VMState &vm, const FnData &fd) {
   for (size_t i = 1; i < fd.args.size(); ++i) {
     std::string str;
     if (!fd.args[i]->to_str(vm, str, fd.src_id, fd.idx)) {
@@ -137,7 +137,7 @@ VarBase* col_dprintln(VMState& vm, const FnData& fd) {
   return vm.nil;
 }
 
-VarBase* scan(VMState& vm, const FnData& fd) {
+VarBase *scan(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarString>()) {
     vm.fail(fd.args[1]->src_id(), fd.args[1]->idx(),
             "expected string data for input prompt, found: %s",
@@ -158,7 +158,7 @@ VarBase* scan(VMState& vm, const FnData& fd) {
   return make<VarString>(res);
 }
 
-VarBase* scaneof(VMState& vm, const FnData& fd) {
+VarBase *scaneof(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarString>()) {
     vm.fail(fd.args[1]->src_id(), fd.args[1]->idx(),
             "expected string data for input prompt, found: %s",
@@ -180,7 +180,7 @@ VarBase* scaneof(VMState& vm, const FnData& fd) {
   return make<VarString>(res);
 }
 
-VarBase* fflush(VMState& vm, const FnData& fd) {
+VarBase *fflush(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarFile>()) {
     vm.fail(fd.args[1]->src_id(), fd.args[1]->idx(),
             "expected a file argument for fflush, found: %s",
@@ -197,7 +197,7 @@ VarBase* fflush(VMState& vm, const FnData& fd) {
   return vm.nil;
 }
 
-VarBase* readchar(VMState& vm, const FnData& fd) {
+VarBase *readchar(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(fd.args[1]->src_id(), fd.args[1]->idx(),
             "expected an integer argument for file descriptor, found: %s",
@@ -221,7 +221,7 @@ VarBase* readchar(VMState& vm, const FnData& fd) {
 }
 
 INIT_MODULE(io) {
-  VarSrc* src = vm.current_source();
+  VarSrc *src = vm.current_source();
 
   src->add_native_fn("print", print, 1, true);
   src->add_native_fn("println", println, 0, true);
@@ -244,7 +244,7 @@ INIT_MODULE(io) {
   return true;
 }
 
-std::unordered_map<std::string, const char*> COL = {
+std::unordered_map<std::string, const char *> COL = {
     {"0", "\033[0m"},
 
     {"r", "\033[0;31m"},  {"g", "\033[0;32m"},  {"y", "\033[0;33m"},
@@ -256,7 +256,7 @@ std::unordered_map<std::string, const char*> COL = {
     {"bw", "\033[1;37m"},
 };
 
-int apply_colors(std::string& str) {
+int apply_colors(std::string &str) {
   int chars = 0;
   for (size_t i = 0; i < str.size();) {
     if (str[i] == '{' &&

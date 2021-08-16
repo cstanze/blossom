@@ -12,9 +12,9 @@
 #include "VM/Vars.hpp"
 
 // env: BLOSSOM_PATHS
-VMState::VMState(const std::string& self_bin, const std::string& self_base,
-                 const std::vector<std::string>& args, const size_t& flags,
-                 const bool& is_thread_copy)
+VMState::VMState(const std::string &self_bin, const std::string &self_base,
+                 const std::vector<std::string> &args, const size_t &flags,
+                 const bool &is_thread_copy)
     : exit_called(false), exec_stack_count_exceeded(false), exit_code(0),
       exec_flags(flags), exec_stack_max(EXEC_STACK_MAX_DEFAULT),
       exec_stack_count(0), tru(new VarBool(true, 0, 0)),
@@ -28,9 +28,9 @@ VMState::VMState(const std::string& self_bin, const std::string& self_base,
 
   init_typenames(*this);
 
-  std::vector<VarBase*> src_args_vec;
+  std::vector<VarBase *> src_args_vec;
 
-  for (auto& arg : args) {
+  for (auto &arg : args) {
     src_args_vec.push_back(new VarString(arg, 0, 0));
   }
   src_args = new VarVec(src_args_vec, false, 0, 0);
@@ -38,7 +38,7 @@ VMState::VMState(const std::string& self_bin, const std::string& self_base,
   std::vector<std::string> extra_search_paths =
       String::split(Env::get("BLOSSOM_PATHS"), ';');
 
-  for (auto& path : extra_search_paths) {
+  for (auto &path : extra_search_paths) {
     m_inc_locs.push_back(path + "/include/blossom");
     m_dll_locs.push_back(path + "/lib/blossom");
   }
@@ -50,17 +50,17 @@ VMState::VMState(const std::string& self_bin, const std::string& self_base,
 VMState::~VMState() {
   delete vm_stack;
   if (!m_is_thread_copy)
-    for (auto& typefn : m_typefns)
+    for (auto &typefn : m_typefns)
       delete typefn.second;
-  for (auto& g : m_globals)
+  for (auto &g : m_globals)
     var_dref(g.second);
-  for (auto& src : all_srcs)
+  for (auto &src : all_srcs)
     var_dref(src.second);
   var_dref(nil);
   var_dref(fals);
   var_dref(tru);
   var_dref(src_args);
-  for (auto& deinit_fn : m_dll_deinit_fns) {
+  for (auto &deinit_fn : m_dll_deinit_fns) {
     deinit_fn.second();
   }
   if (m_is_thread_copy)
@@ -68,7 +68,7 @@ VMState::~VMState() {
   delete dlib;
 }
 
-void VMState::push_src(SrcFile* src, const size_t& idx) {
+void VMState::push_src(SrcFile *src, const size_t &idx) {
   if (all_srcs.find(src->path()) == all_srcs.end()) {
     all_srcs[src->path()] = new VarSrc(src, new Vars(), src->id(), idx);
   }
@@ -76,7 +76,7 @@ void VMState::push_src(SrcFile* src, const size_t& idx) {
   src_stack.push_back(all_srcs[src->path()]);
 }
 
-void VMState::push_src(const std::string& src_path) {
+void VMState::push_src(const std::string &src_path) {
   assert(all_srcs.find(src_path) != all_srcs.end());
   var_iref(all_srcs[src_path]);
   src_stack.push_back(all_srcs[src_path]);
@@ -87,8 +87,8 @@ void VMState::pop_src() {
   src_stack.pop_back();
 }
 
-void VMState::add_typefn(const std::uintptr_t& type, const std::string& name,
-                         VarBase* fn, const bool iref) {
+void VMState::add_typefn(const std::uintptr_t &type, const std::string &name,
+                         VarBase *fn, const bool iref) {
   if (m_typefns.find(type) == m_typefns.end()) {
     m_typefns[type] = new VarsFrame();
   }
@@ -100,9 +100,9 @@ void VMState::add_typefn(const std::uintptr_t& type, const std::string& name,
   }
   m_typefns[type]->add(name, fn, iref);
 }
-VarBase* VMState::get_typefn(VarBase* var, const std::string& name) {
+VarBase *VMState::get_typefn(VarBase *var, const std::string &name) {
   auto it = m_typefns.find(var->typefn_id());
-  VarBase* res = nullptr;
+  VarBase *res = nullptr;
   if (it == m_typefns.end()) {
     if (var->attr_based())
       goto attr_based;
@@ -122,20 +122,20 @@ attr_based:
   return m_typefns[type_id<VarAll>()]->get(name);
 }
 
-void VMState::set_typename(const std::uintptr_t& type,
-                           const std::string& name) {
+void VMState::set_typename(const std::uintptr_t &type,
+                           const std::string &name) {
   m_typenames[type] = name;
 }
-std::string VMState::type_name(const std::uintptr_t& type) {
+std::string VMState::type_name(const std::uintptr_t &type) {
   if (m_typenames.find(type) != m_typenames.end()) {
     return m_typenames[type];
   }
   return "typeid<" + std::to_string(type) + ">";
 }
-std::string VMState::type_name(const VarBase* val) {
+std::string VMState::type_name(const VarBase *val) {
   return type_name(val->type());
 }
-void VMState::gadd(const std::string& name, VarBase* val, const bool iref) {
+void VMState::gadd(const std::string &name, VarBase *val, const bool iref) {
   if (m_globals.find(name) != m_globals.end())
     return;
   if (iref)
@@ -143,16 +143,16 @@ void VMState::gadd(const std::string& name, VarBase* val, const bool iref) {
   m_globals[name] = val;
 }
 
-VarBase* VMState::gget(const std::string& name) {
+VarBase *VMState::gget(const std::string &name) {
   if (m_globals.find(name) == m_globals.end())
     return nullptr;
   return m_globals[name];
 }
 
-bool VMState::mod_exists(const std::vector<std::string>& locs, std::string& mod,
-                         const std::string& ext, std::string& dir) {
+bool VMState::mod_exists(const std::vector<std::string> &locs, std::string &mod,
+                         const std::string &ext, std::string &dir) {
   if (mod.front() != '~' && mod.front() != '/' && mod.front() != '.') {
-    for (auto& loc : locs) {
+    for (auto &loc : locs) {
       if (FS::exists(loc + "/" + mod + ext)) {
         mod = FS::absPath(loc + "/" + mod + ext, &dir);
         return true;
@@ -177,8 +177,8 @@ bool VMState::mod_exists(const std::vector<std::string>& locs, std::string& mod,
   return false;
 }
 
-bool VMState::nmod_load(const std::string& mod_str, const size_t& src_id,
-                        const size_t& idx) {
+bool VMState::nmod_load(const std::string &mod_str, const size_t &src_id,
+                        const size_t &idx) {
   std::string mod = mod_str.substr(mod_str.find_last_of('/') + 1);
   std::string mod_file = mod_str;
   std::string mod_dir;
@@ -219,8 +219,8 @@ bool VMState::nmod_load(const std::string& mod_str, const size_t& src_id,
 }
 
 // updated mod_str with actual file name (full canonical path)
-int VMState::bmod_load(std::string& mod_file, const size_t& src_id,
-                       const size_t& idx) {
+int VMState::bmod_load(std::string &mod_file, const size_t &src_id,
+                       const size_t &idx) {
   std::string mod_dir;
   if (!mod_exists(m_inc_locs, mod_file, bmod_ext(), mod_dir)) {
     fail(src_id, idx, "import file: %s not found in locations: %s",
@@ -232,7 +232,7 @@ int VMState::bmod_load(std::string& mod_file, const size_t& src_id,
     return E_OK;
 
   Errors err = E_OK;
-  SrcFile* src =
+  SrcFile *src =
       m_src_load_fn(mod_file, mod_dir, exec_flags, false, err, 0, -1);
   if (err != E_OK) {
     if (src)
@@ -246,12 +246,12 @@ int VMState::bmod_load(std::string& mod_file, const size_t& src_id,
   return res;
 }
 
-void VMState::fail(const size_t& src_id, const size_t& idx, const char* msg,
+void VMState::fail(const size_t &src_id, const size_t &idx, const char *msg,
                    ...) {
   va_list vargs;
   va_start(vargs, msg);
   if (fails.empty() || this->exit_called) {
-    for (auto& src : all_srcs) {
+    for (auto &src : all_srcs) {
       if (src.second->src()->id() == src_id) {
         src.second->src()->fail(idx, msg, vargs);
         break;
@@ -265,13 +265,13 @@ void VMState::fail(const size_t& src_id, const size_t& idx, const char* msg,
   va_end(vargs);
 }
 
-void VMState::fail(const size_t& src_id, const size_t& idx, VarBase* val,
-                   const char* msg, const bool& iref) {
+void VMState::fail(const size_t &src_id, const size_t &idx, VarBase *val,
+                   const char *msg, const bool &iref) {
   if (iref)
     var_iref(val);
 
   if (fails.empty() || this->exit_called) {
-    for (auto& src : all_srcs) {
+    for (auto &src : all_srcs) {
       if (src.second->src()->id() == src_id) {
         std::string data;
         val->to_str(*this, data, src_id, idx);
@@ -290,20 +290,20 @@ void VMState::fail(const size_t& src_id, const size_t& idx, VarBase* val,
 
 bool VMState::load_core_mods() {
   std::vector<std::string> mods = {"core", "utils"};
-  for (auto& mod : mods) {
+  for (auto &mod : mods) {
     if (!nmod_load(mod, 0, 0))
       return false;
   }
   return true;
 }
 
-VMState* VMState::thread_copy(const size_t& src_id, const size_t& idx) {
-  VMState* vm = new VMState(m_self_bin, m_self_base, {}, exec_flags, true);
-  for (auto& s : all_srcs) {
+VMState *VMState::thread_copy(const size_t &src_id, const size_t &idx) {
+  VMState *vm = new VMState(m_self_bin, m_self_base, {}, exec_flags, true);
+  for (auto &s : all_srcs) {
     vm->all_srcs[s.first] =
-        static_cast<VarSrc*>(s.second->thread_copy(src_id, idx));
+        static_cast<VarSrc *>(s.second->thread_copy(src_id, idx));
   }
-  for (auto& s : src_stack) {
+  for (auto &s : src_stack) {
     vm->src_stack.push_back(vm->all_srcs[s->src()->path()]);
   }
   vm->dlib = dlib; // don't delete in destructor
@@ -314,7 +314,7 @@ VMState* VMState::thread_copy(const size_t& src_id, const size_t& idx) {
   vm->m_inc_locs = m_inc_locs;
   vm->m_dll_locs = m_dll_locs;
   vm->m_globals = m_globals;
-  for (auto& glob : vm->m_globals) {
+  for (auto &glob : vm->m_globals) {
     var_iref(glob.second);
   }
   vm->m_typefns = m_typefns; // do not delete in destructor
@@ -323,7 +323,7 @@ VMState* VMState::thread_copy(const size_t& src_id, const size_t& idx) {
   return vm;
 }
 
-const char* nmod_ext() {
+const char *nmod_ext() {
 #if __linux__ || __FreeBSD__ || __NetBSD__ || __OpenBSD__ || __bsdi__ ||       \
     __DragonFly__
   return ".so";
@@ -332,7 +332,7 @@ const char* nmod_ext() {
 #endif
 }
 
-const char* bmod_ext(const bool compiled) {
+const char *bmod_ext(const bool compiled) {
   if (compiled)
     return ".cbl";
   return ".bls";

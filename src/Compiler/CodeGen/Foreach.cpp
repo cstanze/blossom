@@ -2,7 +2,7 @@
 
 #include "Compiler/CodeGen/Internal.hpp"
 
-bool StmtForEach::codegen(Bytecode& bc) const {
+bool StmtForEach::codegen(Bytecode &bc) const {
   bc.add(idx(), OP_PUSH_LOOP);
 
   // create __<loop_var> from expression

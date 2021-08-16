@@ -2,12 +2,12 @@
 
 #include "Compiler/CodeGen/Internal.hpp"
 
-Errors parse_conditional(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_conditional(ParseHelper &ph, StmtBase *&loc) {
   std::vector<conditional_t> conds;
   conditional_t cond;
   bool got_else = false;
 
-  const lex::tok_t* tok = nullptr;
+  const lex::tok_t *tok = nullptr;
 
   cond.idx = ph.peak()->pos;
 
@@ -57,7 +57,7 @@ done:
   loc = new StmtConditional(conds, conds[0].idx);
   return E_OK;
 fail:
-  for (auto& c : conds) {
+  for (auto &c : conds) {
     if (c.condition)
       delete c.condition;
     delete c.body;

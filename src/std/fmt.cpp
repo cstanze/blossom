@@ -9,15 +9,15 @@
 #include "Compiler/Parser.hpp"
 #include "VM/VM.hpp"
 
-bool eval(VMState& vm, const std::string& data, std::string& res,
-          const size_t& src_id, const size_t& idx);
+bool eval(VMState &vm, const std::string &data, std::string &res,
+          const size_t &src_id, const size_t &idx);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// Functions
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-VarBase* templ(VMState& vm, const FnData& fd) {
+VarBase *templ(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarString>()) {
     vm.fail(fd.args[1]->src_id(), fd.args[1]->idx(),
             "expected a string for format string parameter, found: %s",
@@ -84,9 +84,9 @@ INIT_MODULE(fmt) {
   return true;
 }
 
-bool eval(VMState& vm, const std::string& data, std::string& res,
-          const size_t& src_id, const size_t& idx) {
-  SrcFile* src = vm.current_source_file();
+bool eval(VMState &vm, const std::string &data, std::string &res,
+          const size_t &src_id, const size_t &idx) {
+  SrcFile *src = vm.current_source_file();
   size_t begin_stack_sz = vm.vm_stack->size();
   static size_t i = 0;
   Bytecode bc;
@@ -97,7 +97,7 @@ bool eval(VMState& vm, const std::string& data, std::string& res,
             data.c_str());
     return false;
   }
-  for (auto& b : bc.getmut()) {
+  for (auto &b : bc.getmut()) {
     b.src_id = src_id;
     b.idx = idx;
   }

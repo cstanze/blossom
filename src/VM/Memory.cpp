@@ -17,7 +17,7 @@ static size_t tot_alloc_req = 0;
 static size_t tot_manual_alloc = 0;
 #endif
 void mem_mgr_t::alloc_pool() {
-  u8* alloc = new u8[POOL_SIZE];
+  u8 *alloc = new u8[POOL_SIZE];
 #ifdef MEM_PROFILE
   tot_alloc += POOL_SIZE;
 #endif
@@ -26,16 +26,16 @@ void mem_mgr_t::alloc_pool() {
 
 mem_mgr_t::mem_mgr_t() { alloc_pool(); }
 mem_mgr_t::~mem_mgr_t() {
-  for (auto& c : m_free_chunks) {
+  for (auto &c : m_free_chunks) {
     if (c.first > POOL_SIZE) {
-      for (auto& blk : c.second) {
+      for (auto &blk : c.second) {
         delete[] blk;
       }
     }
     c.second.clear();
   }
   m_free_chunks.clear();
-  for (auto& p : m_pools) {
+  for (auto &p : m_pools) {
     delete[] p.mem;
   }
 #ifdef MEM_PROFILE
@@ -47,12 +47,12 @@ mem_mgr_t::~mem_mgr_t() {
 #endif
 }
 
-mem_mgr_t& mem_mgr_t::instance() {
+mem_mgr_t &mem_mgr_t::instance() {
   static mem_mgr_t mem;
   return mem;
 }
 
-void* mem_mgr_t::alloc(size_t sz) {
+void *mem_mgr_t::alloc(size_t sz) {
   if (sz == 0)
     return nullptr;
   std::lock_guard<std::mutex> mtx_lock(mem_mtx);
@@ -73,10 +73,10 @@ void* mem_mgr_t::alloc(size_t sz) {
   }
 
   if (m_free_chunks[sz].size() == 0) {
-    for (auto& p : m_pools) {
+    for (auto &p : m_pools) {
       size_t free_space = POOL_SIZE - (p.head - p.mem);
       if (free_space >= sz) {
-        u8* loc = p.head;
+        u8 *loc = p.head;
         p.head += sz;
 #if defined(MEM_PROFILE) && defined(DEBUG_MODE)
         fprintf(stdout, "Allocating from pool ... %zu\n", sz);
@@ -85,8 +85,8 @@ void* mem_mgr_t::alloc(size_t sz) {
       }
     }
     alloc_pool();
-    auto& p = m_pools.back();
-    u8* loc = p.head;
+    auto &p = m_pools.back();
+    u8 *loc = p.head;
     p.head += sz;
 #if defined(MEM_PROFILE) && defined(DEBUG_MODE)
     fprintf(stdout, "Allocating from NEW pool ... %zu\n", sz);
@@ -94,7 +94,7 @@ void* mem_mgr_t::alloc(size_t sz) {
     return loc;
   }
 
-  u8* loc = m_free_chunks[sz].front();
+  u8 *loc = m_free_chunks[sz].front();
   m_free_chunks[sz].pop_front();
 #if defined(MEM_PROFILE) && defined(DEBUG_MODE)
   fprintf(stdout, "Using previously allocated ... %zu\n", sz);
@@ -102,7 +102,7 @@ void* mem_mgr_t::alloc(size_t sz) {
   return loc;
 }
 
-void mem_mgr_t::free(void* ptr, size_t sz) {
+void mem_mgr_t::free(void *ptr, size_t sz) {
   if (ptr == nullptr || sz == 0)
     return;
   std::lock_guard<std::mutex> mtx_lock(mem_mtx);
@@ -110,11 +110,11 @@ void mem_mgr_t::free(void* ptr, size_t sz) {
 #if defined(MEM_PROFILE) && defined(DEBUG_MODE)
     fprintf(stdout, "Deleting manually ... %zu\n", sz);
 #endif
-    delete[](u8*) ptr;
+    delete[](u8 *) ptr;
     return;
   }
 #if defined(MEM_PROFILE) && defined(DEBUG_MODE)
   fprintf(stdout, "Giving back to pool ... %zu\n", sz);
 #endif
-  m_free_chunks[sz].push_front((u8*)ptr);
+  m_free_chunks[sz].push_front((u8 *)ptr);
 }

@@ -2,8 +2,8 @@
 
 #include "Compiler/CodeGen/Internal.hpp"
 
-Errors parse_block(ParseHelper& ph, StmtBase*& loc, const bool with_brace) {
-  std::vector<const StmtBase*> stmts;
+Errors parse_block(ParseHelper &ph, StmtBase *&loc, const bool with_brace) {
+  std::vector<const StmtBase *> stmts;
 
   size_t idx = ph.peak()->pos;
 
@@ -18,11 +18,13 @@ Errors parse_block(ParseHelper& ph, StmtBase*& loc, const bool with_brace) {
   }
 
   while (ph.valid() && (!with_brace || ph.peakt() != TOK_RBRACE)) {
-    StmtBase* stmt = nullptr;
+    StmtBase *stmt = nullptr;
     if (ph.accept(TOK_IMPL)) {
-      if(parse_impl_decl(ph, stmt)) goto fail;
+      if (parse_impl_decl(ph, stmt))
+        goto fail;
     } else if (ph.accept(TOK_FUNC)) {
-      if(parse_func_decl(ph, stmt)) goto fail;
+      if (parse_func_decl(ph, stmt))
+        goto fail;
     } else if (ph.accept(TOK_LET)) {
       if (parse_var_decl(ph, stmt) != E_OK)
         goto fail;
@@ -55,8 +57,7 @@ Errors parse_block(ParseHelper& ph, StmtBase*& loc, const bool with_brace) {
         if (stmt->type() != GT_EXPR) {
           stmt = new StmtExpr(stmt, nullptr, nullptr, stmt->idx());
         }
-        static_cast<StmtExpr*>(stmt)->set_with_cols(ph.peakt() !=
-                                                       TOK_RBRACE);
+        static_cast<StmtExpr *>(stmt)->set_with_cols(ph.peakt() != TOK_RBRACE);
         if (ph.peakt() == TOK_COLS)
           ph.next();
       } else {
@@ -80,10 +81,10 @@ Errors parse_block(ParseHelper& ph, StmtBase*& loc, const bool with_brace) {
   }
 
   loc = new StmtBlock(stmts, idx);
-  static_cast<StmtBlock*>(loc)->set_no_brace(!with_brace);
+  static_cast<StmtBlock *>(loc)->set_no_brace(!with_brace);
   return E_OK;
 fail:
-  for (auto& stmt : stmts)
+  for (auto &stmt : stmts)
     delete stmt;
   return E_PARSE_FAIL;
 }

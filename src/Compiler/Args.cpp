@@ -23,9 +23,9 @@ const size_t OPT_V = 1 << 14; // show version
 const size_t OPT_1 = 1 << 15;
 
 namespace args {
-size_t parse(const int argc, const char** argv,
-             std::unordered_map<std::string, std::string>& args,
-             std::vector<std::string>& code_args) {
+size_t parse(const int argc, const char **argv,
+             std::unordered_map<std::string, std::string> &args,
+             std::vector<std::string> &code_args) {
   bool main_done = false;
   size_t flags = 0;
   char prev_flag = '\0';

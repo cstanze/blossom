@@ -5,7 +5,7 @@
 #include <cstdarg>
 #include <vector>
 
-static std::vector<bool>& _tab() {
+static std::vector<bool> &_tab() {
   static std::vector<bool> tabs;
   return tabs;
 }
@@ -35,7 +35,7 @@ void io::trem(const size_t num) {
     _tab().pop_back();
 }
 
-void io::print(const bool has_next, const char* fmt, ...) {
+void io::print(const bool has_next, const char *fmt, ...) {
   _tab_apply(has_next);
   va_list args;
   va_start(args, fmt);

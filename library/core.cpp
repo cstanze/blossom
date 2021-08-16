@@ -12,45 +12,45 @@
 #include "core/to_str.hpp"
 #include "core/typeid.hpp"
 
-VarBase* all_get_type(VMState& vm, const FnData& fd) {
+VarBase *all_get_type(VMState &vm, const FnData &fd) {
   return make<VarTypeId>(fd.args[0]->type());
 }
 
-VarBase* all_get_typefid(VMState& vm, const FnData& fd) {
+VarBase *all_get_typefid(VMState &vm, const FnData &fd) {
   return make<VarTypeId>(fd.args[0]->typefn_id());
 }
 
-VarBase* all_get_typestr(VMState& vm, const FnData& fd) {
+VarBase *all_get_typestr(VMState &vm, const FnData &fd) {
   return make<VarString>(vm.type_name(fd.args[0]));
 }
 
-VarBase* all_eq(VMState& vm, const FnData& fd) {
+VarBase *all_eq(VMState &vm, const FnData &fd) {
   return fd.args[0]->type() == fd.args[1]->type() ? vm.tru : vm.fals;
 }
 
-VarBase* all_ne(VMState& vm, const FnData& fd) {
+VarBase *all_ne(VMState &vm, const FnData &fd) {
   return fd.args[0]->type() != fd.args[1]->type() ? vm.tru : vm.fals;
 }
 
-VarBase* all_copy(VMState& vm, const FnData& fd) {
-  VarBase* copy = fd.args[0]->copy(fd.src_id, fd.idx);
+VarBase *all_copy(VMState &vm, const FnData &fd) {
+  VarBase *copy = fd.args[0]->copy(fd.src_id, fd.idx);
   // decreased because system internally will increment it again
   copy->dref();
   return copy;
 }
 
-VarBase* reference(VMState& vm, const FnData& fd) {
+VarBase *reference(VMState &vm, const FnData &fd) {
   fd.args[1]->set_load_as_ref();
   return fd.args[1];
 }
 
-VarBase* raise(VMState& vm, const FnData& fd) {
+VarBase *raise(VMState &vm, const FnData &fd) {
   vm.fail(fd.src_id, fd.idx, fd.args[1], "raised error");
   return nullptr;
 }
 
-VarBase* load_module(VMState& vm, const FnData& fd) {
-  VarBase* mod_var = fd.args[1];
+VarBase *load_module(VMState &vm, const FnData &fd) {
+  VarBase *mod_var = fd.args[1];
   if (!mod_var->istype<VarString>()) {
     vm.fail(fd.src_id, fd.idx,
             "expected argument to be of type string, found: %s",
@@ -65,8 +65,8 @@ VarBase* load_module(VMState& vm, const FnData& fd) {
   return vm.nil;
 }
 
-VarBase* import_file(VMState& vm, const FnData& fd) {
-  VarBase* file_var = fd.args[1];
+VarBase *import_file(VMState &vm, const FnData &fd) {
+  VarBase *file_var = fd.args[1];
   if (!file_var->istype<VarString>()) {
     vm.fail(file_var->src_id(), file_var->idx(),
             "expected argument to be of type string, found: %s",
@@ -84,8 +84,8 @@ VarBase* import_file(VMState& vm, const FnData& fd) {
   return vm.all_srcs[file];
 }
 
-VarBase* is_main_src(VMState& vm, const FnData& fd) {
-  SrcFile* src = vm.current_source_file();
+VarBase *is_main_src(VMState &vm, const FnData &fd) {
+  SrcFile *src = vm.current_source_file();
   return src->is_main() ? vm.tru : vm.fals;
 }
 
@@ -117,7 +117,7 @@ VarBase *type_of(VMState &vm, const FnData &fd) {
 }
 
 INIT_MODULE(core) {
-  const std::string& src_name = vm.current_source_file()->path();
+  const std::string &src_name = vm.current_source_file()->path();
 
   // fundamental functions for builtin types
   vm.add_native_typefn<VarAll>("_type_", all_get_type, 0, src_id, idx);
@@ -179,12 +179,16 @@ INIT_MODULE(core) {
   vm.gadd("__ismainsrc__",
           new VarFn(src_name, {}, {}, {.native = is_main_src}, src_id, idx),
           false);
-  vm.gadd("__type__", new VarFn(src_name, {""}, {}, {.native = type_of}, src_id, idx), false);
+  vm.gadd("__type__",
+          new VarFn(src_name, {""}, {}, {.native = type_of}, src_id, idx),
+          false);
   vm.gadd("print",
-          new VarFn(src_name, "", ".", {""}, {}, {.native = print}, true, src_id, idx),
+          new VarFn(src_name, "", ".", {""}, {}, {.native = print}, true,
+                    src_id, idx),
           false);
   vm.gadd("println",
-          new VarFn(src_name, "", ".", {""}, {}, {.native = println}, true, src_id, idx),
+          new VarFn(src_name, "", ".", {""}, {}, {.native = println}, true,
+                    src_id, idx),
           false);
 
   // core type functions

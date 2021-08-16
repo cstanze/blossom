@@ -2,15 +2,15 @@
 
 #include "Compiler/CodeGen/Internal.hpp"
 
-bool StmtVarDecl::codegen(Bytecode& bc) const {
-  for (auto& vd : m_decls) {
+bool StmtVarDecl::codegen(Bytecode &bc) const {
+  for (auto &vd : m_decls) {
     if (!vd->codegen(bc))
       return false;
   }
   return true;
 }
 
-bool StmtVarDeclBase::codegen(Bytecode& bc) const {
+bool StmtVarDeclBase::codegen(Bytecode &bc) const {
   if (!m_rhs->codegen(bc))
     return false;
   if (m_in && !m_in->codegen(bc))

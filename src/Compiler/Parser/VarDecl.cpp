@@ -2,9 +2,9 @@
 
 #include "Compiler/CodeGen/Internal.hpp"
 
-Errors parse_var_decl(ParseHelper& ph, StmtBase*& loc) {
-  std::vector<const StmtVarDeclBase*> decls;
-  StmtBase* decl = nullptr;
+Errors parse_var_decl(ParseHelper &ph, StmtBase *&loc) {
+  std::vector<const StmtVarDeclBase *> decls;
+  StmtBase *decl = nullptr;
 
   size_t idx = ph.peak()->pos;
   if (!ph.accept(TOK_LET)) {
@@ -19,7 +19,7 @@ begin:
   if (parse_var_decl_base(ph, decl) != E_OK) {
     goto fail;
   }
-  decls.push_back((StmtVarDeclBase*)decl);
+  decls.push_back((StmtVarDeclBase *)decl);
   decl = nullptr;
 
   if (ph.accept(TOK_COMMA)) {
@@ -38,13 +38,13 @@ begin:
   loc = new StmtVarDecl(decls, idx);
   return E_OK;
 fail:
-  for (auto& decl : decls)
+  for (auto &decl : decls)
     delete decl;
   return E_PARSE_FAIL;
 }
 
-Errors parse_var_decl_base(ParseHelper& ph, StmtBase*& loc) {
-  const lex::tok_t* lhs = nullptr;
+Errors parse_var_decl_base(ParseHelper &ph, StmtBase *&loc) {
+  const lex::tok_t *lhs = nullptr;
   StmtBase *in = nullptr, *rhs = nullptr;
 
   // iden index

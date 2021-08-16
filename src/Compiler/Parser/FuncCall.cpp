@@ -2,13 +2,13 @@
 
 #include "Compiler/CodeGen/Internal.hpp"
 
-Errors parse_fn_call_args(ParseHelper& ph, StmtBase*& loc) {
+Errors parse_fn_call_args(ParseHelper &ph, StmtBase *&loc) {
   // assn_args = kw args
-  std::vector<const StmtBase*> args;
-  std::vector<const StmtFnAssnArg*> assn_args;
+  std::vector<const StmtBase *> args;
+  std::vector<const StmtFnAssnArg *> assn_args;
   bool va_unpack = false;
   size_t va_unpack_pos = 0;
-  StmtBase* expr = nullptr;
+  StmtBase *expr = nullptr;
 
   size_t idx = ph.peak()->pos;
 begin:
@@ -18,10 +18,10 @@ begin:
     goto fail;
   }
   if (ph.acceptd() && ph.peakt(1) == TOK_ASSN) {
-    const lex::tok_t* lhs = ph.peak();
+    const lex::tok_t *lhs = ph.peak();
     if (ph.peakt() == TOK_IDENT)
       ph.sett(TOK_STRING);
-    StmtBase* rhs = nullptr;
+    StmtBase *rhs = nullptr;
     ph.next();
     ph.next();
     if (parse_expr_15(ph, rhs) != E_OK) {
@@ -49,7 +49,7 @@ begin:
   loc = new StmtFnCallArgs(args, assn_args, va_unpack, idx);
   return E_OK;
 fail:
-  for (auto& arg : args)
+  for (auto &arg : args)
     delete arg;
   return E_PARSE_FAIL;
 }

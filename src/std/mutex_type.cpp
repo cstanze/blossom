@@ -13,12 +13,12 @@
 
 #include "std/mutex_type.hpp"
 
-VarMutex::VarMutex(const size_t& src_id, const size_t& idx)
+VarMutex::VarMutex(const size_t &src_id, const size_t &idx)
     : VarBase(type_id<VarMutex>(), src_id, idx, false, false) {}
 
-VarBase* VarMutex::copy(const size_t& src_id, const size_t& idx) {
+VarBase *VarMutex::copy(const size_t &src_id, const size_t &idx) {
   return new VarMutex(src_id, idx);
 }
-void VarMutex::set(VarBase* from) {
+void VarMutex::set(VarBase *from) {
   // nothing to reassign in a mutex
 }

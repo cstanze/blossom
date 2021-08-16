@@ -2,9 +2,9 @@
 
 #include "Compiler/CodeGen/Internal.hpp"
 
-Errors parse_single_operand_stmt(ParseHelper& ph, StmtBase*& loc) {
-  const lex::tok_t* sost = ph.peak();
-  StmtBase* operand = nullptr;
+Errors parse_single_operand_stmt(ParseHelper &ph, StmtBase *&loc) {
+  const lex::tok_t *sost = ph.peak();
+  StmtBase *operand = nullptr;
 
   ph.next();
 
@@ -42,8 +42,8 @@ Errors parse_single_operand_stmt(ParseHelper& ph, StmtBase*& loc) {
   if (ph.accept(TOK_COLS)) {
     // Err::set(
     //     E_PARSE_FAIL, ph.peak()->pos,
-    //     "expected semicolon to denote end of statement '%s', but found: '%s'",
-    //     TokStrs[sost->type], TokStrs[ph.peakt()]);
+    //     "expected semicolon to denote end of statement '%s', but found:
+    //     '%s'", TokStrs[sost->type], TokStrs[ph.peakt()]);
     // goto fail;
     ph.next();
   }

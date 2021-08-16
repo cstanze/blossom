@@ -7,13 +7,13 @@ static size_t src_id() {
   return sid++;
 }
 
-SrcFile::SrcFile(const std::string& dir, const std::string& path,
+SrcFile::SrcFile(const std::string &dir, const std::string &path,
                  const bool is_main)
     : m_id(src_id()), m_dir(dir), m_path(path), m_is_main(is_main) {}
 
 Errors SrcFile::load_file() {
-  FILE* fp;
-  char* line = NULL;
+  FILE *fp;
+  char *line = NULL;
   size_t len = 0;
   ssize_t read;
 
@@ -48,19 +48,19 @@ Errors SrcFile::load_file() {
   return E_OK;
 }
 
-void SrcFile::add_data(const std::string& data) { m_data += data; }
-void SrcFile::add_cols(const std::vector<src_col_range_t>& cols) {
+void SrcFile::add_data(const std::string &data) { m_data += data; }
+void SrcFile::add_cols(const std::vector<src_col_range_t> &cols) {
   m_cols.insert(m_cols.end(), cols.begin(), cols.end());
 }
 
-void SrcFile::fail(const size_t& idx, const char* msg, ...) const {
+void SrcFile::fail(const size_t &idx, const char *msg, ...) const {
   va_list vargs;
   va_start(vargs, msg);
   fail(idx, msg, vargs);
   va_end(vargs);
 }
 
-void SrcFile::fail(const size_t& idx, const char* msg, va_list vargs) const {
+void SrcFile::fail(const size_t &idx, const char *msg, va_list vargs) const {
   size_t line, col_begin, col_end, col;
   bool found = false;
   for (size_t i = 0; i < m_cols.size(); ++i) {
@@ -93,7 +93,7 @@ void SrcFile::fail(const size_t& idx, const char* msg, va_list vargs) const {
 
   std::string spcs;
   int tab_count = 0;
-  for (auto& ch : err_line) {
+  for (auto &ch : err_line) {
     if (ch == '\t')
       ++tab_count;
   }
