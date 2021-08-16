@@ -1,7 +1,0 @@
-func facto(num) {
-	if num < 2 { return 1; }
-	return num * facto(num - 1);
-}
-
-// println('factorial of 5 is: ', facto(5));
-assert(facto(5) == 120);

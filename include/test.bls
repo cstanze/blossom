@@ -1,6 +1,0 @@
-// executes all '.bls' files in a given directory
-// ensures they all exit with return code zero
-
-let io = import("std/io");
-
-io.cprintln("{r}Test Runner Not Implemented!{0}");

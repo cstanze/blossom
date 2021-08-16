@@ -1,5 +1,0 @@
-mload('std/ptr');
-
-func new(val = nil) {
-	return new_native(val);
-}

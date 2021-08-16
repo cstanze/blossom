@@ -1,4 +1,0 @@
-let io = import('std/io');
-
-let input = io.scan('Enter some data: ');
-io.println('The data you entered is: ', input);

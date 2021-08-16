@@ -1,8 +1,0 @@
-func x(a, x = 10, y = 20) {
-	// println(a, ' ', x, ' ', y);
-	assert(a == 100);
-	assert(x == 200);
-	assert(y == 20);
-}
-
-x(100, 200);
