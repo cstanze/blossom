@@ -8,3 +8,4 @@ title = "Blossom Lang"
 [output.html]
 
 [output.linkcheck]
+optional = true # linkcheck occurs on the dev machine. no need to check again.
