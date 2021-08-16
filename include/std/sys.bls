@@ -1,0 +1,9 @@
+mload('std/sys');
+
+func exit(code = 0) {
+	return exit_native(code);
+}
+
+func set_call_stack_max(size = CALL_STACK_MAX_DEFAULT) {
+	set_call_stack_max_native(size);
+}

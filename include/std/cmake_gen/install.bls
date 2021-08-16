@@ -1,0 +1,26 @@
+let str = import('std/str');
+let fmt = import('std/fmt');
+let lang = import('std/lang');
+
+let install_base =
+`# Install {self.install_name}
+install(DIRECTORY "$\\{CMAKE_SOURCE_DIR}/{self.src_path}/"
+	DESTINATION "$\\{CMAKE_INSTALL_PREFIX}/{self.src_path}/blossom/{self.proj_name}"
+	FILES_MATCHING PATTERN "{self.pattern}"
+)`;
+
+let CMakeInstall = lang.struct(
+	proj_name = '',
+	install_name = 'sample_install',
+	src_path = 'include',
+	pattern = '*.*'
+);
+
+func new(name, proj) { return install_t(install_name = name, proj_name = proj); }
+
+impl CMakeInstall.set_src_path(path) { self.src_path = path; return self; }
+impl CMakeInstall.set_pattern(pattern) { self.pattern = pattern; return self; }
+
+impl CMakeInstall.gen() {
+	return fmt.template(install_base);
+}

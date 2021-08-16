@@ -1,0 +1,25 @@
+let sys = import('std/sys');
+
+// using the function __type__ is also a way to get the type of a variable
+assert('some string'._typestr_() == 'String');
+
+// raise
+func div(x, y) {
+	if y == 0 {
+		raise('div by zero');
+	}
+	return x / y;
+}
+
+let x = div(5, 0) or e {
+	10 / 0 or e2 {
+		assert(e == 'div by zero');
+		assert(e2 == 'division by zero');
+		20 // set 20 as the value
+	}
+};
+let y = div(div(12, 0) or { 10 }, 10);
+assert(x == 20);
+assert(y == 1);
+assert(!sys.var_exists('e2'));
+assert(!sys.var_exists('e'));

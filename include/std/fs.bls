@@ -1,0 +1,18 @@
+mload('std/fs');
+let stat = import('std/stat');
+
+func fopen(file, mode = 'r') {
+	return fopen_native(file, mode);
+}
+
+impl File.reopen(file, mode = 'r') {
+	return self.reopen_native(file, mode);
+}
+
+func walkdir(dir, mode = WALK_RECURSE, regex = '(.*)') {
+	return walkdir_native(dir, mode, regex);
+}
+
+func open(name, mode = O_RDONLY) {
+	return open_native(name, mode);
+}

@@ -1,0 +1,5 @@
+mload('std/bytebuffer');
+
+func new(size = 0) {
+	return new_native(size);
+}

@@ -1,0 +1,2 @@
+println(__SRC_DIR__);
+println(__SRC_PATH__);

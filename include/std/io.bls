@@ -1,0 +1,9 @@
+mload('std/io');
+
+func scan(prompt = '') {
+	return scan_native(prompt);
+}
+
+func scaneof(prompt = '') {
+	return scaneof_native(prompt);
+}
