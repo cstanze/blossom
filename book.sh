@@ -1,5 +1,5 @@
 cd book
-mdbook buid
+mdbook build
 cd ..
 git worktree add ./book/book gh-pages
 git add -A
