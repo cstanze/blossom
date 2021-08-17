@@ -3,9 +3,8 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title></title>
-                        <base href="/">
-        
+        <title>Naming Conventions - Blossom Lang</title>
+                
 
         <!-- Custom HTML head -->
         
@@ -83,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Installation</div></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="conditionals.html"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="imports/syntax.html"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Installation</div></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="naming_conventions.html" class="active"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="conditionals.html"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="imports/syntax.html"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -144,14 +143,49 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <h1 id="naming-conventions"><a class="header" href="#naming-conventions">Naming Conventions</a></h1>
+<h2 id="language-specific-rules"><a class="header" href="#language-specific-rules">Language-specific Rules</a></h2>
+<p>Blossom defines specific rules on how you can name variables. These rules are similar to other languages like Rust, Swift, etc. The rules are as follows:</p>
+<ol>
+<li>Must begin with an alphabetic character (A-Z, case insensitive) or an underscore.</li>
+<li>Can contain numbers anywhere except the first character</li>
+<li>Cannot contain any symbol (except for the rule below) other than alphanumeric characters or underscores</li>
+<li>Variables (usually function names) can end with <code>?</code> or <code>!</code>.</li>
+</ol>
+<h2 id="standard-conventions"><a class="header" href="#standard-conventions">Standard Conventions</a></h2>
+<p>Blossom tries to keep a solid and standard naming convention. Similarly to Rust, variable names should be in <code>snake_case</code> and struct/enum names should be in <code>PascalCase</code>.  Functions (including member functions) should also follow the <code>snake_case</code> naming convention.</p>
+<p>For functions that throw exceptions, we append <code>!</code> to the end of the function name.</p>
+<p>For functions that return a boolean value, we append <code>?</code> to the end of the function name.</p>
+<p>Below are examples of these naming conventions.</p>
+<pre><code class="language-bls">let this_is_a_var_name = 20;
+
+func this_function_throws!() {
+  raise(&quot;Wow!&quot;);
+}
+
+func is_it_true?() {
+  return true;
+}
+
+import &quot;std/lang&quot; as lang
+let SomeStruct = lang.struct(
+  hello_structs = 10
+);
+</code></pre>
+<p><del>To simplify things, we've created <code>blossom-format</code> to aid in keeping a consistent code style.</del></p>
+<p><strong>For the time being,</strong> <code>blossom-format</code> <strong>is not available</strong></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="variables.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
                         
+                                                    <a rel="next" href="data_types.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
                         
                         <div style="clear: both"></div>
                     </nav>
@@ -159,7 +193,13 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="variables.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
                 
+                                    <a rel="next" href="data_types.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
                             </nav>
 
         </div>

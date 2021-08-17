@@ -3,9 +3,8 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title></title>
-                        <base href="/">
-        
+        <title>Loops - Blossom Lang</title>
+                
 
         <!-- Custom HTML head -->
         
@@ -83,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Installation</div></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="conditionals.html"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="imports/syntax.html"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Installation</div></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="conditionals.html"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="loops.html" class="active"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="imports/syntax.html"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -144,14 +143,89 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <h1 id="loops"><a class="header" href="#loops">Loops</a></h1>
+<p>If we attempted to make a multiplication table of 12 from 1 to 12 and wrote it by hand, it would like something like this:</p>
+<pre><code class="language-bls">println(&quot;12 * 1 = &quot;, 12 * 1);
+println(&quot;12 * 2 = &quot;, 12 * 2);
+println(&quot;12 * 3 = &quot;, 12 * 3);
+println(&quot;12 * 4 = &quot;, 12 * 4);
+println(&quot;12 * 5 = &quot;, 12 * 5);
+println(&quot;12 * 6 = &quot;, 12 * 6);
+println(&quot;12 * 7 = &quot;, 12 * 7);
+println(&quot;12 * 8 = &quot;, 12 * 8);
+println(&quot;12 * 9 = &quot;, 12 * 9);
+println(&quot;12 * 10 = &quot;, 12 * 10);
+println(&quot;12 * 11 = &quot;, 12 * 11);
+println(&quot;12 * 12 = &quot;, 12 * 12);
+</code></pre>
+<p>Well, that works I suppose. But, is it convenient? Nope. But is it hard? Well, also no. But this is just from 1 to 12. What about 1 to 100? Or 1 to 1000? It becomes far more incovenient.</p>
+<p>This is where loops come in. Using a loop, the above program can be written as:</p>
+<pre><code class="language-bls">for let i = 1; i &lt;= 12; ++i {
+  println(&quot;12 * &quot;, i, &quot; = &quot;, 12 * i);
+}
+</code></pre>
+<p>Phew! That was much easier to write! If we wanted to do this <code>1000</code> times, all we need to change is <code>i &lt;= 12</code> to <code>i &lt;= 1000</code>! This is a really basic example, but it should suffice.</p>
+<p>Blossom has 3 kinds of loops:</p>
+<ol>
+<li><a href="#for-loops"><code>for</code></a> loops</li>
+<li><a href="#for-in-loops"><code>for in</code></a> loops</li>
+<li><a href="#while-loops"><code>while</code></a> loops</li>
+</ol>
+<h2 id="for-loops"><a class="header" href="#for-loops"><code>for</code> loops</a></h2>
+<p>This is the most basic, common, and most used loop - for a good reason. The <code>for</code> loop is the basis for all other loops! This form of loop contains 4 parts:</p>
+<ol>
+<li>Initialization - This is used for initializing the loop, only run once before the loop runs</li>
+<li>Execution Condition - This is used to put a condition to determine when a loop should exit. In the example above, as long as <code>i &lt;= 12</code> evaluates to <code>true</code>, the loop block will continue to run!</li>
+<li>Modification - This component allows for modification to some value - often to update the variable being evaluated in the condition. In the example above, we increment <code>i</code> by <code>1</code></li>
+<li>Loop Block - This is the block of code being executed as long as the condition is <code>true</code>.</li>
+</ol>
+<p>Other than the Loop block, all other components are optional and we can skip them to make an infinite loop.</p>
+<h2 id="for-in-loops"><a class="header" href="#for-in-loops"><code>for in</code> loops</a></h2>
+<p>This loop is also commonly called a <code>range based for</code> loop because it works for a range of items. Although very helpful as well as readable, it is not always feasible. For example, skipping initialization or modification is not an option while using a <code>for in</code> loop. In any case, it is available for when it is required. The following program is the first example in a <code>for in</code> structure:</p>
+<pre><code class="language-bls">for i in range(1, 13) {
+  println(&quot;12 * &quot;, i, &quot; = &quot;, 12 * i);
+}
+</code></pre>
+<p>Note that we use <code>1</code> to <code>13</code> in the <code>range</code> function. This is because the <code>for in</code> loop runs until the variable is <strong>less than</strong> the end expression. When translated into the <code>for</code> loop format:</p>
+<pre><code class="language-bls">for let i = 1; i &lt; 13; ++i {
+  println(&quot;12 * &quot;, i, &quot; = &quot;, 12 * i);
+}
+</code></pre>
+<p>It will go up to but not include 13. This translates to &quot;from <code>1</code> to <code>12</code>&quot;.</p>
+<h2 id="while-loops"><a class="header" href="#while-loops"><code>while</code> loops</a></h2>
+<p>Imagine a <code>for</code> loop but remove initialization and modification components. That is the <code>while</code> loop. Yes, it can be represented by a <code>for</code> loop, but its so much easier to use a <code>while</code> loop. It avoids the awkwardness of having two useless semicolons (<code>;</code>) that we have to deal with if we use a <code>for</code> loop.</p>
+<p>An example of the <code>while</code> using vectors can be as so:</p>
+<pre><code class="language-bls">import &quot;std/vec&quot; as vec
+
+let v = vec.new(1, 2, 3, 4);
+
+while !v.empty() {
+  v.pop();
+}
+</code></pre>
+<p>All the above program does is delete the last element in a vector until it is empty.</p>
+<p>The same program example using <code>for</code> loops would be:</p>
+<pre><code class="language-bls">import &quot;std/vec&quot; as vec
+
+let v = vec.new(1, 2, 3, 4);
+
+for ;!v.empty(); {
+  v.pop();
+}
+</code></pre>
+<p>Not as pleasing is it?</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="conditionals.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
                         
+                                                    <a rel="next" href="functions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
                         
                         <div style="clear: both"></div>
                     </nav>
@@ -159,7 +233,13 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="conditionals.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
                 
+                                    <a rel="next" href="functions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
                             </nav>
 
         </div>

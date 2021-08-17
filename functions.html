@@ -3,9 +3,8 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title></title>
-                        <base href="/">
-        
+        <title>Functions - Blossom Lang</title>
+                
 
         <!-- Custom HTML head -->
         
@@ -83,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Installation</div></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="conditionals.html"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="imports/syntax.html"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Installation</div></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="conditionals.html"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="functions.html" class="active"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="imports/syntax.html"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -144,14 +143,92 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <!-- markdownlint-disable MD042 -->
+<h1 id="functions"><a class="header" href="#functions">Functions</a></h1>
+<p>In this section, we'll dive into the world of functions -- including member functions! We'll cover the following topics:</p>
+<ul>
+<li><a href="#simple-functions">Simple Functions</a></li>
+<li><a href="#default-arguments">Default Arguments</a></li>
+<li><a href="#variadics">Variadic Functions</a></li>
+<li><a href="#keyword-arguments">Keyword Arguments</a></li>
+</ul>
+<h2 id="simple-functions"><a class="header" href="#simple-functions">Simple Functions</a></h2>
+<p>Simple functions can be created using the <code>func</code> keyword followed by a function name, some arguments, and then a block.</p>
+<pre><code class="language-bls">func example_function(with, some, args) {
+  println(&quot;Do something &quot;, with, some, args, &quot;!&quot;);
+}
+</code></pre>
+<p>Functions take arguments of any type, so that may be something you'd want to watch out for when writing your own functions.</p>
+<h2 id="default-arguments"><a class="header" href="#default-arguments">Default Arguments</a></h2>
+<p>Functions are allowed to have defaults arguments by assigning a default value to arguments that don't <em>require</em> values.</p>
+<p>For example, in the following function, we define 3 arguments: <code>x</code>, <code>y</code>, and <code>z</code>. But, we assign a default value to <code>z</code>.</p>
+<pre><code class="language-bls">func default_args(x, y, z = 0) {
+  if x == 0 {
+    println(&quot;x is 0&quot;);
+  }
+
+  if y == 0 {
+    println(&quot;x is 0&quot;);
+  }
+
+  if z == 0 {
+    println(&quot;x is 0 (default)&quot;);
+  }
+}
+</code></pre>
+<p>When we call the function <code>default_args</code> we don't need to include <code>z</code> as a parameter. It instead defaults to <code>0</code>!</p>
+<h2 id="variadics"><a class="header" href="#variadics">Variadics</a></h2>
+<p>Functions that can take any amount of arguments are called variadic functions. Variadic functions are cool because they allow for an infinite amount of arguments to be passed to the function. Again note, that these arguments are of any type which may be something to watch out for.</p>
+<pre><code class="language-bls">import &quot;std/vec&quot; as vec
+
+func variadic_func(x...) {
+  if x.empty() {
+    println(&quot;x is empty!&quot;);
+    return;
+  }
+  println(&quot;found x: &quot;, x);
+}
+</code></pre>
+<p>The above example shows a variadic function called <code>variadic_func</code>. It takes an arbitrary number of arguments and combines it into a <code>vec</code> argument named <code>x</code>. This is why we also need to import <code>std/vec</code>. We'll talk about imports in the next chapter. We define variadic arguments by appending <code>...</code> to the end of an argument name.</p>
+<p>Please note that variadics <strong>must</strong> be the last argument in a list of arguments. For example, the following will not compile:</p>
+<pre><code class="language-bls">import &quot;std/vec&quot; as vec
+
+func invalid_var_args(x..., y) {
+  println(x)
+  println(y)
+}
+</code></pre>
+<p>Instead we're greeted with the following error:</p>
+<pre><code class="language-txt">var_args.bls:3:29: error: cannot have any argument after variadic arg declaration
+func invalid_var_args(x..., y) {
+                            ^
+</code></pre>
+<h2 id="keyword-arguments"><a class="header" href="#keyword-arguments">Keyword Arguments</a></h2>
+<p>Functions are already very powerful in their uses. But, we have one more thing to add and that is keyword arguments. Keyword arguments are arguments that accept named values into a <code>map</code>. This powerful feature also requires <code>std/map</code> to fully leverage. To define a keyword argument, we prepend <code>.</code> to an argument name.</p>
+<pre><code class="language-bls">import &quot;std/map&quot; as map
+
+func kw_args(x, .kw) {
+  println(x)
+  println(kw[&quot;y&quot;])
+}
+</code></pre>
+<p>In the example, we define a function called <code>kw_args</code> with 2 arguments. A regular arg named <code>x</code> and a keyword arg named <code>kw</code>. When we pass the arguments, we can define named arguments in the call:</p>
+<pre><code class="language-bls">kw_args(20, y = 10)
+</code></pre>
+<p>We give <code>x</code> the value of <code>20</code>, then we create a named variable called <code>y</code> with the value <code>10</code>. When run, this code will print <code>20</code> and <code>10</code> to the terminal. It is also important to note that if a keyword argument attempts to access a member without a value, it will return <code>nil</code>.</p>
+<p>Next chapter, we'll go into the wide world of imports and modules!</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="loops.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
                         
+                                                    <a rel="next" href="imports.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
                         
                         <div style="clear: both"></div>
                     </nav>
@@ -159,7 +236,13 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="loops.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
                 
+                                    <a rel="next" href="imports.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
                             </nav>
 
         </div>

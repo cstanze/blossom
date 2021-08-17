@@ -3,9 +3,8 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title></title>
-                        <base href="/">
-        
+        <title>Data Types - Blossom Lang</title>
+                
 
         <!-- Custom HTML head -->
         
@@ -83,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Installation</div></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="conditionals.html"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="imports/syntax.html"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Installation</div></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="data_types.html" class="active"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="conditionals.html"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="imports/syntax.html"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -144,14 +143,93 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <h1 id="data-types"><a class="header" href="#data-types">Data Types</a></h1>
+<p>In Blossom, we have common data types that come from many other languages. The following types are:</p>
+<ul>
+<li><a href="#integers"><code>Int</code></a></li>
+<li><a href="#floats"><code>Float</code></a></li>
+<li><a href="#booleans"><code>Bool</code></a></li>
+<li><a href="#strings"><code>String</code></a></li>
+</ul>
+<p>Some programmers may note the missing data type: <code>char</code>. Despite having the concept of strings in Blossom, we don't have the <code>char</code> primitive.</p>
+<p>Blossom is a <code>dynamically typed</code> language. This means we don't provide types for the variable and we don't perform type checks and buildtime. Instead, the interpreter deduces the types of variables at runtime, similar to JavaScript.</p>
+<pre><code class="language-bls">let s = &quot;hiya&quot;;
+let i = 0;
+</code></pre>
+<p>In the above example, the interpreter creates 2 variables named <code>s</code> and <code>i</code>. The interpreter then deduces these 2 variables as the types: <code>string</code> and <code>int</code> respectively.</p>
+<h2 id="basic-types"><a class="header" href="#basic-types">Basic Types</a></h2>
+<h3 id="integers"><a class="header" href="#integers">Integers</a></h3>
+<p>Integers represent negative and positive numbers in Blossom. All numbers without a floating point are valid integers.</p>
+<pre><code class="language-bls">let some_int = 132872987298732287939897289723;
+let some_neg_int = -132872987298732287939897289723;
+</code></pre>
+<p>Additionally, unlike many (usually compiled) languages, Blossom doesn't limit you to 32, 64, or 128 bit numbers. Any number is usable, as long as it fits in system memory.</p>
+<h3 id="floats"><a class="header" href="#floats">Floats</a></h3>
+<p>Floating point numbers are simply integers but with more precision as there is the ability to use the decimals (<code>.</code>). Because we use the same system for storing floats as with integers, floating point values can also be arbitrarily long with high precision.</p>
+<pre><code class="language-bls">let some_float = 13287298729873.2287939897289723;
+let some_neg_float = -13287298729873.2287939897289723;
+</code></pre>
+<p><strong>Note:</strong> Floats that don't require anything after a decimal point after can be initialized using a <code>.0</code> after the number like so:</p>
+<pre><code class="language-bls">let some_float = 5.0;
+</code></pre>
+<h2 id="booleans"><a class="header" href="#booleans">Booleans</a></h2>
+<p>Booleans are simple values to indicate <code>true</code> and <code>false</code>. Unlike other types, <code>true</code> and <code>false</code> are actually constant variables that cannot be reassigned and are always globally available.</p>
+<pre><code class="language-bls">let t = true;
+let f = false;
+</code></pre>
+<h2 id="strings"><a class="header" href="#strings">Strings</a></h2>
+<p>Strings are simple data structures to hold some sort of text or the like.</p>
+<p>Constant strings (const strings) are strings that are hardcoded into your code. These strings are written using one of the 3 available ways:</p>
+<ol>
+<li>Enclosing content in single quotes (<code>'</code>)</li>
+<li>Enclosing content in double quotes (<code>&quot;</code>)</li>
+<li>Enclosing content in back ticks (<code>`</code>)</li>
+</ol>
+<p>Blossom also supports escape sequences such as:</p>
+<pre><code class="language-txt">\a - Bell
+\b - Backspace
+\f - Formfeed
+\n - New line
+\r - Carriage return
+\t - Tab (horizontal)
+\v - Tab (vertical)
+\\ - Escaped Backslash
+\&quot; - Escaped Double quote
+\' - Escaped Single quote
+</code></pre>
+<p>Here are a couple examples of using strings:</p>
+<pre><code class="language-bls">// simple double quoted string
+println(&quot;hello world!&quot;)
+
+// simple single quoted string
+println('hiya there!')
+
+// backticks too!
+println(`we also support embedded quotes like the double (&quot;) and single (') quotes.`)
+
+// same with other strings
+println(&quot;don't you think 'this' is cool?&quot;)
+println('i &quot;certainly&quot; do!')
+</code></pre>
+<p>Please note that the following does not work:</p>
+<pre><code class="language-bls">println(&quot;having this quote: &quot; unescaped is invalid!&quot;)
+</code></pre>
+<pre><code class="language-bls">println('same with singe quotes: ' uhoh!')
+</code></pre>
+<pre><code class="language-bls">println(`backticks as well! ` scary!`)
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="naming_conventions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
                         
+                                                    <a rel="next" href="conditionals.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
                         
                         <div style="clear: both"></div>
                     </nav>
@@ -159,7 +237,13 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="naming_conventions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
                 
+                                    <a rel="next" href="conditionals.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
                             </nav>
 
         </div>

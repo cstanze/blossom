@@ -3,9 +3,8 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title></title>
-                        <base href="/">
-        
+        <title>Conditionals - Blossom Lang</title>
+                
 
         <!-- Custom HTML head -->
         
@@ -83,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Installation</div></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="conditionals.html"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="imports/syntax.html"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Installation</div></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="conditionals.html" class="active"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="imports/syntax.html"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -144,14 +143,79 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <h1 id="conditionals"><a class="header" href="#conditionals">Conditionals</a></h1>
+<p>In Blossom, like most languages, conditionals follow the format:</p>
+<pre><code class="language-bls">if &lt;some expression&gt; {
+  // do something
+} elif &lt;maybe another expression&gt; {
+  // do something else
+} else {
+  // nothing else worked, let's fallback to this.
+}
+</code></pre>
+<p>As of Blossom v0.1.0, the following style is also supported:</p>
+<pre><code class="language-bls">if &lt;something&gt; {
+  // do something
+} else if &lt;something else&gt; {
+  // do another thing
+} else {
+  // try one final thing
+}
+</code></pre>
+<p>Do note that the <code>elif</code>/<code>else if</code> and <code>else</code> portions are not mandatory. But, the order is absolute. A conditional can have any number <code>elif</code>/<code>else if</code> sections.</p>
+<h2 id="logical-operators"><a class="header" href="#logical-operators">Logical Operators</a></h2>
+<p>Logical Operators are operators that perform logical comparisons. They're interpreted from left to right, so if one fails (in a logical <code>and</code>), the others won't be interpreted. For example,</p>
+<pre><code class="language-bls">let x = false;
+func test() {
+  println(&quot;test!&quot;);
+  return true;
+}
+
+// won't print &quot;test!&quot; to the console
+// because its not interpreted
+if x &amp;&amp; test() {
+  println(&quot;good!&quot;)
+} else {
+  println(&quot;not good!&quot;)
+}
+</code></pre>
+<p>Below is a short list of logical operators:</p>
+<ul>
+<li><code>&amp;&amp;</code> - Checks if both sides evaluate to the <code>true</code> boolean value.
+<ul>
+<li><code>true &amp;&amp; true</code> - True</li>
+<li><code>false &amp;&amp; true</code> - False</li>
+<li><code>true &amp;&amp; false</code> - False</li>
+<li><code>false &amp;&amp; false</code> - False</li>
+</ul>
+</li>
+<li><code>||</code> - Checks if at least one side evaluates to the <code>true</code> boolean value.
+<ul>
+<li><code>true || true</code> - True</li>
+<li><code>true || false</code> - True</li>
+<li><code>false || true</code> - True</li>
+<li><code>false || false</code> - False</li>
+</ul>
+</li>
+<li><code>!</code> - Gets the opposite boolean value.
+<ul>
+<li><code>!true</code> - False</li>
+<li><code>!false</code> - True</li>
+</ul>
+</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="data_types.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
                         
+                                                    <a rel="next" href="loops.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
                         
                         <div style="clear: both"></div>
                     </nav>
@@ -159,7 +223,13 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="data_types.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
                 
+                                    <a rel="next" href="loops.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
                             </nav>
 
         </div>

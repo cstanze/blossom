@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Installation</div></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="conditionals.html"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="imports/syntax.html"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -149,6 +149,494 @@
 <p>Blossom is an interpreted, general purpose, and dynamically typed programming language. Its ease of use and simplicity allows for quick scripts and prototypes as well as larger projects.</p>
 <p>Blossom's minimalistic design is no shortcoming. In fact, it supports common concepts such as first-class citizenship, variables, imports, functions, and structures. Blossom's main purpose is scripting and is meant to be a small language. Its compatibility with C++ allows a developer to create powerful software using Blossom. Alongside its extensibility, its performance is comparable to many mainstream languages.</p>
 <p>This book is made to help people understand Blossom. It serves to be a &quot;holy grail&quot; for Blossom developers, new or old. This book also dives into many technical details of the language. Note that this book does not go over all of the standard library.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
+<p>A simple <strong>Hello World</strong> program can be written in Blossom in 1 line!</p>
+<pre><code class="language-bls">// hello_world.bls
+
+println(&quot;Hello world!&quot;);
+</code></pre>
+<p>The <code>print</code> and <code>println</code> functions are builtin to the language, this avoids the need to import extra modules from the standard library.</p>
+<p>To run this program, you can use the <code>blossom</code> compiler as so:</p>
+<pre><code class="language-bash">blossom hello_world.bls
+</code></pre>
+<p>The <code>blossom</code> compiler will run and interpret the code all in one. It should output the following to the terminal.</p>
+<pre><code class="language-txt">Hello world!
+</code></pre>
+<p>Congratulations! You've written a program in Blossom!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="additional-notes"><a class="header" href="#additional-notes">Additional Notes</a></h1>
+<h2 id="print--println-functions"><a class="header" href="#print--println-functions"><code>print</code> &amp; <code>println</code> functions</a></h2>
+<p><code>print</code> and <code>println</code> are functions that you will get to know and understand more as you write more code. These functions are both considered variadic. They take any number of arguments above the minimum.</p>
+<p>For <code>print</code>, the minimum is 1 argument. The argument can be of any type (for struct types, the struct needs to have a member function called <code>str</code>).</p>
+<p>For <code>println</code>, the minimum is 0 arguments. This is because <code>println</code> automatically prints a newline if no arguments are specified. Otherwise, it does the same as <code>print</code> and then prints a newline.</p>
+<h2 id="semicolons"><a class="header" href="#semicolons">Semicolons</a></h2>
+<p>The semicolon (<code>;</code>) at the end of the <code>println</code> call is totally optional! Technically yes, they are optional. But, they are advised as they help promote good code practices! This is because certain statements such as <code>continue</code>, <code>return</code>, and <code>break</code> require a semicolon (or another expression) after its declaration.</p>
+<p>For example, the following snippet is valid:</p>
+<pre><code class="language-bls">func x() {
+  return 0
+}
+</code></pre>
+<p>but the next snippet isn't:</p>
+<pre><code class="language-bls">func x() {
+  return
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="variables"><a class="header" href="#variables">Variables</a></h1>
+<p>Declaring variables is as simple as:</p>
+<pre><code class="language-bls">let x = 10;
+</code></pre>
+<p>Using the <code>let</code> keyword, we can specify a variable name and then assign a value. Since Blossom is dynamically typed, there is no need to markup the type of the variable.</p>
+<h2 id="reassigning-variables"><a class="header" href="#reassigning-variables">Reassigning Variables</a></h2>
+<p>In the following program:</p>
+<pre><code class="language-bls">let x = 10;
+x = &quot;hiya!&quot;;
+</code></pre>
+<p>We declare the variable <code>x</code> with the value <code>10</code>. Then, we <strong>attempt</strong> to reassign x with the string <code>&quot;hiya!&quot;</code>. We happen to get an error though...?</p>
+<pre><code class="language-txt">reassign.bls:2:3: error: type mismatch for assignment: String cannot be assigned to variable of type: Int
+
+x = &quot;hiya!&quot;;
+  ^
+</code></pre>
+<p>Despite having a dynamic type system, Blossom retains some restrictions from statically typed languages. There <em>is</em> one trick to get around this. In the following program, we assign <code>x</code> to <code>10</code> and then redeclare <code>x</code>.</p>
+<pre><code class="language-bls">let x = 10;
+let x = &quot;hiya!&quot;;
+</code></pre>
+<p>Variable redeclaration is a viable way of changing types. It recreates a variable with the same name and different type. The old variable will no longer exist. Be sure to use this feature with the types in mind.</p>
+<p>In the next chapter, we'll dive deeper into Blossom's <a href="./data_types.html">Data Types</a>.</p>
+<h2 id="scope"><a class="header" href="#scope">Scope</a></h2>
+<p>Scoping rules are simple and follow similar rules from other languages.</p>
+<p>For example, this creates a variable named <code>x</code> in the global scope.</p>
+<pre><code class="language-bls">let x = 10;
+</code></pre>
+<p>The global scope is accessable by all and can be use anywhere. Also, the variable won't be destroyed until the end of the program.</p>
+<p>On the other hand, if we run the following program:</p>
+<pre><code class="language-bls">{
+  let a = 20;
+}
+println(a);
+</code></pre>
+<p>We'd get an error similar to the following:</p>
+<pre><code class="language-txt">scope.bls:4:9: error: variable 'a' does not exist
+
+println(a);
+        ^
+</code></pre>
+<p>If we declared another variable named <code>a</code> outside of the block scope, the <code>println</code> function would be able to pick up the new declaration. Such as in the following program:</p>
+<pre><code class="language-bls">{
+  let a = 20;
+}
+let a = &quot;hey there!&quot;;
+println(a); // prints &quot;hey there!&quot; instead of 20
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="naming-conventions"><a class="header" href="#naming-conventions">Naming Conventions</a></h1>
+<h2 id="language-specific-rules"><a class="header" href="#language-specific-rules">Language-specific Rules</a></h2>
+<p>Blossom defines specific rules on how you can name variables. These rules are similar to other languages like Rust, Swift, etc. The rules are as follows:</p>
+<ol>
+<li>Must begin with an alphabetic character (A-Z, case insensitive) or an underscore.</li>
+<li>Can contain numbers anywhere except the first character</li>
+<li>Cannot contain any symbol (except for the rule below) other than alphanumeric characters or underscores</li>
+<li>Variables (usually function names) can end with <code>?</code> or <code>!</code>.</li>
+</ol>
+<h2 id="standard-conventions"><a class="header" href="#standard-conventions">Standard Conventions</a></h2>
+<p>Blossom tries to keep a solid and standard naming convention. Similarly to Rust, variable names should be in <code>snake_case</code> and struct/enum names should be in <code>PascalCase</code>.  Functions (including member functions) should also follow the <code>snake_case</code> naming convention.</p>
+<p>For functions that throw exceptions, we append <code>!</code> to the end of the function name.</p>
+<p>For functions that return a boolean value, we append <code>?</code> to the end of the function name.</p>
+<p>Below are examples of these naming conventions.</p>
+<pre><code class="language-bls">let this_is_a_var_name = 20;
+
+func this_function_throws!() {
+  raise(&quot;Wow!&quot;);
+}
+
+func is_it_true?() {
+  return true;
+}
+
+import &quot;std/lang&quot; as lang
+let SomeStruct = lang.struct(
+  hello_structs = 10
+);
+</code></pre>
+<p><del>To simplify things, we've created <code>blossom-format</code> to aid in keeping a consistent code style.</del></p>
+<p><strong>For the time being,</strong> <code>blossom-format</code> <strong>is not available</strong></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="data-types"><a class="header" href="#data-types">Data Types</a></h1>
+<p>In Blossom, we have common data types that come from many other languages. The following types are:</p>
+<ul>
+<li><a href="data_types.html#integers"><code>Int</code></a></li>
+<li><a href="data_types.html#floats"><code>Float</code></a></li>
+<li><a href="data_types.html#booleans"><code>Bool</code></a></li>
+<li><a href="data_types.html#strings"><code>String</code></a></li>
+</ul>
+<p>Some programmers may note the missing data type: <code>char</code>. Despite having the concept of strings in Blossom, we don't have the <code>char</code> primitive.</p>
+<p>Blossom is a <code>dynamically typed</code> language. This means we don't provide types for the variable and we don't perform type checks and buildtime. Instead, the interpreter deduces the types of variables at runtime, similar to JavaScript.</p>
+<pre><code class="language-bls">let s = &quot;hiya&quot;;
+let i = 0;
+</code></pre>
+<p>In the above example, the interpreter creates 2 variables named <code>s</code> and <code>i</code>. The interpreter then deduces these 2 variables as the types: <code>string</code> and <code>int</code> respectively.</p>
+<h2 id="basic-types"><a class="header" href="#basic-types">Basic Types</a></h2>
+<h3 id="integers"><a class="header" href="#integers">Integers</a></h3>
+<p>Integers represent negative and positive numbers in Blossom. All numbers without a floating point are valid integers.</p>
+<pre><code class="language-bls">let some_int = 132872987298732287939897289723;
+let some_neg_int = -132872987298732287939897289723;
+</code></pre>
+<p>Additionally, unlike many (usually compiled) languages, Blossom doesn't limit you to 32, 64, or 128 bit numbers. Any number is usable, as long as it fits in system memory.</p>
+<h3 id="floats"><a class="header" href="#floats">Floats</a></h3>
+<p>Floating point numbers are simply integers but with more precision as there is the ability to use the decimals (<code>.</code>). Because we use the same system for storing floats as with integers, floating point values can also be arbitrarily long with high precision.</p>
+<pre><code class="language-bls">let some_float = 13287298729873.2287939897289723;
+let some_neg_float = -13287298729873.2287939897289723;
+</code></pre>
+<p><strong>Note:</strong> Floats that don't require anything after a decimal point after can be initialized using a <code>.0</code> after the number like so:</p>
+<pre><code class="language-bls">let some_float = 5.0;
+</code></pre>
+<h2 id="booleans"><a class="header" href="#booleans">Booleans</a></h2>
+<p>Booleans are simple values to indicate <code>true</code> and <code>false</code>. Unlike other types, <code>true</code> and <code>false</code> are actually constant variables that cannot be reassigned and are always globally available.</p>
+<pre><code class="language-bls">let t = true;
+let f = false;
+</code></pre>
+<h2 id="strings"><a class="header" href="#strings">Strings</a></h2>
+<p>Strings are simple data structures to hold some sort of text or the like.</p>
+<p>Constant strings (const strings) are strings that are hardcoded into your code. These strings are written using one of the 3 available ways:</p>
+<ol>
+<li>Enclosing content in single quotes (<code>'</code>)</li>
+<li>Enclosing content in double quotes (<code>&quot;</code>)</li>
+<li>Enclosing content in back ticks (<code>`</code>)</li>
+</ol>
+<p>Blossom also supports escape sequences such as:</p>
+<pre><code class="language-txt">\a - Bell
+\b - Backspace
+\f - Formfeed
+\n - New line
+\r - Carriage return
+\t - Tab (horizontal)
+\v - Tab (vertical)
+\\ - Escaped Backslash
+\&quot; - Escaped Double quote
+\' - Escaped Single quote
+</code></pre>
+<p>Here are a couple examples of using strings:</p>
+<pre><code class="language-bls">// simple double quoted string
+println(&quot;hello world!&quot;)
+
+// simple single quoted string
+println('hiya there!')
+
+// backticks too!
+println(`we also support embedded quotes like the double (&quot;) and single (') quotes.`)
+
+// same with other strings
+println(&quot;don't you think 'this' is cool?&quot;)
+println('i &quot;certainly&quot; do!')
+</code></pre>
+<p>Please note that the following does not work:</p>
+<pre><code class="language-bls">println(&quot;having this quote: &quot; unescaped is invalid!&quot;)
+</code></pre>
+<pre><code class="language-bls">println('same with singe quotes: ' uhoh!')
+</code></pre>
+<pre><code class="language-bls">println(`backticks as well! ` scary!`)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="conditionals"><a class="header" href="#conditionals">Conditionals</a></h1>
+<p>In Blossom, like most languages, conditionals follow the format:</p>
+<pre><code class="language-bls">if &lt;some expression&gt; {
+  // do something
+} elif &lt;maybe another expression&gt; {
+  // do something else
+} else {
+  // nothing else worked, let's fallback to this.
+}
+</code></pre>
+<p>As of Blossom v0.1.0, the following style is also supported:</p>
+<pre><code class="language-bls">if &lt;something&gt; {
+  // do something
+} else if &lt;something else&gt; {
+  // do another thing
+} else {
+  // try one final thing
+}
+</code></pre>
+<p>Do note that the <code>elif</code>/<code>else if</code> and <code>else</code> portions are not mandatory. But, the order is absolute. A conditional can have any number <code>elif</code>/<code>else if</code> sections.</p>
+<h2 id="logical-operators"><a class="header" href="#logical-operators">Logical Operators</a></h2>
+<p>Logical Operators are operators that perform logical comparisons. They're interpreted from left to right, so if one fails (in a logical <code>and</code>), the others won't be interpreted. For example,</p>
+<pre><code class="language-bls">let x = false;
+func test() {
+  println(&quot;test!&quot;);
+  return true;
+}
+
+// won't print &quot;test!&quot; to the console
+// because its not interpreted
+if x &amp;&amp; test() {
+  println(&quot;good!&quot;)
+} else {
+  println(&quot;not good!&quot;)
+}
+</code></pre>
+<p>Below is a short list of logical operators:</p>
+<ul>
+<li><code>&amp;&amp;</code> - Checks if both sides evaluate to the <code>true</code> boolean value.
+<ul>
+<li><code>true &amp;&amp; true</code> - True</li>
+<li><code>false &amp;&amp; true</code> - False</li>
+<li><code>true &amp;&amp; false</code> - False</li>
+<li><code>false &amp;&amp; false</code> - False</li>
+</ul>
+</li>
+<li><code>||</code> - Checks if at least one side evaluates to the <code>true</code> boolean value.
+<ul>
+<li><code>true || true</code> - True</li>
+<li><code>true || false</code> - True</li>
+<li><code>false || true</code> - True</li>
+<li><code>false || false</code> - False</li>
+</ul>
+</li>
+<li><code>!</code> - Gets the opposite boolean value.
+<ul>
+<li><code>!true</code> - False</li>
+<li><code>!false</code> - True</li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="loops"><a class="header" href="#loops">Loops</a></h1>
+<p>If we attempted to make a multiplication table of 12 from 1 to 12 and wrote it by hand, it would like something like this:</p>
+<pre><code class="language-bls">println(&quot;12 * 1 = &quot;, 12 * 1);
+println(&quot;12 * 2 = &quot;, 12 * 2);
+println(&quot;12 * 3 = &quot;, 12 * 3);
+println(&quot;12 * 4 = &quot;, 12 * 4);
+println(&quot;12 * 5 = &quot;, 12 * 5);
+println(&quot;12 * 6 = &quot;, 12 * 6);
+println(&quot;12 * 7 = &quot;, 12 * 7);
+println(&quot;12 * 8 = &quot;, 12 * 8);
+println(&quot;12 * 9 = &quot;, 12 * 9);
+println(&quot;12 * 10 = &quot;, 12 * 10);
+println(&quot;12 * 11 = &quot;, 12 * 11);
+println(&quot;12 * 12 = &quot;, 12 * 12);
+</code></pre>
+<p>Well, that works I suppose. But, is it convenient? Nope. But is it hard? Well, also no. But this is just from 1 to 12. What about 1 to 100? Or 1 to 1000? It becomes far more incovenient.</p>
+<p>This is where loops come in. Using a loop, the above program can be written as:</p>
+<pre><code class="language-bls">for let i = 1; i &lt;= 12; ++i {
+  println(&quot;12 * &quot;, i, &quot; = &quot;, 12 * i);
+}
+</code></pre>
+<p>Phew! That was much easier to write! If we wanted to do this <code>1000</code> times, all we need to change is <code>i &lt;= 12</code> to <code>i &lt;= 1000</code>! This is a really basic example, but it should suffice.</p>
+<p>Blossom has 3 kinds of loops:</p>
+<ol>
+<li><a href="loops.html#for-loops"><code>for</code></a> loops</li>
+<li><a href="loops.html#for-in-loops"><code>for in</code></a> loops</li>
+<li><a href="loops.html#while-loops"><code>while</code></a> loops</li>
+</ol>
+<h2 id="for-loops"><a class="header" href="#for-loops"><code>for</code> loops</a></h2>
+<p>This is the most basic, common, and most used loop - for a good reason. The <code>for</code> loop is the basis for all other loops! This form of loop contains 4 parts:</p>
+<ol>
+<li>Initialization - This is used for initializing the loop, only run once before the loop runs</li>
+<li>Execution Condition - This is used to put a condition to determine when a loop should exit. In the example above, as long as <code>i &lt;= 12</code> evaluates to <code>true</code>, the loop block will continue to run!</li>
+<li>Modification - This component allows for modification to some value - often to update the variable being evaluated in the condition. In the example above, we increment <code>i</code> by <code>1</code></li>
+<li>Loop Block - This is the block of code being executed as long as the condition is <code>true</code>.</li>
+</ol>
+<p>Other than the Loop block, all other components are optional and we can skip them to make an infinite loop.</p>
+<h2 id="for-in-loops"><a class="header" href="#for-in-loops"><code>for in</code> loops</a></h2>
+<p>This loop is also commonly called a <code>range based for</code> loop because it works for a range of items. Although very helpful as well as readable, it is not always feasible. For example, skipping initialization or modification is not an option while using a <code>for in</code> loop. In any case, it is available for when it is required. The following program is the first example in a <code>for in</code> structure:</p>
+<pre><code class="language-bls">for i in range(1, 13) {
+  println(&quot;12 * &quot;, i, &quot; = &quot;, 12 * i);
+}
+</code></pre>
+<p>Note that we use <code>1</code> to <code>13</code> in the <code>range</code> function. This is because the <code>for in</code> loop runs until the variable is <strong>less than</strong> the end expression. When translated into the <code>for</code> loop format:</p>
+<pre><code class="language-bls">for let i = 1; i &lt; 13; ++i {
+  println(&quot;12 * &quot;, i, &quot; = &quot;, 12 * i);
+}
+</code></pre>
+<p>It will go up to but not include 13. This translates to &quot;from <code>1</code> to <code>12</code>&quot;.</p>
+<h2 id="while-loops"><a class="header" href="#while-loops"><code>while</code> loops</a></h2>
+<p>Imagine a <code>for</code> loop but remove initialization and modification components. That is the <code>while</code> loop. Yes, it can be represented by a <code>for</code> loop, but its so much easier to use a <code>while</code> loop. It avoids the awkwardness of having two useless semicolons (<code>;</code>) that we have to deal with if we use a <code>for</code> loop.</p>
+<p>An example of the <code>while</code> using vectors can be as so:</p>
+<pre><code class="language-bls">import &quot;std/vec&quot; as vec
+
+let v = vec.new(1, 2, 3, 4);
+
+while !v.empty() {
+  v.pop();
+}
+</code></pre>
+<p>All the above program does is delete the last element in a vector until it is empty.</p>
+<p>The same program example using <code>for</code> loops would be:</p>
+<pre><code class="language-bls">import &quot;std/vec&quot; as vec
+
+let v = vec.new(1, 2, 3, 4);
+
+for ;!v.empty(); {
+  v.pop();
+}
+</code></pre>
+<p>Not as pleasing is it?</p>
+<div style="break-before: page; page-break-before: always;"></div><!-- markdownlint-disable MD042 -->
+<h1 id="functions"><a class="header" href="#functions">Functions</a></h1>
+<p>In this section, we'll dive into the world of functions -- including member functions! We'll cover the following topics:</p>
+<ul>
+<li><a href="functions.html#simple-functions">Simple Functions</a></li>
+<li><a href="functions.html#default-arguments">Default Arguments</a></li>
+<li><a href="functions.html#variadics">Variadic Functions</a></li>
+<li><a href="functions.html#keyword-arguments">Keyword Arguments</a></li>
+</ul>
+<h2 id="simple-functions"><a class="header" href="#simple-functions">Simple Functions</a></h2>
+<p>Simple functions can be created using the <code>func</code> keyword followed by a function name, some arguments, and then a block.</p>
+<pre><code class="language-bls">func example_function(with, some, args) {
+  println(&quot;Do something &quot;, with, some, args, &quot;!&quot;);
+}
+</code></pre>
+<p>Functions take arguments of any type, so that may be something you'd want to watch out for when writing your own functions.</p>
+<h2 id="default-arguments"><a class="header" href="#default-arguments">Default Arguments</a></h2>
+<p>Functions are allowed to have defaults arguments by assigning a default value to arguments that don't <em>require</em> values.</p>
+<p>For example, in the following function, we define 3 arguments: <code>x</code>, <code>y</code>, and <code>z</code>. But, we assign a default value to <code>z</code>.</p>
+<pre><code class="language-bls">func default_args(x, y, z = 0) {
+  if x == 0 {
+    println(&quot;x is 0&quot;);
+  }
+
+  if y == 0 {
+    println(&quot;x is 0&quot;);
+  }
+
+  if z == 0 {
+    println(&quot;x is 0 (default)&quot;);
+  }
+}
+</code></pre>
+<p>When we call the function <code>default_args</code> we don't need to include <code>z</code> as a parameter. It instead defaults to <code>0</code>!</p>
+<h2 id="variadics"><a class="header" href="#variadics">Variadics</a></h2>
+<p>Functions that can take any amount of arguments are called variadic functions. Variadic functions are cool because they allow for an infinite amount of arguments to be passed to the function. Again note, that these arguments are of any type which may be something to watch out for.</p>
+<pre><code class="language-bls">import &quot;std/vec&quot; as vec
+
+func variadic_func(x...) {
+  if x.empty() {
+    println(&quot;x is empty!&quot;);
+    return;
+  }
+  println(&quot;found x: &quot;, x);
+}
+</code></pre>
+<p>The above example shows a variadic function called <code>variadic_func</code>. It takes an arbitrary number of arguments and combines it into a <code>vec</code> argument named <code>x</code>. This is why we also need to import <code>std/vec</code>. We'll talk about imports in the next chapter. We define variadic arguments by appending <code>...</code> to the end of an argument name.</p>
+<p>Please note that variadics <strong>must</strong> be the last argument in a list of arguments. For example, the following will not compile:</p>
+<pre><code class="language-bls">import &quot;std/vec&quot; as vec
+
+func invalid_var_args(x..., y) {
+  println(x)
+  println(y)
+}
+</code></pre>
+<p>Instead we're greeted with the following error:</p>
+<pre><code class="language-txt">var_args.bls:3:29: error: cannot have any argument after variadic arg declaration
+func invalid_var_args(x..., y) {
+                            ^
+</code></pre>
+<h2 id="keyword-arguments"><a class="header" href="#keyword-arguments">Keyword Arguments</a></h2>
+<p>Functions are already very powerful in their uses. But, we have one more thing to add and that is keyword arguments. Keyword arguments are arguments that accept named values into a <code>map</code>. This powerful feature also requires <code>std/map</code> to fully leverage. To define a keyword argument, we prepend <code>.</code> to an argument name.</p>
+<pre><code class="language-bls">import &quot;std/map&quot; as map
+
+func kw_args(x, .kw) {
+  println(x)
+  println(kw[&quot;y&quot;])
+}
+</code></pre>
+<p>In the example, we define a function called <code>kw_args</code> with 2 arguments. A regular arg named <code>x</code> and a keyword arg named <code>kw</code>. When we pass the arguments, we can define named arguments in the call:</p>
+<pre><code class="language-bls">kw_args(20, y = 10)
+</code></pre>
+<p>We give <code>x</code> the value of <code>20</code>, then we create a named variable called <code>y</code> with the value <code>10</code>. When run, this code will print <code>20</code> and <code>10</code> to the terminal. It is also important to note that if a keyword argument attempts to access a member without a value, it will return <code>nil</code>.</p>
+<p>Next chapter, we'll go into the wide world of imports and modules!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="imports"><a class="header" href="#imports">Imports</a></h1>
+<p>In this chapter, we'll dive into the world of imports and modules. We'll cover how to import Blossom modules and C++ modules. In a future chapter, we'll understand C++ modules more and how they work.</p>
+<ul>
+<li><a href="./imports/syntax.html">Learning the syntax</a></li>
+<li><a href="./imports/standard.html">Importing the standard library</a></li>
+<li><a href="./imports/external.html">Importing external modules</a></li>
+</ul>
+<!-- - [C++ modules]()
+  - [Creating C++ modules]()
+  - [Loading C++ modules]() -->
+<div style="break-before: page; page-break-before: always;"></div><h1 id="learning-the-syntax"><a class="header" href="#learning-the-syntax">Learning the syntax</a></h1>
+<p>Imports are a vital structure for Blossom. As your project begins to grow, so will your codebase. To reduce clutter and file size, we've added support for importing modules, whether they be coded in Blossom or C++.</p>
+<h2 id="basic-imports"><a class="header" href="#basic-imports">Basic Imports</a></h2>
+<p>By default, Blossom imports the <code>core</code> and <code>utils</code> library to use. This includes many functions for primitive types. This also includes the <code>print</code> and <code>println</code> functions. Additional functions available to you are <code>import</code> and <code>mload</code> which we'll discuss in more detail. The compiler also includes a keyword <em>named</em> <code>import</code>. Notice the conflictions between the function name and keyword? We'll discuss that in more detail later.</p>
+<p>For now, we'll use the <code>import</code> keyword to import Blossom modules.</p>
+<p>To import a module, you must specify the <code>import</code> keyword followed by a string as the name of your module. Optionally, you may also import the module as a variable by using the <code>as</code> keyword.</p>
+<pre><code class="language-bls">import &quot;std/vec&quot; as vec
+</code></pre>
+<p>The example above imports the <code>std/vec</code> library as a variable named <code>vec</code>. <code>std/vec</code> is the standard vector library, essentially the equivalent to arrays or lists from either JavaScript or Python (respectively).</p>
+<p>You may omit the <code>as</code> section to import a module as is. For example, the <code>std/str</code> library doesn't import any types. It simply imports some extensions to the string type:</p>
+<pre><code class="language-bls">impl String.substr(begin = 0, len = -1) {
+	if len == -1 { len = self.len(); }
+	return self.substr_native(begin, len);
+}
+</code></pre>
+<p>For these types of situations, you can import the module without assigning it to a variable:</p>
+<pre><code class="language-bls">import &quot;std/str&quot;
+</code></pre>
+<p>Then, we can use the <code>substr</code> function as we please.</p>
+<pre><code class="language-bls">import &quot;std/str&quot;
+
+let x = &quot;xxhiyaxx&quot;;
+
+println(x.substr(2, 4)) // prints &quot;hiya&quot;
+</code></pre>
+<h2 id="multiple-imports"><a class="header" href="#multiple-imports">Multiple Imports</a></h2>
+<p>This section is a bit short but here is the basic rundown of importing multiple modules in one line.</p>
+<p>We can separate imports by commas! Note, we added the newlines to make it easier to read. They're obviously optional</p>
+<pre><code class="language-bls">import &quot;std/str&quot;, 
+       &quot;std/sys&quot; as sys,
+       &quot;std/vec&quot; as vec,
+       &quot;std/map&quot; as map
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="importing-the-standard-lib"><a class="header" href="#importing-the-standard-lib">Importing the standard lib</a></h1>
+<p>All langauges have a standard library. This standard library has common structures, functions, and variables to aid in everyday development. For example, Rust has a structure called <code>HashMap</code> in its standard library to act as a key-value structure. Blossom on the other hand has the <code>std/map</code> library with a similar map structure.</p>
+<h2 id="the-standard-library"><a class="header" href="#the-standard-library">The Standard Library</a></h2>
+<p>As you should already know, you can import modules/libraries. The standard library is split into parts to avoid needing to import the whole library. </p>
+<p>Here is a whole list of available <code>std</code> library parts:</p>
+<ul>
+<li><code>std/bytebuffer</code> - Bytebuffer Type and Functions</li>
+<li><code>std/fmt</code> - String Formatting Functions</li>
+<li><code>std/fs</code> - File System Functions</li>
+<li><code>std/io</code> - Extra IO functions</li>
+<li><code>std/json</code> - JSON Encoder &amp; Decoder</li>
+<li><code>std/lang</code> - Language Types (Structs &amp; Enums)</li>
+<li><code>std/map</code> - Map Type</li>
+<li><code>std/multiproc</code> - Process management</li>
+<li><code>std/mutex</code> - Mutex lock type and functions</li>
+<li><code>std/os</code> - Standard OS functions and variables</li>
+<li><code>std/ptr</code> - Pointer type and functions</li>
+<li><code>std/rng</code> - Random Number Generation</li>
+<li><code>std/stat</code> - C <code>stat</code> filesystem api</li>
+<li><code>std/str</code> - Helper String Functions</li>
+<li><code>std/sys</code> - System Functions and Variables</li>
+<li><code>std/term</code> - Minor Terminal Functions and Variables</li>
+<li><code>std/threads</code> - Thread/Process management</li>
+<li><code>std/time</code> - Time keeping</li>
+<li><code>std/vec</code> - Vector type</li>
+</ul>
+<p>This large and ever increasing list is going to prove very useful in your development.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="importing-external-modules"><a class="header" href="#importing-external-modules">Importing external modules</a></h1>
+<p>Importing external modules usually consists of importing code you created. To import a local file:</p>
+<pre><code class="language-bls">// main.bls
+import &quot;./more_string_funcs&quot;
+
+println(&quot;&quot;.test())
+</code></pre>
+<p>Then in the other file:</p>
+<pre><code class="language-bls">// more_string_funcs.bls
+impl String.test() {
+  return self + &quot;test&quot;
+}
+</code></pre>
+<p>The example above, when run, will output <code>test</code> to the console.</p>
+<h2 id="additional-notes-1"><a class="header" href="#additional-notes-1">Additional Notes</a></h2>
+<p>Please note that it is not advised to extend builtin types. Only when necessary is it advised.</p>
+<p>Overriding methods is also not allowed for program safety.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="core-functions"><a class="header" href="#core-functions">Core Functions</a></h1>
+<p>Blossom contains a few core functions that are important to a developer. Below are the listed functions alongside their descriptions.</p>
+<table><thead><tr><th>Function</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>mload</code></td><td>Load a C++ module</td></tr>
+<tr><td><code>import</code></td><td>Import a Blossom module (only available in <a href="./compiler_features.html">classic mode</a>)</td></tr>
+<tr><td><code>raise</code></td><td>Raise an error (takes one argument - a string message)</td></tr>
+<tr><td><code>print</code></td><td>Print to the console</td></tr>
+<tr><td><code>println</code></td><td>Print to the console and append a newline. Print a newline if no arguments</td></tr>
+</tbody></table>
+<h2 id="copy-function"><a class="header" href="#copy-function">Copy function</a></h2>
+<p>Every type has a <code>copy</code> member function. This makes a copy of the current object. This is useful but use it wisely as it does duplicate memory, increasing usage.</p>
 
                     </main>
 
