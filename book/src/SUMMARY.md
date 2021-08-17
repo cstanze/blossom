@@ -1,3 +1,21 @@
+<!-- markdownlint-disable MD042 -->
 # Summary
 
 - [Introduction](./introduction.md)
+- [Installation]()
+- [Getting Started](./getting_started.md)
+  - [Additional Notes](./gs/additional-notes.md)
+- [Variables](./variables.md)
+  - [Naming Conventions](./naming_conventions.md)
+- [Data Types](./data_types.md)
+- [Conditionals](./conditionals.md)
+- [Loops](./loops.md)
+- [Functions](./functions.md)
+- [Imports](./imports.md)
+  - [Learning the syntax](./imports/syntax.md)
+  - [Importing the standard library](./imports/standard.md)
+  - [Importing external modules](./imports/external.md)
+  - [C++ modules]()
+    - [Creating C++ modules]()
+    - [Loading C++ modules]()
+- [Core Functions](./core_funcs.md)

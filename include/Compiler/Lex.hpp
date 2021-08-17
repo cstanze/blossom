@@ -36,6 +36,8 @@ enum TokType {
   TOK_FALSE,
   TOK_NIL,
   TOK_OR,
+  TOK_IMPORT,
+  TOK_AS,
 
   // Operators
   TOK_ASSN,

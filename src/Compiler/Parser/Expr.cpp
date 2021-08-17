@@ -692,6 +692,9 @@ Errors parse_term(ParseHelper &ph, StmtBase *&loc, const bool make_const) {
   } else if (!make_const && ph.accept(TOK_IMPL)) {
     if (parse_impl_decl(ph, loc) != E_OK)
       goto fail;
+  } else if (!make_const && ph.accept(TOK_IMPORT)) {
+    if (parse_import_decl(ph, loc) != E_OK)
+      goto fail;
   } else {
     Err::set(E_PARSE_FAIL, ph.peak()->pos,
              "invalid or extraneous token type '%s' received in expression",

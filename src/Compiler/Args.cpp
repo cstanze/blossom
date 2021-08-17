@@ -9,7 +9,7 @@ const size_t OPT_B = 1 << 1; // show byte code
 const size_t OPT_C = 1 << 2; // (byte) compile
 const size_t OPT_D = 1 << 3; // dry run (no execute)
 const size_t OPT_E = 1 << 4; // REPL (eval)
-const size_t OPT_F = 1 << 5;
+const size_t OPT_F = 1 << 5; // fallback to classic compiler
 const size_t OPT_G = 1 << 6;
 const size_t OPT_H = 1 << 7;
 const size_t OPT_I = 1 << 8;
@@ -23,6 +23,8 @@ const size_t OPT_V = 1 << 14; // show version
 const size_t OPT_1 = 1 << 15;
 
 namespace args {
+size_t parsedFlags;
+
 size_t parse(const int argc, const char **argv,
              std::unordered_map<std::string, std::string> &args,
              std::vector<std::string> &code_args) {
@@ -107,6 +109,8 @@ size_t parse(const int argc, const char **argv,
   // dry run if compiled flag exists (no actual execution of program)
   if (flags & OPT_C)
     flags |= OPT_D;
+
+  parsedFlags = flags;
 
   return flags;
 }

@@ -174,11 +174,6 @@ const StmtBase *StmtVarDeclBase::rhs() const { return m_rhs; }
 
 bool StmtVarDeclBase::has_in() const { return m_in != nullptr; }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////// VAR_DECL
-//////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
 StmtVarDecl::StmtVarDecl(const std::vector<const StmtVarDeclBase *> &decls,
                          const size_t &idx)
     : StmtBase(GT_VAR_DECL, idx), m_decls(decls) {}
@@ -200,6 +195,48 @@ void StmtVarDecl::disp(const bool has_next) const {
 const std::vector<const StmtVarDeclBase *> &StmtVarDecl::decls() const {
   return m_decls;
 }
+
+
+StmtImportBase::StmtImportBase(const StmtSimple *mod, const StmtSimple *name, const size_t &idx)
+  : StmtBase(GT_VAR_DECL_BASE, idx), m_mod(mod), m_name(name) {}
+
+void StmtImportBase::disp(const bool has_next) const {
+  io::tadd(has_next);
+  io::print(has_next, "Import Base at: %p\n", this);
+  m_mod->disp(true);
+  if(m_name)
+    m_name->disp(false);
+  io::trem();
+}
+
+StmtImportBase::~StmtImportBase() {
+  delete m_mod;
+  if(m_name)
+    delete m_name;
+}
+
+const StmtSimple *StmtImportBase::mod() const { return m_mod; }
+const StmtSimple *StmtImportBase::name() const { return m_name; }
+
+
+StmtImport::StmtImport(const std::vector<const StmtImportBase*> &decls, const size_t &idx)
+  : StmtBase(GT_VAR_DECL, idx), m_decls(decls) {}
+
+StmtImport::~StmtImport() {
+  for (auto &d : m_decls)
+    delete d;
+}
+
+void StmtImport::disp(const bool has_next) const {
+  io::tadd(has_next);
+  io::print(has_next, "Import at: %p\n", this);
+  for (size_t i = 0; i < m_decls.size(); ++i) {
+    m_decls[i]->disp(i != m_decls.size() - 1);
+  }
+  io::trem();
+}
+
+const std::vector<const StmtImportBase*> &StmtImport::decls() const { return m_decls; }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////// FUNC_ASSN_ARG

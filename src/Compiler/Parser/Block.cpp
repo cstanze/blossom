@@ -25,6 +25,9 @@ Errors parse_block(ParseHelper &ph, StmtBase *&loc, const bool with_brace) {
     } else if (ph.accept(TOK_FUNC)) {
       if (parse_func_decl(ph, stmt))
         goto fail;
+    } else if (ph.accept(TOK_IMPORT)) {
+      if (parse_import_decl(ph, stmt))
+        goto fail;
     } else if (ph.accept(TOK_LET)) {
       if (parse_var_decl(ph, stmt) != E_OK)
         goto fail;

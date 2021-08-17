@@ -1,6 +1,5 @@
-
-
 #include "Compiler/Lex.hpp"
+#include "Compiler/Args.hpp"
 
 const char *TokStrs[_TOK_LAST] = {
     "Int",
@@ -26,6 +25,8 @@ const char *TokStrs[_TOK_LAST] = {
     "false",
     "nil",
     "or",
+    "import",
+    "as",
 
     // Operators
     "=",
@@ -260,7 +261,7 @@ static std::string get_name(const std::string &src, size_t &i) {
       break;
     buf.push_back(src[i++]);
   }
-  if (i < src_len && CURR(src) == '?')
+  if (i < src_len && (CURR(src) == '?' || CURR(src) == '!'))
     buf.push_back(src[i++]);
 
   return buf;
@@ -269,6 +270,10 @@ static std::string get_name(const std::string &src, size_t &i) {
 static int classify_str(const std::string &str) {
   if (str == TokStrs[TOK_LET])
     return TOK_LET;
+  if (str == TokStrs[TOK_IMPORT] && (args::parsedFlags & OPT_F) != OPT_F)
+    return TOK_IMPORT;
+  if (str == TokStrs[TOK_AS])
+    return TOK_AS;
   if (str == TokStrs[TOK_FUNC])
     return TOK_FUNC;
   if (str == TokStrs[TOK_IMPL])

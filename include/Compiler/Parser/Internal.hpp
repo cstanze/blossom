@@ -38,6 +38,9 @@ Errors parse_term(ParseHelper &ph, StmtBase *&loc,
 Errors parse_var_decl(ParseHelper &ph, StmtBase *&loc);
 Errors parse_var_decl_base(ParseHelper &ph, StmtBase *&loc);
 
+Errors parse_import_decl(ParseHelper &ph, StmtBase *&loc);
+Errors parse_import_decl_base(ParseHelper &ph, StmtBase *&loc);
+
 Errors parse_impl_decl(ParseHelper &ph, StmtBase *&loc);
 Errors parse_func_decl(ParseHelper &ph, StmtBase *&loc);
 Errors parse_fn_decl_args(ParseHelper &ph, StmtBase *&loc);

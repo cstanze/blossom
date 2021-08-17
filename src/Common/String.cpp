@@ -4,31 +4,29 @@
 
 #include <string>
 #include <vector>
+#include <sstream>
 
 namespace String {
-std::vector<std::string> split(const std::string &data, const char delim,
-                               const bool keep_delim) {
-  if (data.empty())
-    return {};
-  std::string temp;
-  std::vector<std::string> vec;
-
-  for (auto c : data) {
-    if (c == delim) {
-      vec.push_back(std::string(1, c));
-      if (temp.empty())
-        continue;
-      vec.push_back(temp);
-      temp.clear();
-      continue;
-    }
-
-    temp += c;
+std::vector<std::string> split(const std::string &data, const char delim) {
+  std::vector<std::string> result;
+  std::stringstream ss(data);
+  std::string item;
+  while (std::getline(ss, item, delim)) {
+    result.push_back(item);
   }
+  return result;
+}
 
-  if (!temp.empty())
-    vec.push_back(temp);
-  return vec;
+std::string join(const std::vector<std::string> &data,
+                              const char delim)
+{
+  std::string result;
+  for (auto &s : data) {
+    if (!result.empty())
+      result += delim;
+    result += s;
+  }
+  return result;
 }
 
 std::string stringify(const std::vector<std::string> &vec) {

@@ -19,15 +19,26 @@ _if_elif:
   }
   tok = ph.peak();
   ph.next();
+_cond:
   if (parse_expr_15(ph, cond.condition) != E_OK) {
     goto fail;
   }
   goto block;
 _else:
-  if (got_else) {
+  if (got_else && ph.peak(1)->type != TOK_IF) {
     Err::set(E_PARSE_FAIL, ph.peak()->pos,
              "cannot have more than one else block for a condtion");
     goto fail;
+  } else if(got_else && ph.peak(1)->type == TOK_IF) {
+    Err::set(E_PARSE_FAIL, ph.peak()->pos,
+             "cannot have an else if block after else block for a condtion");
+    goto fail;
+  }
+  if(ph.peak(1)->type == TOK_IF) {
+    ph.next();
+    tok = ph.peak();
+    ph.next();
+    goto _cond;
   }
   tok = ph.peak();
   ph.next();

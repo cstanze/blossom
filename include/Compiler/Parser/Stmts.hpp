@@ -143,6 +143,37 @@ public:
   const std::vector<const StmtVarDeclBase *> &decls() const;
 };
 
+class StmtImportBase : public StmtBase {
+  const StmtSimple *m_mod;
+  const StmtSimple *m_name;
+
+public:
+  StmtImportBase(const StmtSimple *mod, const StmtSimple *name, const size_t &idx);
+  ~StmtImportBase();
+
+  void disp(const bool has_next) const;
+
+  bool codegen(Bytecode &bc) const;
+
+  const StmtSimple *mod() const;
+  const StmtSimple *name() const;
+};
+
+class StmtImport : public StmtBase {
+  const std::vector<const StmtImportBase *> m_decls;
+
+public:
+  StmtImport(const std::vector<const StmtImportBase *> &decls,
+              const size_t &idx);
+  ~StmtImport();
+
+  void disp(const bool has_next) const;
+
+  bool codegen(Bytecode &bc) const;
+
+  const std::vector<const StmtImportBase *> &decls() const;
+};
+
 class StmtFnDefArgs : public StmtBase {
   const std::vector<const StmtBase *> m_args;
   const StmtSimple *m_kwarg, *m_vaarg;
@@ -239,9 +270,9 @@ public:
 /*
 enum SingleOperandStmtType
 {
-        SOST_RETURN,
-        SOST_CONTINUE,
-        SOST_BREAK,
+  SOST_RETURN,
+  SOST_CONTINUE,
+  SOST_BREAK,
 };
 */
 class StmtSingleOpStmt : public StmtBase {

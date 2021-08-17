@@ -26,8 +26,8 @@ endif()
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
 
 set(BLOSSOM_VERSION_MAJOR 0)
-set(BLOSSOM_VERSION_MINOR 0)
-set(BLOSSOM_VERSION_PATCH 7)
+set(BLOSSOM_VERSION_MINOR 1)
+set(BLOSSOM_VERSION_PATCH 0)
 
 execute_process(COMMAND date "+%a %b %d, %Y at %H:%M:%S" OUTPUT_VARIABLE BUILD_DATE OUTPUT_STRIP_TRAILING_WHITESPACE)
 
@@ -78,7 +78,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES ".*BSD.*")
 endif()
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-	add_definitions(-DDEBUG_MODE)
+	# add_definitions(-DDEBUG_MODE)
 	message("-- Running in debug mode")
 endif()
 

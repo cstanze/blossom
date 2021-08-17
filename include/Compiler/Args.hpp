@@ -13,7 +13,7 @@ extern const size_t OPT_B; // show byte code
 extern const size_t OPT_C; // (byte) compile
 extern const size_t OPT_D; // dry run (no execute)
 extern const size_t OPT_E; // REPL (eval)
-extern const size_t OPT_F;
+extern const size_t OPT_F; // fallback to classic compiler
 extern const size_t OPT_G;
 extern const size_t OPT_H;
 extern const size_t OPT_I;
@@ -27,6 +27,8 @@ extern const size_t OPT_V; // show version
 extern const size_t OPT_1;
 
 namespace args {
+extern size_t parsedFlags;
+
 size_t parse(const int argc, const char **argv,
              std::unordered_map<std::string, std::string> &args,
              std::vector<std::string> &code_args);

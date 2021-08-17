@@ -1,4 +1,5 @@
 #include "VM/SrcFile.hpp"
+#include "Common/FS.hpp"
 
 #include <cstdarg>
 
@@ -81,7 +82,7 @@ void SrcFile::fail(const size_t &idx, const char *msg, va_list vargs) const {
     return;
   }
 
-  fprintf(stderr, "%s %zu[%zu]: error: ", m_path.c_str(), line + 1, col + 1);
+  fprintf(stderr, "%s:%zu:%zu: error: ", FS::relativePath(m_path, m_dir).c_str(), line + 1, col + 1);
 
   vfprintf(stderr, msg, vargs);
   fprintf(stderr, "\n");
