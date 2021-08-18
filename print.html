@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Installation</div></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="conditionals.html"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="imports/syntax.html"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="conditionals.html"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="imports/syntax.html"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -149,6 +149,40 @@
 <p>Blossom is an interpreted, general purpose, and dynamically typed programming language. Its ease of use and simplicity allows for quick scripts and prototypes as well as larger projects.</p>
 <p>Blossom's minimalistic design is no shortcoming. In fact, it supports common concepts such as first-class citizenship, variables, imports, functions, and structures. Blossom's main purpose is scripting and is meant to be a small language. Its compatibility with C++ allows a developer to create powerful software using Blossom. Alongside its extensibility, its performance is comparable to many mainstream languages.</p>
 <p>This book is made to help people understand Blossom. It serves to be a &quot;holy grail&quot; for Blossom developers, new or old. This book also dives into many technical details of the language. Note that this book does not go over all of the standard library.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
+<p>To begin installing <code>blossom</code>, you must first ensure you have <code>CMake</code>, <code>Ninja</code>, <code>LibGMP</code>, and <code>LibMPFR</code> installed on your computer.</p>
+<p>It must be noted that Blossom does not yet support Windows. Windows support is in development.</p>
+<h2 id="automated-installation"><a class="header" href="#automated-installation">Automated Installation</a></h2>
+<p>You can automatically build Blossom and its standard library by downloading and running <code>build.sh</code>. It requires <a href="https://git-scm.org"><code>Git</code></a> and the packages listed above.</p>
+<pre><code class="language-bash"># Download the script (example with wget)
+wget https://raw.githubusercontent.com/cstanze/Blossom/main/build.sh
+
+# Run it
+sh build.sh
+</code></pre>
+<h2 id="manual-installation"><a class="header" href="#manual-installation">Manual Installation</a></h2>
+<p>Through manual installation, you're able to enable things like debug info which can prove to be very useful in debugging.</p>
+<p>To begin, first clone the GitHub repository. Simple enough right?</p>
+<p>Next, <code>cd</code> into the cloned repo then create a directory named <code>build</code> or whatever name you'd like - this directory must be removed or gitignored before creating a pull request. After you've created the new directory, <code>cd</code> into it and move to the next step.</p>
+<p>At this point, make sure you have all the tools and libraries required to compile Blossom. If not, install them now. Otherwise, continue to the next step.</p>
+<p>Run the following command in your shell:</p>
+<pre><code class="language-bash">cmake \
+  -DCMAKE_BUILD_TYPE=Release \
+  -G Ninja \
+  ..
+</code></pre>
+<p>This will initialize the current directory (it should be that directory you created).</p>
+<p>Lets explain the options though:</p>
+<ul>
+<li><code>-DCMAKE_BUILD_TYPE=Release</code> - This sets the build type to <code>Release</code>. You may also change this to <code>Debug</code> to get debug information.</li>
+<li><code>-G Ninja</code> - This sets the generator to Ninja. If you'd rather use another generator, you may pick from the CMake supported generators list.</li>
+<li><code>-DMEM_PROFILE</code> - This wasn't added on the command but may prove useful to contributors. This turns on the memory profiling for the Blossom interpreter.</li>
+<li><code>-DPREFIX_PATH=&lt;path&gt;</code> - This also wasn't added but allows you to set the install prefix. The default prefix is <code>$HOME/.blossom</code></li>
+</ul>
+<p>Then you can compile and install everything:</p>
+<pre><code class="language-bash">ninja install -j8
+</code></pre>
+<p>Great! You've successfully compiled and installed Blossom!</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
 <p>A simple <strong>Hello World</strong> program can be written in Blossom in 1 line!</p>
 <pre><code class="language-bls">// hello_world.bls
@@ -630,7 +664,7 @@ impl String.test() {
 <p>Blossom contains a few core functions that are important to a developer. Below are the listed functions alongside their descriptions.</p>
 <table><thead><tr><th>Function</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>mload</code></td><td>Load a C++ module</td></tr>
-<tr><td><code>import</code></td><td>Import a Blossom module (only available in <a href="./compiler_features.html">classic mode</a>)</td></tr>
+<tr><td><code>import</code></td><td>Import a Blossom module (only available in classic mode), otherwise use <code>import</code> keyword</td></tr>
 <tr><td><code>raise</code></td><td>Raise an error (takes one argument - a string message)</td></tr>
 <tr><td><code>print</code></td><td>Print to the console</td></tr>
 <tr><td><code>println</code></td><td>Print to the console and append a newline. Print a newline if no arguments</td></tr>
