@@ -28,7 +28,7 @@ extern const size_t OPT_1;
 
 namespace args {
 extern size_t parsedFlags;
-
+void printUsage(char *argv0);
 size_t parse(const int argc, const char **argv,
              std::unordered_map<std::string, std::string> &args,
              std::vector<std::string> &code_args);

@@ -3,6 +3,7 @@
 #include "Compiler/Args.hpp"
 
 #include <cstring>
+#include <iostream>
 
 const size_t OPT_A = 1 << 0;
 const size_t OPT_B = 1 << 1; // show byte code
@@ -24,6 +25,22 @@ const size_t OPT_1 = 1 << 15;
 
 namespace args {
 size_t parsedFlags;
+
+void printUsage(char *argv0) {
+  std::cout << "Usage: " << argv0 << " [options] <file> [code_args]" << std::endl;
+  std::cout << std::endl;
+  std::cout << "Options:" << std::endl;
+  std::cout << "  -b Show byte code" << std::endl;
+  std::cout << "  -c (byte) compile" << std::endl;
+  std::cout << "  -d Dry run" << std::endl;
+  // std::cout << "  -e REPL" << std::endl;
+  std::cout << "  -f Use classic compiler" << std::endl;
+  std::cout << "  -p Show parse tree (AST)" << std::endl;
+  std::cout << "  -r Recursively show everything (FrontEnd->VM->Import->FrontEnd...)" << std::endl;
+  std::cout << "  -t Show tokens" << std::endl;
+  std::cout << "  -v Show version" << std::endl;
+  std::cout << "  -h Show this help message" << std::endl;
+}
 
 size_t parse(const int argc, const char **argv,
              std::unordered_map<std::string, std::string> &args,

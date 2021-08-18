@@ -2,6 +2,7 @@
 ################
 .vscode/
 .clangd/
+.metals/
 compile_commands.json
 *.swp
 

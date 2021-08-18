@@ -2,7 +2,7 @@
 # Summary
 
 - [Introduction](./introduction.md)
-- [Installation]()
+- [Installation](./installation.md)
 - [Getting Started](./getting_started.md)
   - [Additional Notes](./gs/additional-notes.md)
 - [Variables](./variables.md)

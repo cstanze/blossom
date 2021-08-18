@@ -31,8 +31,8 @@ int main(int argc, char **argv) {
   blossom_bin = FS::absPath(Env::get_proc_path(), &blossom_base, true);
 
   std::string src_file = args["__main__"];
-  if (src_file.empty())
-    src_file = "repl";
+  // if (src_file.empty())
+  //   src_file = "repl";
 
   if ((src_file == "test" || src_file == "repl") && !FS::exists(src_file)) {
     src_file = blossom_base + "/include/blossom/" + src_file + bmod_ext();
@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
   }
 
   if (src_file.empty() || flags & OPT_H) {
-    fprintf(stderr, "usage: %s [flags] <source file>\n", argv[0]);
+    args::printUsage(argv[0]);
     return E_FAIL;
   }
 
