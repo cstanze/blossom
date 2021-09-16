@@ -35,6 +35,7 @@ class SrcFile {
   Bytecode m_bcode;
 
   bool m_is_main;
+  bool m_is_bytecode_loaded;
 
 public:
   /**
@@ -53,7 +54,7 @@ public:
    *
    * \return Errors E_OK on success, anything else on failure
    */
-  Errors load_file();
+  Errors load_file(); // TODO: add bytecode loading
 
   /**
    * \brief Append content to an instance

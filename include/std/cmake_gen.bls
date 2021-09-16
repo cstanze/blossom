@@ -1,15 +1,15 @@
-let io = import('std/io');
-let fs = import('std/fs');
-let os = import('std/os');
-let fmt = import('std/fmt');
-let vec = import('std/vec');
-let sys = import('std/sys');
-let lang = import('std/lang');
-let cmake_base = import('./cmake_gen/base');
-let install = import('./cmake_gen/install');
-let find_lib = import('./cmake_gen/find_lib');
-let shared_lib = import('./cmake_gen/shared_lib');
-let binary = import('./cmake_gen/binary');
+import 'std/io' as io;
+import 'std/fs' as fs;
+import 'std/os' as os;
+import 'std/fmt' as fmt;
+import 'std/vec' as vec;
+import 'std/sys' as sys;
+import 'std/lang' as lang;
+import './cmake_gen/base' as cmake_base;
+import './cmake_gen/install' as install;
+import './cmake_gen/find_lib' as find_lib;
+import './cmake_gen/shared_lib' as shared_lib;
+import './cmake_gen/binary' as binary;
 
 let default_install_rpaths = sys.install_prefix + '/lib/blossom/std;' + sys.install_prefix  + '/lib/blossom';
 
@@ -27,7 +27,7 @@ let Core = lang.struct(
 	use_blossom_vm = false
 );
 
-func new(proj_name) { return Core(proj_name = proj_name); };
+func new(proj_name) { return Core(proj_name = proj_name); }
 
 impl Core.gen(ret = false) {
 	let deps_str = '';
@@ -69,17 +69,31 @@ impl Core.gen(ret = false) {
 		changed = true;
 	}
 	os.set_cwd('build');
-	if changed && os.exec('cmake .. -DCMAKE_BUILD_TYPE=' + buildtype) != 0 {
+	
+	let ex = "";
+	if sys.args.contains("--ninja") {
+		ex = "-G Ninja"
+	}
+	
+	if changed && os.exec('cmake .. -DCMAKE_BUILD_TYPE=' + buildtype + " " + ex) != 0 {
 		raise('failed to execute cmake');
 	}
+	
 	let ins = '';
 	if sys.args.len() > 0 && sys.args[0] == 'install' {
 		ins = ' install';
 	}
-	if os.exec('make -j' + ins) != 0 {
-		raise('failed to execute make');
+
+	let cmd = 'make -j';
+	if sys.args.contains("--ninja") {
+		cmd = "ninja -j4 " // TODO: replace `4` with the number of logical cores
+	}
+
+	if os.exec(cmd + ins) != 0 {
+		raise('failed to build');
 	}
 	os.set_cwd(cwd);
+	
 	return nil;
 }
 
@@ -87,41 +101,41 @@ impl Core.add_dep(name) {
 	let lib = find_lib.new(name);
 	self.deps.push(lib);
 	return ref(lib);
-};
+}
 
 impl Core.add_install(name) {
 	let ins = install.new(name, self.proj_name);
 	self.installs.push(ins);
 	return ref(ins);
-};
+}
 
 impl Core.add_shared_lib(name, with_blossom_vm = true) {
 	let lib = shared_lib.new(name, self.proj_name);
 	if with_blossom_vm { self.add_blossomvm_libs(lib); }
 	self.shared_libs.push(lib);
 	return ref(lib);
-};
+}
 
 impl Core.add_bin(name, with_blossom_vm = true) {
 	let bin = binary.new(name);
 	if with_blossom_vm { self.add_blossomvm_libs(bin); }
 	self.binaries.push(bin);
 	return ref(bin);
-};
+}
 
-impl Core.add_rpath(rpath) { self.install_rpaths += ';' + rpath; return self; };
+impl Core.add_rpath(rpath) { self.install_rpaths += ';' + rpath; return self; }
 
-impl Core.rel_rpath(rpath_from_origin) { self.rpath_from_origin = rpath_from_origin; return self; };
+impl Core.rel_rpath(rpath_from_origin) { self.rpath_from_origin = rpath_from_origin; return self; }
 
-impl Core.set_prefix(prefix) { self.prefix = prefix; return self; };
+impl Core.set_prefix(prefix) { self.prefix = prefix; return self; }
 
 // internal functions
 
-impl Coore.add_blossomvm_libs(obj) {
+impl Core.add_blossomvm_libs(obj) {
 	if !self.use_blossom_vm {
 		self.deps.push(shared_lib.blossomvm);
 		self.use_blossom_vm = true;
 	}
 	obj.add_dep(shared_lib.blossomvm);
 	return self;
-};
+}

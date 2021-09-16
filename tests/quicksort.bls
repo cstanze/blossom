@@ -1,4 +1,4 @@
-let vec = import('std/vec');
+import "std/vec" as vec;
 
 let v = vec.new(10, 5, 35, 8, 1, 70, 3, 40);
 

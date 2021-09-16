@@ -1,5 +1,3 @@
-
-
 #include "VM/VM.hpp"
 #include "std/map_type.hpp"
 

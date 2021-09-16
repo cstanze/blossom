@@ -38,6 +38,7 @@ enum TokType {
   TOK_OR,
   TOK_IMPORT,
   TOK_AS,
+  TOK_WITH,
 
   // Operators
   TOK_ASSN,

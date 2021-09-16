@@ -21,7 +21,7 @@ VarBase *str_add(VMState &vm, const FnData &fd) {
 VarBase *str_mul(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(fd.src_id, fd.idx,
-            "expected integer argument for string multiplication, found: %s",
+            "expected integer argument for String.repeat, found: %s",
             vm.type_name(fd.args[1]).c_str());
     return nullptr;
   }
@@ -37,22 +37,10 @@ VarBase *str_mul(VMState &vm, const FnData &fd) {
   return make<VarString>(res);
 }
 
-VarBase *str_addassn(VMState &vm, const FnData &fd) {
-  if (!fd.args[1]->istype<VarString>()) {
-    vm.fail(fd.src_id, fd.idx,
-            "expected string argument for addition assignment, found: %s",
-            vm.type_name(fd.args[1]).c_str());
-    return nullptr;
-  }
-  STR(fd.args[0])->get() += STR(fd.args[1])->get();
-  return fd.args[0];
-}
-
 VarBase *str_mulassn(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(fd.src_id, fd.idx,
-            "expected integer argument for string multiplication assignment, "
-            "found: %s",
+            "expected integer argument for String.repeat, found: %s",
             vm.type_name(fd.args[1]).c_str());
     return nullptr;
   }
@@ -64,8 +52,21 @@ VarBase *str_mulassn(VMState &vm, const FnData &fd) {
   for (; mpz_cmp(i, rhs) < 0; mpz_add_ui(i, i, 1)) {
     res += lhs;
   }
-  lhs = res;
   mpz_clear(i);
+  
+  STR(fd.args[0])->get() = res;
+
+  return make<VarString>(res);
+}
+
+VarBase *str_addassn(VMState &vm, const FnData &fd) {
+  if (!fd.args[1]->istype<VarString>()) {
+    vm.fail(fd.src_id, fd.idx,
+            "expected string argument for addition assignment, found: %s",
+            vm.type_name(fd.args[1]).c_str());
+    return nullptr;
+  }
+  STR(fd.args[0])->get() += STR(fd.args[1])->get();
   return fd.args[0];
 }
 
@@ -156,7 +157,8 @@ VarBase *str_at(VMState &vm, const FnData &fd) {
 
 // string functions
 
-std::vector<VarBase *> _str_split(const std::string &data, const char delim,
+std::vector<VarBase *> _str_split(const std::string &data,
+                                  const std::string &delim,
                                   const size_t &src_id, const size_t &idx);
 
 static inline void trim(std::string &s);
@@ -206,7 +208,7 @@ VarBase *str_pop(VMState &vm, const FnData &fd) {
   return fd.args[0];
 }
 
-VarBase *str_ischat(VMState &vm, const FnData &fd) {
+VarBase *str_has_char_at(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(
         fd.src_id, fd.idx,
@@ -347,7 +349,7 @@ VarBase *str_substr(VMState &vm, const FnData &fd) {
   return make<VarString>(str.substr(pos, len));
 }
 
-VarBase *str_last(VMState &vm, const FnData &fd) {
+VarBase *str_zlength(VMState &vm, const FnData &fd) {
   return make<VarInt>(STR(fd.args[0])->get().size() - 1);
 }
 
@@ -359,10 +361,13 @@ VarBase *str_trim(VMState &vm, const FnData &fd) {
 
 VarBase *str_upper(VMState &vm, const FnData &fd) {
   std::string str = STR(fd.args[0])->get();
-  size_t len = str.size();
-  for (size_t i = 0; i < len; ++i) {
-    str[i] = str[i] >= 'a' && str[i] <= 'z' ? str[i] ^ 0x20 : str[i];
-  }
+  std::for_each(str.begin(), str.end(), [](char &c) { c = ::toupper(c); });
+  return make<VarString>(str);
+}
+
+VarBase *str_lower(VMState &vm, const FnData &fd) {
+  std::string str = STR(fd.args[0])->get();
+  std::for_each(str.begin(), str.end(), [](char &c) { c = ::tolower(c); });
   return make<VarString>(str);
 }
 
@@ -375,10 +380,10 @@ VarBase *str_split(VMState &vm, const FnData &fd) {
     return nullptr;
   }
   if (STR(fd.args[1])->get().size() == 0) {
-    vm.fail(fd.src_id, fd.idx, "found empty delimiter for string split");
+    vm.fail(fd.src_id, fd.idx, "found empty delimiter for String.split()");
     return nullptr;
   }
-  char delim = STR(fd.args[1])->get()[0];
+  std::string delim = STR(fd.args[1])->get();
   std::vector<VarBase *> res_vec =
       _str_split(str->get(), delim, fd.src_id, fd.src_id);
   return make<VarVec>(res_vec, false);
@@ -398,25 +403,26 @@ VarBase *chr(VMState &vm, const FnData &fd) {
       std::string(1, (char)mpz_get_si(INT(fd.args[0])->get())));
 }
 
-std::vector<VarBase *> _str_split(const std::string &data, const char delim,
+std::vector<VarBase *> _str_split(const std::string &data, const std::string &delim,
                                   const size_t &src_id, const size_t &idx) {
-  std::string temp;
   std::vector<VarBase *> vec;
+  std::string tmp = data;
 
-  for (auto c : data) {
-    if (c == delim) {
-      if (temp.empty())
-        continue;
-      vec.push_back(new VarString(temp, src_id, idx));
-      temp.clear();
-      continue;
-    }
+  std::string token;
 
-    temp += c;
+  size_t pos = tmp.find(delim);
+  while (pos != std::string::npos) {
+    token = tmp.substr(0, pos);
+    tmp.erase(0, pos + delim.length());
+
+    vec.push_back(new VarString(token, src_id, idx));
+    pos = tmp.find(delim);
   }
 
-  if (!temp.empty())
-    vec.push_back(new VarString(temp, src_id, idx));
+  if (tmp.length() > 0) {
+    vec.push_back(new VarString(tmp, src_id, idx));
+  }
+
   return vec;
 }
 

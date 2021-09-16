@@ -38,14 +38,25 @@ Errors parse_impl_decl(ParseHelper &ph, StmtBase *&loc) {
   }
   ph.next();
 
-  if (!ph.accept(TOK_IDENT) && !ph.acceptoper()) {
+  if (!ph.accept(TOK_IDENT) && !ph.acceptoper() && !ph.accept(TOK_LBRACK)) {
     Err::set(E_PARSE_FAIL, ph.peak()->pos,
              "Expected identifier or operator as member name");
     return parseFail(args, body, in, name);
   }
+  bool isSubs = false;
+  if(ph.accept(TOK_LBRACK)) {
+    ph.setd("[]");
+    isSubs = true;
+  }
   ph.sett(TOK_STRING);
   name = new StmtSimple(ph.peak());
   ph.next();
+  if(ph.accept(TOK_RBRACK) && isSubs)
+    ph.next();
+  else if(isSubs) {
+    Err::set(E_PARSE_FAIL, ph.peak()->pos, "Expected closing '['");
+    return parseFail(args, body, in, name);
+  }
 
   if (!ph.accept(TOK_LPAREN)) {
     Err::set(E_PARSE_FAIL, ph.peak()->pos, "Expected '(' after member name");

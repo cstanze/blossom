@@ -1,8 +1,8 @@
-let io = import('std/io');
+import "std/io" as io;
 
-io.print('hi');
-io.println();
-io.println('heya');
+print('hi');
+println();
+println('heya');
 
 io.fprint(io.stdout, 'hi again');
 io.fprintln(io.stdout);

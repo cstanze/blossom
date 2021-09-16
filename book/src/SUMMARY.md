@@ -19,3 +19,5 @@
     - [Creating C++ modules]()
     - [Loading C++ modules]()
 - [Core Functions](./core_funcs.md)
+- [Standard Library](./stdlib.md)
+  - [Optionals](./stdlib/optionals.md)

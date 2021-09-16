@@ -1,53 +1,33 @@
-
-
 #include "Compiler/Args.hpp"
 
 #include <cstring>
 #include <iostream>
 
-const size_t OPT_A = 1 << 0;
-const size_t OPT_B = 1 << 1; // show byte code
-const size_t OPT_C = 1 << 2; // (byte) compile
-const size_t OPT_D = 1 << 3; // dry run (no execute)
-const size_t OPT_E = 1 << 4; // REPL (eval)
-const size_t OPT_F = 1 << 5; // fallback to classic compiler
-const size_t OPT_G = 1 << 6;
-const size_t OPT_H = 1 << 7;
-const size_t OPT_I = 1 << 8;
-const size_t OPT_L = 1 << 9;
-const size_t OPT_P = 1 << 10; // show parse tree
-const size_t OPT_R = 1 << 11; // recursively show everything (ex.
-                              // FrontEnd->VM->Import->FrontEnd...)
-const size_t OPT_S = 1 << 12;
-const size_t OPT_T = 1 << 13; // show tokens
-const size_t OPT_V = 1 << 14; // show version
-const size_t OPT_1 = 1 << 15;
-
 namespace args {
-size_t parsedFlags;
+Args *parsedArgs = nullptr;
 
-void printUsage(char *argv0) {
+void printUsage(const char *argv0) {
   std::cout << "Usage: " << argv0 << " [options] <file> [code_args]" << std::endl;
   std::cout << std::endl;
   std::cout << "Options:" << std::endl;
-  std::cout << "  -b Show byte code" << std::endl;
-  std::cout << "  -c (byte) compile" << std::endl;
-  std::cout << "  -d Dry run" << std::endl;
+  std::cout << "  -b        Show byte code" << std::endl;
+  std::cout << "  -d        Dry run" << std::endl;
   // std::cout << "  -e REPL" << std::endl;
-  std::cout << "  -f Use classic compiler" << std::endl;
-  std::cout << "  -p Show parse tree (AST)" << std::endl;
-  std::cout << "  -r Recursively show everything (FrontEnd->VM->Import->FrontEnd...)" << std::endl;
-  std::cout << "  -t Show tokens" << std::endl;
-  std::cout << "  -v Show version" << std::endl;
-  std::cout << "  -h Show this help message" << std::endl;
+  std::cout << "  -f        Classic compiler" << std::endl;
+  std::cout << "  -p        Show parse tree (AST)" << std::endl;
+  std::cout << "  -t        Show tokens" << std::endl;
+  std::cout << "  -v        Show version" << std::endl;
+  std::cout << "  -r        Recursively show everything (FrontEnd->VM->Import->FrontEnd...)" << std::endl;
+  std::cout << "  -o <file> Output bytecode to file" << std::endl;
+  std::cout << "  -h        Show this help message" << std::endl;
 }
 
-size_t parse(const int argc, const char **argv,
+Errors parse(const int argc, const char **argv,
              std::unordered_map<std::string, std::string> &args,
              std::vector<std::string> &code_args) {
   bool main_done = false;
-  size_t flags = 0;
   char prev_flag = '\0';
+  parsedArgs = new Args();
 
   for (int i = 1; i < argc; ++i) {
     if (main_done) {
@@ -68,68 +48,56 @@ size_t parse(const int argc, const char **argv,
       continue;
     }
 
-    for (size_t j = 1; j < len; ++j) {
-      switch (argv[i][j]) {
-      case 'a':
-        flags |= OPT_A;
-        break;
-      case 'b':
-        flags |= OPT_B;
-        break;
-      case 'c':
-        flags |= OPT_C;
-        break;
-      case 'd':
-        flags |= OPT_D;
-        break;
-      case 'e':
-        flags |= OPT_E;
-        break;
-      case 'f':
-        flags |= OPT_F;
-        break;
-      case 'g':
-        flags |= OPT_G;
-        break;
-      case 'h':
-        flags |= OPT_H;
-        break;
-      case 'i':
-        flags |= OPT_I;
-        break;
-      case 'l':
-        flags |= OPT_L;
-        break;
-      case 'p':
-        flags |= OPT_P;
-        break;
-      case 'r':
-        flags |= OPT_R;
-        break;
-      case 's':
-        flags |= OPT_S;
-        break;
-      case 't':
-        flags |= OPT_T;
-        break;
-      case 'v':
-        flags |= OPT_V;
-        break;
-      case '1':
-        flags |= OPT_1;
-        break;
+    if (argv[i][0] == '-') {
+      for (size_t j = 1; j < len; ++j) {
+        switch (argv[i][j]) {
+        case 'b':
+          parsedArgs->showBytecode = true;
+          break;
+        case 'd':
+          parsedArgs->dryRun = true;
+          break;
+        case 'e':
+          parsedArgs->repl = true;
+          break;
+        case 'f':
+          parsedArgs->classic = true;
+          break;
+        case 'p':
+          parsedArgs->showParseTree = true;
+          break;
+        case 'r':
+          parsedArgs->showRecursive = true;
+          break;
+        case 't':
+          parsedArgs->showTokens = true;
+          break;
+        case 'v':
+          parsedArgs->showVersion = true;
+          break;
+        case 'h':
+          printUsage(argv[0]);
+          exit(0);
+          break;
+        case 'o':
+          if(argc > i + 1) {
+            parsedArgs->hasOutputFile = true;
+            parsedArgs->outputFile = argv[i + 1];
+            i++;
+          } else {
+            std::cerr << "Error: -o requires an argument" << std::endl;
+            return E_ARGS_FAIL;
+          }
+          break;
+        default:
+          std::cerr << "Error: Unknown flag: " << argv[i][j] << std::endl;
+          return E_ARGS_FAIL;
+        }
       }
-      prev_flag = argv[i][j];
     }
   }
 
-  // dry run if compiled flag exists (no actual execution of program)
-  if (flags & OPT_C)
-    flags |= OPT_D;
-
-  parsedFlags = flags;
-
-  return flags;
+  return E_OK;
 }
 
 } // namespace args

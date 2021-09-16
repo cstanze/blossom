@@ -27,14 +27,13 @@ begin:
     goto begin;
   }
 
-  if (ph.accept(TOK_COLS)) {
-    // Err::set(E_PARSE_FAIL, ph.peak()->pos,
-    //          "expected semicolon after variable declaration, found: '%s'",
-    //          TokStrs[ph.peakt()]);
-    // goto fail;
-    ph.next();
+  if (!ph.accept(TOK_COLS)) {
+    Err::set(E_PARSE_FAIL, ph.peak()->pos,
+             "expected semicolon after variable declaration, found: '%s'",
+             TokStrs[ph.peakt()]);
+    goto fail;
   }
-  // ph.next();
+  ph.next();
   loc = new StmtVarDecl(decls, idx);
   return E_OK;
 fail:

@@ -1,4 +1,4 @@
-let sys = import('std/sys');
+import "std/sys" as sys;
 
 assert(!sys.var_exists('a'));
 assert(sys.var_exists('sys'));

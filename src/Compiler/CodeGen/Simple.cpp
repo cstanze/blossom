@@ -1,5 +1,3 @@
-
-
 #include "Compiler/CodeGen/Internal.hpp"
 
 bool StmtSimple::codegen(Bytecode &bc) const {
@@ -8,7 +6,7 @@ bool StmtSimple::codegen(Bytecode &bc) const {
 
   switch (m_val->type) {
   case TOK_INT:
-    bc.adds(m_val->pos, OP_LOAD, ODT_INT, m_val->data);
+    bc.addsn(m_val->pos, OP_LOAD, ODT_INT, ODT_STRING, m_val->data);
     break;
   case TOK_FLOAT:
     bc.adds(m_val->pos, OP_LOAD, ODT_FLOAT, m_val->data);

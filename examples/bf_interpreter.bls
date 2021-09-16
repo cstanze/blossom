@@ -1,10 +1,10 @@
-let io = import('std/io');
-let os = import('std/os');
-let map = import('std/map');
-let vec = import('std/vec');
-let str = import('std/str');
-let sys = import('std/sys');
-let prog = import('./bf_hello_world');
+let io = import 'std/io';
+let os = import 'std/os';
+let map = import 'std/map';
+let vec = import 'std/vec';
+let str = import 'std/str';
+let sys = import 'std/sys';
+let prog = import './bf_hello_world';
 
 let len = prog.data.len();
 
@@ -20,7 +20,7 @@ for let i = 0; i < len; ++i {
 // optimize the jumps
 let jmp_map = map.new();
 for let i = 0; i < len; ++i {
-	if jmp_map.find(i) { continue; }
+	if jmp_map.contains(i) { continue; }
 	if prog.data[i] == '[' {
 		let j = i;
 		let depth = 0;

@@ -5,7 +5,7 @@ Blossom contains a few core functions that are important to a developer. Below a
 | Function  | Description                                                                                                        |
 |-----------|--------------------------------------------------------------------------------------------------------------------|
 | `mload`   | Load a C++ module                                                                                                  |
-| `import`  | Import a Blossom module (only available in classic mode), otherwise use `import` keyword |
+| `import`  | Import a Blossom module (only available in classic mode), otherwise use `import` keyword                           |
 | `raise`   | Raise an error (takes one argument - a string message)                                                             |
 | `print`   | Print to the console                                                                                               |
 | `println` | Print to the console and append a newline. Print a newline if no arguments                                         |

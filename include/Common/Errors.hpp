@@ -20,6 +20,8 @@ enum Errors {
   E_EXEC_FAIL,
 
   E_FAIL,
+
+  E_ARGS_FAIL,
 };
 
 namespace Err {

@@ -196,31 +196,69 @@ const std::vector<const StmtVarDeclBase *> &StmtVarDecl::decls() const {
   return m_decls;
 }
 
+ImportWith::ImportWith(const lex::tok_t *name, const lex::tok_t *alias,
+                       const size_t &idx)
+    : StmtBase(GT_VAR_DECL_BASE, idx), m_name(name), m_alias(alias) {}
 
-StmtImportBase::StmtImportBase(const StmtSimple *mod, const StmtSimple *name, const size_t &idx)
-  : StmtBase(GT_VAR_DECL_BASE, idx), m_mod(mod), m_name(name) {}
+ImportWith::~ImportWith() {
+  delete m_name;
+  if (m_alias)
+    delete m_alias;
+}
+
+const lex::tok_t *ImportWith::name() const { return m_name; }
+const lex::tok_t *ImportWith::alias() const { return m_alias; }
+
+void ImportWith::disp(const bool hasNext) const {
+  io::tadd(hasNext);
+  io::print(hasNext, "Import With at: %p\n", this);
+  io::print(true, "Name:\n");
+
+  io::tadd(true);
+  io::print(false, "%s", m_name->data.c_str());
+  io::trem();
+
+  io::print(true, "Alias:\n");
+  if (m_alias) {
+    io::tadd(true);
+    io::print(false, "%s", m_alias->data.c_str());
+    io::trem();
+  }
+  io::trem();
+}
+
+StmtImportBase::StmtImportBase(const StmtSimple *mod, const StmtSimple *name,
+                               const std::vector<ImportWith *> &with,
+                               const size_t &idx)
+    : StmtBase(GT_VAR_DECL_BASE, idx), m_mod(mod), m_with(with), m_name(name) {}
 
 void StmtImportBase::disp(const bool has_next) const {
   io::tadd(has_next);
   io::print(has_next, "Import Base at: %p\n", this);
   m_mod->disp(true);
-  if(m_name)
+  if (m_name)
     m_name->disp(false);
+  if (m_with.size()) {
+    io::print(true, "With:\n");
+    for (const auto &with : m_with) {
+      with->disp(false);
+    }
+  }
   io::trem();
 }
 
 StmtImportBase::~StmtImportBase() {
   delete m_mod;
-  if(m_name)
+  if (m_name)
     delete m_name;
 }
 
 const StmtSimple *StmtImportBase::mod() const { return m_mod; }
 const StmtSimple *StmtImportBase::name() const { return m_name; }
 
-
-StmtImport::StmtImport(const std::vector<const StmtImportBase*> &decls, const size_t &idx)
-  : StmtBase(GT_VAR_DECL, idx), m_decls(decls) {}
+StmtImport::StmtImport(const std::vector<const StmtImportBase *> &decls,
+                       const size_t &idx)
+    : StmtBase(GT_VAR_DECL, idx), m_decls(decls) {}
 
 StmtImport::~StmtImport() {
   for (auto &d : m_decls)
@@ -236,7 +274,9 @@ void StmtImport::disp(const bool has_next) const {
   io::trem();
 }
 
-const std::vector<const StmtImportBase*> &StmtImport::decls() const { return m_decls; }
+const std::vector<const StmtImportBase *> &StmtImport::decls() const {
+  return m_decls;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////// FUNC_ASSN_ARG

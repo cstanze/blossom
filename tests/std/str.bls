@@ -1,5 +1,5 @@
-let str = import('std/str');
-let vec = import('std/vec');
+import "std/str";
+import "std/vec" as vec;
 
 let s = '12345';
 
@@ -12,7 +12,7 @@ assert(s.pop() == '12345');
 assert(s.set(0, '0') == '02345');
 assert(s.insert(1, '1') == '012345');
 assert(s.erase(0) == '12345');
-assert(s.lastidx() == 4);
+assert(s.len() - 1 == 4);
 
 let a = '\n\t  ' + s + ' \t';
 assert(a.trim() == s);

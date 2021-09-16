@@ -1,4 +1,4 @@
-let map = import('std/map');
+import "std/map" as map;
 
 let m = map.new(3, 'three', 1, 'one');
 let m2 = map.new();

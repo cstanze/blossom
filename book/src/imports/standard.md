@@ -17,9 +17,10 @@ Here is a whole list of available `std` library parts:
 - `std/map` - Map Type
 - `std/multiproc` - Process management
 - `std/mutex` - Mutex lock type and functions
+- `std/optional` - New `Option` type
 - `std/os` - Standard OS functions and variables
 - `std/ptr` - Pointer type and functions
-- `std/rng` - Random Number Generation
+- `std/random` - Random Number Generation
 - `std/stat` - C `stat` filesystem api
 - `std/str` - Helper String Functions
 - `std/sys` - System Functions and Variables

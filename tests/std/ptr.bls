@@ -1,7 +1,6 @@
-let io = import('std/io');
-let ptr = import('std/ptr');
-let vec = import('std/vec');
-let lang = import('std/lang');
+import "std/ptr" as ptr;
+import "std/vec" as vec;
+import "std/lang" as lang;
 
 let Node = lang.struct(d = 0, next = nil);
 let List = lang.struct(head = nil);

@@ -74,7 +74,7 @@ void SrcFile::fail(const size_t &idx, const char *msg, va_list vargs) const {
       break;
     }
   }
-  if (!found) {
+  if (!found && !m_is_bytecode_loaded) {
     fprintf(stderr, "could not find error: ");
     vfprintf(stderr, msg, vargs);
     fprintf(stderr, "\n");
@@ -82,10 +82,14 @@ void SrcFile::fail(const size_t &idx, const char *msg, va_list vargs) const {
     return;
   }
 
-  fprintf(stderr, "%s:%zu:%zu: error: ", FS::relativePath(m_path, m_dir).c_str(), line + 1, col + 1);
+  fprintf(stderr,
+          "%s:%zu:%zu: error: ", FS::relativePath(m_path, m_dir).c_str(),
+          line + 1, col + 1);
 
   vfprintf(stderr, msg, vargs);
   fprintf(stderr, "\n");
+
+  if (m_is_bytecode_loaded) return; // no source code available
 
   std::string err_line = m_data.substr(col_begin, col_end - col_begin);
   if (err_line.back() == '\n')

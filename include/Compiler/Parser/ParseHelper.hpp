@@ -23,12 +23,18 @@ public:
   const lex::tok_t *prev();
   TokType prevt();
 
+  inline void setd(const std::string& data) {
+    if (m_idx < m_toks.size())
+      m_toks[m_idx].data = data;
+  }
+
   inline void sett(const TokType type) {
     if (m_idx < m_toks.size())
       m_toks[m_idx].type = type;
   }
 
   inline bool accept(const TokType type) const { return peakt() == type; }
+  inline bool acceptNext(const TokType type) const { return peakt(1) == type; }
   inline bool accept(const TokType t1, const TokType t2) const {
     const TokType t = peakt();
     return t == t1 || t == t2;

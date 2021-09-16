@@ -1,8 +1,7 @@
 // similar to rabin-karp algorithm
 
-let io = import('std/io');
-let str = import('std/str');
-let vec = import('std/vec');
+import "std/str";
+import "std/vec" as vec;
 
 let str = 'abracadabra';
 

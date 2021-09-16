@@ -1,4 +1,4 @@
-let sys = import('std/sys');
+import "std/sys" as sys;
 
 for let i = 0; i < 10; ++i {
 	if i == 1 { continue; }

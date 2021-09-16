@@ -1,4 +1,4 @@
-let os = import('std/os');
+import "std/os" as os;
 
 let loc = os.find_exec('valgrind');
 if !loc.empty() {

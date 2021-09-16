@@ -27,6 +27,7 @@ const char *TokStrs[_TOK_LAST] = {
     "or",
     "import",
     "as",
+    "with",
 
     // Operators
     "=",
@@ -42,7 +43,7 @@ const char *TokStrs[_TOK_LAST] = {
     "/=",
     "%=",
     "**", // power
-    "//", // root
+    "/#", // root
     // Post/Pre Inc/Dec
     "x++",
     "++x",
@@ -270,10 +271,12 @@ static std::string get_name(const std::string &src, size_t &i) {
 static int classify_str(const std::string &str) {
   if (str == TokStrs[TOK_LET])
     return TOK_LET;
-  if (str == TokStrs[TOK_IMPORT] && (args::parsedFlags & OPT_F) != OPT_F)
+  if (str == TokStrs[TOK_IMPORT] && !args::parsedArgs->classic)
     return TOK_IMPORT;
   if (str == TokStrs[TOK_AS])
     return TOK_AS;
+  if (str == TokStrs[TOK_WITH])
+    return TOK_WITH;
   if (str == TokStrs[TOK_FUNC])
     return TOK_FUNC;
   if (str == TokStrs[TOK_IMPL])
@@ -663,11 +666,23 @@ static void remove_back_slash(std::string &s) {
         continue;
       it = s.erase(it);
       switch (*it) {
+      case '\'':
+        *it = '\'';
+        break;
+      case '`':
+        *it = '`';
+        break;
+      case '"':
+        *it = '"';
+        break;
       case 'a':
         *it = '\a';
         break;
       case 'b':
         *it = '\b';
+        break;
+      case '^':
+        *it = '\033';
         break;
       case 'f':
         *it = '\f';

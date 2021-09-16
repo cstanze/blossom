@@ -19,3 +19,4 @@ More to be added...
 These are possible ideas, but still in debate.
 
 - [ ] A package manager - to install various external modules/libraries from a package index
+- [ ] A built-in http library - to access networking features, possibly even to write the package manager in Blossom.

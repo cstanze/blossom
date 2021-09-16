@@ -1,8 +1,8 @@
 mload('std/os');
 
-let fs = import('std/fs');
-let str = import('std/str');
-let vec = import('std/vec');
+import 'std/fs' as fs;
+import'std/str';
+import'std/vec' as vec;
 
 func set_env(var, val, overwrite = false) {
 	return set_env_native(var, val, overwrite);
@@ -24,7 +24,7 @@ func exec(cmd, out = nil) {
 // find the given file (exec) in the PATH variables
 // return the entire file path if found, empty string if not
 func find_exec(exec) {
-	for dir in get_env('PATH').split().each() {
+	for dir in get_env('PATH').split(';').each() {
 		if fs.exists(dir + '/' + exec) { return dir + '/' + exec; }
 	}
 	return '';

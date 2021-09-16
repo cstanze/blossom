@@ -1,6 +1,5 @@
-let io = import('std/io');
-let fs = import('std/fs');
-let vec = import('std/vec');
+import "std/fs" as fs;
+import "std/vec" as vec;
 
 /* sample comment block */
 
@@ -18,7 +17,7 @@ let file = fs.fopen(__SRC_PATH__);
 assert(file.lines().len() > 0);
 
 for line in file.each_line() {
-	io.println('>', line, '<');
+	println('>', line, '<');
 }
 file.seek(0, fs.SEEK_SET);
 

@@ -25,7 +25,7 @@ VarStructDef::~VarStructDef() {
 VarBase *VarStructDef::copy(const size_t &src_id, const size_t &idx) {
   std::unordered_map<std::string, VarBase *> attrs;
   for (auto &attr : m_attrs) {
-    attr.second->copy(src_id, idx);
+    attrs[attr.first] = attr.second->copy(src_id, idx);
   }
   return new VarStructDef(m_id, m_attr_order, attrs, src_id, idx);
 }
@@ -48,6 +48,8 @@ VarStructDef::call(VMState &vm, const std::vector<VarBase *> &args,
                    const std::vector<FnAssnArg> &assn_args,
                    const std::unordered_map<std::string, size_t> &assn_args_loc,
                    const size_t &src_id, const size_t &idx) {
+  VarBase *apply_fn = nullptr;
+  VarStruct *st = nullptr;
   for (auto &aa : assn_args) {
     if (std::find(m_attr_order.begin(), m_attr_order.end(), aa.name) ==
         m_attr_order.end()) {
@@ -103,7 +105,28 @@ VarStructDef::call(VMState &vm, const std::vector<VarBase *> &args,
     ++it;
   }
 
-  return new VarStruct(m_id, attrs, this, src_id, idx);
+  st = new VarStruct(m_id, attrs, this, src_id, idx);
+
+  // if function with name 'apply' is defined, call it
+  if (attr_based())
+    apply_fn = attr_get("apply");
+  if (apply_fn == nullptr)
+    apply_fn = vm.get_typefn(this, "apply");
+  if (apply_fn) {
+    if (!apply_fn->call(vm, {st}, assn_args, assn_args_loc, src_id, idx)) {
+      vm.fail(this->src_id(), this->idx(), "init function failed for type %s",
+              vm.type_name(this).c_str());
+      return nullptr;
+    }
+    VarBase *vb = vm.vm_stack->pop(false);
+
+    if (!vb->istype<VarNil>()) {
+      vm.fail(this->src_id(), this->idx(), "init function failed for type %s",
+              vm.type_name(this).c_str());
+      return vb;
+    }
+  }
+  return st;
 fail:
   for (auto attr : attrs) {
     var_dref(attr.second);

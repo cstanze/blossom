@@ -49,8 +49,7 @@ bool _eval(VMState &vm, const std::string &data, std::string &res,
   size_t begin_stack_sz = vm.vm_stack->size();
   static size_t i = 0;
   Bytecode bc;
-  Errors err = vm.bmod_read_code_fn()(data, src->dir(), src->path(), bc,
-                                      vm.exec_flags, false, true, 0, -1);
+  Errors err = vm.bmod_read_code_fn()(data, src->dir(), src->path(), bc, false, true, 0, -1);
   if (err != E_OK) {
     vm.fail(src_id, idx, "failed while parsing expression '%s' in string at",
             data.c_str());

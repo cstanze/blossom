@@ -39,15 +39,14 @@ Errors parse_single_operand_stmt(ParseHelper &ph, StmtBase *&loc) {
     goto fail;
   }
 
-  if (ph.accept(TOK_COLS)) {
-    // Err::set(
-    //     E_PARSE_FAIL, ph.peak()->pos,
-    //     "expected semicolon to denote end of statement '%s', but found:
-    //     '%s'", TokStrs[sost->type], TokStrs[ph.peakt()]);
-    // goto fail;
-    ph.next();
+  if (!ph.accept(TOK_COLS)) {
+    Err::set(
+        E_PARSE_FAIL, ph.peak()->pos,
+        "expected semicolon to denote end of statement '%s',"
+        " but found: '%s'", TokStrs[sost->type], TokStrs[ph.peakt()]);
+    goto fail;
   }
-  // ph.next();
+  ph.next();
 
 done:
   loc = new StmtSingleOpStmt(sost, operand);

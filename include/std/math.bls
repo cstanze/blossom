@@ -1,0 +1,15 @@
+import "std/lang" as lang;
+
+func fact(n) {
+  if n == 0 {
+    return 1;
+  }
+  return n * fact(n - 1);
+}
+
+func abs(x, y = 0) {
+  if x >= y {
+    return x - y;
+  }
+  return y - x;
+}

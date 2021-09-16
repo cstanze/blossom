@@ -1,5 +1,5 @@
-let fs = import('std/fs');
-let os = import('std/os');
+import "std/fs" as fs;
+import "std/os" as os;
 
 // 50 ms
 os.sleep(50);
@@ -39,9 +39,3 @@ os.cp(__SRC_PATH__, cpfile);
 assert(fs.exists(cpfile));
 os.rm(cpfile);
 assert(!fs.exists(cpfile));
-
-// len == 0 => not found
-assert(os.find_exec('ls').len() > 0);
-assert(os.find_exec('randomword').empty());
-
-// chmod

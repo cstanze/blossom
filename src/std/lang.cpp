@@ -1,5 +1,3 @@
-
-
 #include "VM/VM.hpp"
 #include "std/struct_type.hpp"
 
@@ -23,6 +21,7 @@ VarBase *create_struct(VMState &vm, const FnData &fd) {
     var_iref(arg.val);
     attrs[arg.name] = arg.val;
   }
+
   return make<VarStructDef>(gen_struct_enum_id(), attr_order, attrs);
 }
 
@@ -86,6 +85,8 @@ VarBase *struct_def_set_typename(VMState &vm, const FnData &fd) {
     return nullptr;
   }
   vm.set_typename(STRUCT_DEF(fd.args[0])->typefn_id(), STR(fd.args[1])->get());
+  vm.set_typename(STRUCT_DEF(fd.args[0])->type(), STR(fd.args[1])->get());
+
   return fd.args[0];
 }
 

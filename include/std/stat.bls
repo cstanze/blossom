@@ -1,5 +1,5 @@
 mload('std/stat');
-let lang = import('std/lang');
+import 'std/lang' as lang;
 
 let stat_t = lang.struct(
 	dev = 0,

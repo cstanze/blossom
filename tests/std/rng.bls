@@ -1,4 +1,4 @@
-let rng = import('std/rng');
+import "std/random" as rng;
 
 let res = rng.get(0, 5);
 assert(res >= 0 && res <= 5);

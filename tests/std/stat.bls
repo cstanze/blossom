@@ -1,4 +1,4 @@
-let stat = import('std/stat');
+import "std/stat" as stat;
 
 let st1 = stat.stat(__SRC_DIR__ + '/stat.bls');
 let st2 = stat.stat('/dev/zero');

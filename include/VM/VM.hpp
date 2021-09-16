@@ -24,13 +24,12 @@ typedef std::unordered_map<std::string, VarSrc *> all_srcs_t;
 
 typedef Errors (*bmod_read_code_fn_t)(
     const std::string &data, const std::string &src_dir,
-    const std::string &src_path, Bytecode &bc, const size_t &flags,
+    const std::string &src_path, Bytecode &bc,
     const bool is_main_src, const bool &expr_only, const size_t &begin_idx,
     const size_t &end_idx);
 
 typedef SrcFile *(*bmod_load_fn_t)(const std::string &src_file,
-                                   const std::string &src_dir,
-                                   const size_t &flags, const bool is_main_src,
+                                   const std::string &src_dir, const bool is_main_src,
                                    Errors &err, const size_t &begin_idx,
                                    const size_t &end_idx);
 
@@ -59,7 +58,6 @@ struct VMState {
   bool exit_called;
   bool exec_stack_count_exceeded;
   size_t exit_code;
-  size_t exec_flags;
   size_t exec_stack_count;
   size_t exec_stack_max;
 
@@ -82,7 +80,7 @@ struct VMState {
   VarBase *src_args;
 
   VMState(const std::string &self_bin, const std::string &self_base,
-          const std::vector<std::string> &args, const size_t &flags,
+          const std::vector<std::string> &args,
           const bool &is_thread_copy = false);
   ~VMState();
 

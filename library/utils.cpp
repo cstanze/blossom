@@ -152,11 +152,11 @@ INIT_MODULE(utils) {
 
   vm.gadd("range",
           new VarFn(src_name, "", ".", {""}, {}, {.native = range}, true,
-                    src_id, idx),
+                    "range", src_id, idx),
           false);
   vm.gadd("assert",
           new VarFn(src_name, "", "", {""}, {}, {.native = assertion}, true,
-                    src_id, idx),
+                    "assert", src_id, idx),
           false);
 
   // get the type id for int iterable (register_type)

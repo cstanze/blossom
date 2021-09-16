@@ -1,5 +1,3 @@
-
-
 #include "VM/VM.hpp"
 #include "core/bool.hpp"
 #include "core/float.hpp"
@@ -45,7 +43,22 @@ VarBase *reference(VMState &vm, const FnData &fd) {
 }
 
 VarBase *raise(VMState &vm, const FnData &fd) {
-  vm.fail(fd.src_id, fd.idx, fd.args[1], "raised error");
+  std::string buf;
+  if (fd.args[1]->to_str(vm, buf, fd.src_id, fd.idx)) {
+    vm.fail(fd.src_id, fd.idx, buf.c_str());
+  } else {
+    vm.fail(fd.src_id, fd.idx, "raised error");
+  }
+  return nullptr;
+}
+
+VarBase *unimplemented(VMState &vm, const FnData &fd) {
+  vm.fail(fd.src_id, fd.idx, "Unimplemented");
+  return nullptr;
+}
+
+VarBase *todo(VMState &vm, const FnData &fd) {
+  vm.fail(fd.src_id, fd.idx, "Todo");
   return nullptr;
 }
 
@@ -133,7 +146,7 @@ INIT_MODULE(core) {
   vm.add_native_typefn<VarTypeId>("str", typeid_to_str, 0, src_id, idx);
   vm.add_native_typefn<VarBool>("str", bool_to_str, 0, src_id, idx);
   vm.add_native_typefn<VarInt>("str", int_to_str, 0, src_id, idx);
-  vm.add_native_typefn<VarFloat>("str", float_to_str, 0, src_id, idx);
+  vm.add_native_typefn<VarFloat>("str", float_to_str, 0, src_id, idx, true);
   vm.add_native_typefn<VarString>("str", str_to_str, 0, src_id, idx);
   vm.add_native_typefn<VarVec>("str", vec_to_str, 0, src_id, idx);
   vm.add_native_typefn<VarMap>("str", map_to_str, 0, src_id, idx);
@@ -170,10 +183,14 @@ INIT_MODULE(core) {
           false);
   vm.gadd("raise",
           new VarFn(src_name, {""}, {}, {.native = raise}, src_id, idx), false);
+  vm.gadd("unimplemented!",
+          new VarFn(src_name, {}, {}, {.native = unimplemented}, src_id, idx), false);
+  vm.gadd("todo!",
+          new VarFn(src_name, {}, {}, {.native = todo}, src_id, idx), false);
   vm.gadd("mload",
           new VarFn(src_name, {""}, {}, {.native = load_module}, src_id, idx),
           false);
-  vm.gadd("import",
+  vm.gadd("__import__",
           new VarFn(src_name, {""}, {}, {.native = import_file}, src_id, idx),
           false);
   vm.gadd("__ismainsrc__",
@@ -184,11 +201,11 @@ INIT_MODULE(core) {
           false);
   vm.gadd("print",
           new VarFn(src_name, "", ".", {""}, {}, {.native = print}, true,
-                    src_id, idx),
+                    "print", src_id, idx),
           false);
   vm.gadd("println",
-          new VarFn(src_name, "", ".", {""}, {}, {.native = println}, true,
-                    src_id, idx),
+          new VarFn(src_name, "", ".", {}, {}, {.native = println}, true,
+                    "println", src_id, idx),
           false);
 
   // core type functions
@@ -229,7 +246,7 @@ INIT_MODULE(core) {
   vm.add_native_typefn<VarInt>(">>=", int_rshiftassn, 1, src_id, idx);
 
   vm.add_native_typefn<VarInt>("**", int_pow, 1, src_id, idx);
-  vm.add_native_typefn<VarInt>("//", int_root, 1, src_id, idx);
+  vm.add_native_typefn<VarInt>("/#", int_root, 1, src_id, idx);
   vm.add_native_typefn<VarInt>("++x", int_preinc, 0, src_id, idx);
   vm.add_native_typefn<VarInt>("x++", int_postinc, 0, src_id, idx);
   vm.add_native_typefn<VarInt>("--x", int_predec, 0, src_id, idx);
@@ -276,7 +293,7 @@ INIT_MODULE(core) {
   vm.add_native_typefn<VarFloat>("round", float_round, 0, src_id, idx);
 
   vm.add_native_typefn<VarFloat>("**", float_pow, 1, src_id, idx);
-  vm.add_native_typefn<VarFloat>("//", float_root, 1, src_id, idx);
+  vm.add_native_typefn<VarFloat>("/#", float_root, 1, src_id, idx);
 
   vm.add_native_typefn<VarFloat>("<", float_lt, 1, src_id, idx);
   vm.add_native_typefn<VarFloat>(">", float_gt, 1, src_id, idx);
@@ -288,9 +305,9 @@ INIT_MODULE(core) {
   // string
   vm.add_native_typefn<VarString>("+", str_add, 1, src_id, idx);
   vm.add_native_typefn<VarString>("*", str_mul, 1, src_id, idx);
+  vm.add_native_typefn<VarString>("*=", str_mulassn, 1, src_id, idx);
 
   vm.add_native_typefn<VarString>("+=", str_addassn, 1, src_id, idx);
-  vm.add_native_typefn<VarString>("*=", str_mulassn, 1, src_id, idx);
 
   vm.add_native_typefn<VarString>("<", str_lt, 1, src_id, idx);
   vm.add_native_typefn<VarString>(">", str_gt, 1, src_id, idx);
@@ -311,16 +328,19 @@ INIT_MODULE(core) {
   vm.add_native_typefn<VarString>("back", str_back, 0, src_id, idx);
   vm.add_native_typefn<VarString>("push", str_push, 1, src_id, idx);
   vm.add_native_typefn<VarString>("pop", str_pop, 0, src_id, idx);
-  vm.add_native_typefn<VarString>("ischat", str_ischat, 2, src_id, idx);
+  vm.add_native_typefn<VarString>("has_char_at", str_has_char_at, 2, src_id,
+                                  idx);
   vm.add_native_typefn<VarString>("set", str_setat, 2, src_id, idx);
   vm.add_native_typefn<VarString>("insert", str_insert, 2, src_id, idx);
   vm.add_native_typefn<VarString>("erase", str_erase, 1, src_id, idx);
   vm.add_native_typefn<VarString>("find", str_find, 1, src_id, idx);
   vm.add_native_typefn<VarString>("substr_native", str_substr, 2, src_id, idx);
-  vm.add_native_typefn<VarString>("lastidx", str_last, 0, src_id, idx);
+  vm.add_native_typefn<VarString>("real_length", str_zlength, 0, src_id, idx);
   vm.add_native_typefn<VarString>("trim", str_trim, 0, src_id, idx);
   vm.add_native_typefn<VarString>("upper", str_upper, 0, src_id, idx);
-  vm.add_native_typefn<VarString>("split_native", str_split, 1, src_id, idx);
+  vm.add_native_typefn<VarString>("lower", str_lower, 0, src_id, idx);
+  vm.add_native_typefn<VarString>("split", str_split, 1, src_id, idx);
+  vm.add_native_typefn<VarString>("repeat", str_mul, 1, src_id, idx);
 
   vm.add_native_typefn<VarString>("byte", byt, 0, src_id, idx);
   vm.add_native_typefn<VarInt>("char", chr, 0, src_id, idx);

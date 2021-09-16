@@ -1,0 +1,59 @@
+import "std/lang" as lang;
+import "std/ptr" as ptr;
+
+let OptionInner = lang.struct(
+  inner = ptr.new()
+);
+
+OptionInner.set_typename("Option");
+
+func _optionCopy(inner) {
+  if inner == nil {
+    return nil;
+  }
+  return inner.copy();
+}
+
+/// Return a new Option with the given value, or None if the value is nil.
+func Option(inner = nil) {
+  // copies the inner value, deters ptr changes
+  return OptionInner(ptr.new(_optionCopy(inner)));
+}
+
+/// Return an new Option with the given value.
+func Some(inner) {
+  return Option(inner);
+}
+
+/// Return an new empty Option.
+func None() {
+  return Option();
+}
+
+impl OptionInner.str() {
+  if self.is_some() {
+    return "Some(" + self.unwrap().str() + ")";
+  } else {
+    return "None";
+  }
+}
+
+impl OptionInner.is_some() {
+  return self.inner.get() != nil;
+}
+
+impl OptionInner.is_none() {
+  return self.inner.get() == nil;
+}
+
+impl OptionInner.unwrap() {
+  if self.is_none() {
+    raise("Option.unwrap: no value");
+  }
+
+  return self.inner.get();
+}
+
+impl OptionInner.unwrap_or(default) {
+  return self.unwrap() or _ { default; };
+}

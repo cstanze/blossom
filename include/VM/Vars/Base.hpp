@@ -288,6 +288,7 @@ union FnBody {
 
 class VarFn : public VarBase {
   std::string m_src_name;
+  std::string m_fn_name;
   std::string m_kw_arg;
   std::string m_var_arg;
   std::vector<std::string> m_args;
@@ -299,12 +300,16 @@ public:
   VarFn(const std::string &src_name, const std::string &kw_arg,
         const std::string &var_arg, const std::vector<std::string> &args,
         const std::unordered_map<std::string, VarBase *> &assn_args,
+        const FnBody &body, const bool is_native, const std::string &fn_name,
+        const size_t &src_id, const size_t &idx);
+  VarFn(const std::string &src_name, const std::string &kw_arg,
+        const std::string &var_arg, const std::vector<std::string> &args,
+        const std::unordered_map<std::string, VarBase *> &assn_args,
         const FnBody &body, const bool is_native, const size_t &src_id,
         const size_t &idx);
   VarFn(const std::string &src_name, const std::vector<std::string> &args,
         const std::unordered_map<std::string, VarBase *> &assn_args,
         const FnBody &body, const size_t &src_id, const size_t &idx);
-
   ~VarFn();
 
   VarBase *copy(const size_t &src_id, const size_t &idx);
@@ -313,6 +318,7 @@ public:
   std::string &src_name();
   std::string &kw_arg();
   std::string &var_arg();
+  std::string &fn_name();
   std::vector<std::string> &args();
   std::unordered_map<std::string, VarBase *> &assn_args();
   FnBody &body();

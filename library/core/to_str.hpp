@@ -28,43 +28,25 @@ VarBase *typeid_to_str(VMState &vm, const FnData &fd) {
 }
 
 VarBase *int_to_str(VMState &vm, const FnData &fd) {
-  typedef void (*gmp_freefunc_t)(void *, size_t);
-
-  char *_res = mpz_get_str(NULL, 10, INT(fd.args[0])->get());
-  VarString *res = make<VarString>("");
-  res->get() = _res;
-
-  gmp_freefunc_t freefunc;
-  mp_get_memory_functions(NULL, NULL, &freefunc);
-  freefunc(_res, strlen(_res) + 1);
+  char *_res;
+  gmp_asprintf(&_res, "%Zd", INT(fd.args[0])->get());
+  VarBase *res = make<VarString>(_res);
 
   return res;
 }
 
 VarBase *float_to_str(VMState &vm, const FnData &fd) {
-  mpfr_exp_t expo;
-  char *_res = mpfr_get_str(NULL, &expo, 10, 0, FLOAT(fd.args[0])->get(),
-                            mpfr_get_default_rounding_mode());
-  VarString *res = make<VarString>(_res);
-  mpfr_free_str(_res);
-  if (res->get().empty() || expo == 0 || expo > 25)
-    return res;
-  auto last_zero_from_end = res->get().find_last_of("123456789");
-  if (last_zero_from_end != std::string::npos)
-    res->get() = res->get().erase(last_zero_from_end + 1);
-  if (expo > 0) {
-    std::string &str_res = res->get();
-    size_t sz = str_res.size();
-    while (expo > sz) {
-      str_res += '0';
-    }
-    if (res->get()[0] == '-')
-      ++expo;
-    res->get().insert(expo, ".");
-  } else {
-    std::string pre_zero(-expo, '0');
-    res->get() = "0." + pre_zero + res->get();
+  char *_res;
+  std::string format = "%.2Rf";
+
+  if (fd.args.size() == 2 && fd.args[1]->istype<VarString>()) {
+    format = STR(fd.args[1])->get();
   }
+
+  // mpfr_asprintf to &_res with any precision
+  mpfr_asprintf(&_res, format.c_str(), FLOAT(fd.args[0])->get());
+  VarString *res = make<VarString>(_res);
+  
   return res;
 }
 

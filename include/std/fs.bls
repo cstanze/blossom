@@ -1,5 +1,5 @@
 mload('std/fs');
-let stat = import('std/stat');
+import "std/stat" as stat;
 
 func fopen(file, mode = 'r') {
 	return fopen_native(file, mode);

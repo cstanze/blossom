@@ -29,12 +29,12 @@ _else:
     Err::set(E_PARSE_FAIL, ph.peak()->pos,
              "cannot have more than one else block for a condtion");
     goto fail;
-  } else if(got_else && ph.peak(1)->type == TOK_IF) {
+  } else if (got_else && ph.peak(1)->type == TOK_IF) {
     Err::set(E_PARSE_FAIL, ph.peak()->pos,
              "cannot have an else if block after else block for a condtion");
     goto fail;
   }
-  if(ph.peak(1)->type == TOK_IF) {
+  if (ph.peak(1)->type == TOK_IF) {
     ph.next();
     tok = ph.peak();
     ph.next();

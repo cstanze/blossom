@@ -1,22 +1,112 @@
-
-
 #include "VM/VM.hpp"
 
 #include <cstdarg>
 #include <cstdlib>
 #include <string>
+#include <cctype>
+#include <algorithm>
 
 #include "Common/Env.hpp"
 #include "Common/FS.hpp"
 #include "Common/String.hpp"
+#include "Common/json.hpp"
 #include "VM/Vars.hpp"
+
+using namespace nlohmann;
+
+std::vector<std::string> additionalIncludePaths(std::string base) {
+  if (!FS::exists(base + "/config.json"))
+    return {};
+
+  FILE *fp = fopen((base + "/config.json").c_str(), "r");
+  if (fp == NULL)
+    return {};
+
+  char *line = NULL;
+  size_t len = 0;
+  ssize_t read;
+  std::string config_src;
+
+  while ((read = getline(&line, &len, fp)) != -1) {
+    config_src += line;
+  }
+
+  config_src.erase(
+    std::remove_if(
+      config_src.begin(),
+      config_src.end(),
+      [](unsigned char x){ return std::isspace(x); }
+    ),
+    config_src.end()
+  );
+
+  if (config_src.empty())
+    return {};
+
+  json config;
+  config = json::parse(config_src);
+
+  if (!config.is_object() || config.empty())
+    return {};
+  
+  if (!config.contains("includePaths"))
+    return {};
+
+  if (!config["includePaths"].is_array())
+    return {};
+
+  return config["includePaths"].get<std::vector<std::string>>();
+}
+
+std::vector<std::string> additionalDllPaths(std::string base) {
+  if (!FS::exists(base + "/config.json"))
+    return {};
+
+  FILE *fp = fopen((base + "/config.json").c_str(), "r");
+  if (fp == NULL)
+    return {};
+
+  char *line = NULL;
+  size_t len = 0;
+  ssize_t read;
+  std::string config_src;
+
+  while ((read = getline(&line, &len, fp)) != -1) {
+    config_src += line;
+  }
+
+  config_src.erase(
+    std::remove_if(
+      config_src.begin(),
+      config_src.end(),
+      [](unsigned char x){ return std::isspace(x); }
+    ),
+    config_src.end()
+  );
+
+  if (config_src.empty())
+    return {};
+
+  json config;
+  config = json::parse(config_src);
+
+  if (!config.is_object() || config.empty())
+    return {};
+  
+  if (!config.contains("dllPaths"))
+    return {};
+
+  if (!config["dllPaths"].is_array())
+    return {};
+
+  return config["dllPaths"].get<std::vector<std::string>>();
+}
 
 // env: BLOSSOM_PATHS
 VMState::VMState(const std::string &self_bin, const std::string &self_base,
-                 const std::vector<std::string> &args, const size_t &flags,
+                 const std::vector<std::string> &args,
                  const bool &is_thread_copy)
-    : exit_called(false), exec_stack_count_exceeded(false), exit_code(0),
-      exec_flags(flags), exec_stack_max(EXEC_STACK_MAX_DEFAULT),
+    : exit_called(false), exec_stack_count_exceeded(false), exit_code(0), exec_stack_max(EXEC_STACK_MAX_DEFAULT),
       exec_stack_count(0), tru(new VarBool(true, 0, 0)),
       fals(new VarBool(false, 0, 0)), nil(new VarNil(0, 0)),
       vm_stack(new VMStack()), dlib(is_thread_copy ? nullptr : new DynLib()),
@@ -36,7 +126,18 @@ VMState::VMState(const std::string &self_bin, const std::string &self_base,
   src_args = new VarVec(src_args_vec, false, 0, 0);
 
   std::vector<std::string> extra_search_paths =
-      String::split(Env::get("BLOSSOM_PATHS"), ';');
+      String::split(Env::get("BLOSSOM_PATHS"), ";");
+
+  std::vector<std::string> incPaths = additionalIncludePaths(m_self_base);
+  std::vector<std::string> dllPaths = additionalDllPaths(m_self_base);
+
+  for (auto &path : incPaths) {
+    String::replace(path, "{base}", m_self_base);
+  }
+
+  for (auto &path : dllPaths) {
+    String::replace(path, "{base}", m_self_base);
+  }
 
   for (auto &path : extra_search_paths) {
     m_inc_locs.push_back(path + "/include/blossom");
@@ -45,6 +146,9 @@ VMState::VMState(const std::string &self_bin, const std::string &self_base,
 
   m_inc_locs.push_back(m_self_base + "/include/blossom");
   m_dll_locs.push_back(m_self_base + "/lib/blossom");
+
+  m_inc_locs.insert(m_inc_locs.end(), incPaths.begin(), incPaths.end());
+  m_dll_locs.insert(m_dll_locs.end(), dllPaths.begin(), dllPaths.end());
 }
 
 VMState::~VMState() {
@@ -184,18 +288,21 @@ bool VMState::nmod_load(const std::string &mod_str, const size_t &src_id,
   std::string mod_dir;
   mod_file.insert(mod_file.find_last_of('/') + 1, "libblossom");
   if (!mod_exists(m_dll_locs, mod_file, nmod_ext(), mod_dir)) {
-    fail(src_id, idx, "module file: %s not found in locations: %s",
-         (mod_file + nmod_ext()).c_str(),
-         String::stringify(m_dll_locs).c_str());
-    return false;
+    mod_file = mod_str;
+    mod_file.insert(mod_file.find_last_of('/') + 1, "lib");
+    if (!mod_exists(m_dll_locs, mod_file, nmod_ext(), mod_dir)) {
+      fail(src_id, idx, "module file: %s not found in locations: %s",
+           (mod_file + nmod_ext()).c_str(),
+           String::stringify(m_dll_locs).c_str());
+      return false;
+    }
   }
 
   if (dlib->fexists(mod_file))
     return true;
 
   if (!dlib->load(mod_file)) {
-    fail(src_id, idx, "unable to load module file: %s", mod_file.c_str(),
-         String::stringify(m_dll_locs).c_str());
+    fail(src_id, idx, "unable to load module file: %s", mod_file.c_str());
     return false;
   }
   ModInitFn init_fn = (ModInitFn)dlib->get(mod_file, "init_" + mod);
@@ -233,7 +340,7 @@ int VMState::bmod_load(std::string &mod_file, const size_t &src_id,
 
   Errors err = E_OK;
   SrcFile *src =
-      m_src_load_fn(mod_file, mod_dir, exec_flags, false, err, 0, -1);
+      m_src_load_fn(mod_file, mod_dir, false, err, 0, -1);
   if (err != E_OK) {
     if (src)
       delete src;
@@ -288,8 +395,60 @@ void VMState::fail(const size_t &src_id, const size_t &idx, VarBase *val,
   }
 }
 
+std::vector<std::string> additionalCoreMods(std::string base) {
+  if (!FS::exists(base + "/config.json"))
+    return {};
+
+  FILE *fp = fopen((base + "/config.json").c_str(), "r");
+  if (fp == NULL)
+    return {};
+
+  char *line = NULL;
+  size_t len = 0;
+  ssize_t read;
+  std::string config_src;
+
+  while ((read = getline(&line, &len, fp)) != -1) {
+    config_src += line;
+  }
+
+  config_src.erase(
+    std::remove_if(
+      config_src.begin(),
+      config_src.end(),
+      [](unsigned char x){ return std::isspace(x); }
+    ),
+    config_src.end()
+  );
+
+  if (config_src.empty())
+    return {};
+
+  json config;
+  config = json::parse(config_src);
+
+  if (!config.is_object() || config.empty())
+    return {};
+
+  if (!config.contains("additionalCoreMods"))
+    return {};
+
+  if (!config["additionalCoreMods"].is_array())
+    return {};
+
+  return config["additionalCoreMods"].get<std::vector<std::string>>();
+}
+
 bool VMState::load_core_mods() {
   std::vector<std::string> mods = {"core", "utils"};
+  std::vector<std::string> additional = additionalCoreMods(m_self_base);
+
+  for (std::string &mod : additional) {
+    printf("Found Additional mod: %s\n", mod.c_str());
+  }
+
+  mods.insert(mods.end(), additional.begin(), additional.end());
+
   for (auto &mod : mods) {
     if (!nmod_load(mod, 0, 0))
       return false;
@@ -298,7 +457,7 @@ bool VMState::load_core_mods() {
 }
 
 VMState *VMState::thread_copy(const size_t &src_id, const size_t &idx) {
-  VMState *vm = new VMState(m_self_bin, m_self_base, {}, exec_flags, true);
+  VMState *vm = new VMState(m_self_bin, m_self_base, {}, true);
   for (auto &s : all_srcs) {
     vm->all_srcs[s.first] =
         static_cast<VarSrc *>(s.second->thread_copy(src_id, idx));

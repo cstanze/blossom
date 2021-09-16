@@ -11,9 +11,10 @@
 #include "Compiler/Parser.hpp"
 #include "VM/VM.hpp"
 
+using namespace args;
+
 Errors bmod_read_code(const std::string &data, const std::string &src_dir,
-                      const std::string &src_path, Bytecode &bc,
-                      const size_t &flags, const bool is_main_src,
+                      const std::string &src_path, Bytecode &bc, const bool is_main_src,
                       const bool &expr_only, const size_t &begin_idx,
                       const size_t &end_idx) {
   // lexical analysis
@@ -28,7 +29,7 @@ Errors bmod_read_code(const std::string &data, const std::string &src_dir,
   }
 
   // show tokens
-  if (flags & OPT_T && (flags & OPT_R || is_main_src)) {
+  if (parsedArgs->showTokens && (parsedArgs->showRecursive || is_main_src)) {
     fprintf(stdout, "Tokens (%zu):\n", toks.size());
     for (size_t i = 0; i < toks.size(); ++i) {
       auto &tok = toks[i];
@@ -46,7 +47,7 @@ Errors bmod_read_code(const std::string &data, const std::string &src_dir,
     goto end;
 
   // show tree
-  if (flags & OPT_P && (flags & OPT_R || is_main_src)) {
+  if (parsedArgs->showParseTree && (parsedArgs->showRecursive || is_main_src)) {
     fprintf(stdout, "Parse Tree:\n");
     for (auto it = ptree->stmts().begin(); it != ptree->stmts().end(); ++it) {
       (*it)->disp(it != ptree->stmts().end() - 1);
@@ -58,7 +59,7 @@ Errors bmod_read_code(const std::string &data, const std::string &src_dir,
     goto end;
 
   // show bytecode
-  if (flags & OPT_B && (flags & OPT_R || is_main_src)) {
+  if (parsedArgs->showBytecode && (parsedArgs->showRecursive || is_main_src)) {
     fprintf(stdout, "Byte Code (%zu):\n", bc.size());
     const std::vector<Op> &bcode = bc.get();
     int id_padding = std::to_string(bcode.size()).size();
@@ -82,14 +83,13 @@ end:
 }
 
 SrcFile *bmod_load(const std::string &src_path, const std::string &src_dir,
-                   const size_t &flags, const bool is_main_src, Errors &err,
+                   const bool is_main_src, Errors &err,
                    const size_t &begin_idx, const size_t &end_idx) {
   SrcFile *src = new SrcFile(src_dir, src_path, is_main_src);
   err = src->load_file();
   if (err != E_OK)
     goto fail;
-  err = bmod_read_code(src->data(), src->dir(), src->path(), src->bcode(),
-                       flags, is_main_src, false, begin_idx, end_idx);
+  err = bmod_read_code(src->data(), src->dir(), src->path(), src->bcode(), is_main_src, false, begin_idx, end_idx);
   if (err != E_OK) {
     src->fail(Err::val(), Err::str().c_str());
     goto fail;

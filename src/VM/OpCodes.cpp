@@ -54,7 +54,13 @@ const char *OpCodeStrs[_OP_LAST] = {
 };
 
 const char *OpDataTypeStrs[_ODT_LAST] = {
-    "INT",  "float", "STR", "IDEN",
+    "INT",
+
+    "FLOAT",
+
+    "STR",
+
+    "IDEN",
 
     "SZ",
 
@@ -77,21 +83,25 @@ Bytecode::~Bytecode() {
 }
 
 void Bytecode::add(const size_t &idx, const OpCodes op) {
-  m_bcode.push_back(Op{0, idx, op, ODT_NIL, {.s = nullptr}});
+  m_bcode.push_back(Op{0, idx, op, ODT_NIL, ODT_NIL, {.s = nullptr}});
 }
 void Bytecode::adds(const size_t &idx, const OpCodes op, const OpDataType dtype,
                     const std::string &data) {
-  m_bcode.push_back(Op{0, idx, op, dtype, {.s = scpy(data)}});
+  m_bcode.push_back(Op{0, idx, op, dtype, dtype, {.s = scpy(data)}});
+}
+void Bytecode::addsn(const size_t &idx, const OpCodes op, const OpDataType dtype,
+                    const OpDataType rtype, const std::string &data) {
+  m_bcode.push_back(Op{0, idx, op, dtype, rtype, {.s = scpy(data)}});
 }
 void Bytecode::addb(const size_t &idx, const OpCodes op, const bool &data) {
-  m_bcode.push_back(Op{0, idx, op, ODT_BOOL, {.b = data}});
+  m_bcode.push_back(Op{0, idx, op, ODT_BOOL, ODT_BOOL, {.b = data}});
 }
 void Bytecode::addsz(const size_t &idx, const OpCodes op,
                      const std::string &data) {
-  m_bcode.push_back(Op{0, idx, op, ODT_SZ, {.sz = std::stoull(data)}});
+  m_bcode.push_back(Op{0, idx, op, ODT_SZ, ODT_SZ, {.sz = std::stoull(data)}});
 }
 void Bytecode::addsz(const size_t &idx, const OpCodes op, const size_t &data) {
-  m_bcode.push_back(Op{0, idx, op, ODT_SZ, {.sz = data}});
+  m_bcode.push_back(Op{0, idx, op, ODT_SZ, ODT_SZ, {.sz = data}});
 }
 
 OpCodes Bytecode::at(const size_t &pos) const {

@@ -3,10 +3,6 @@ impl String.substr(begin = 0, len = -1) {
 	return self.substr_native(begin, len);
 }
 
-impl String.split(delim = ':') {
-	return self.split_native(delim);
-}
-
 impl String.is_alpha() {
 	if self.empty() { return false; }
 	return (self >= 'a' && self <= 'z') || (self >= 'A' && self <= 'Z');

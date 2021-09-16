@@ -1,0 +1,20 @@
+import "std/lang" with struct;
+import "std/str";
+
+let TestStruct = struct(err = "");
+TestStruct.set_typename("TestStruct");
+
+// init function
+impl TestStruct.apply() {
+  // `self` should be available
+  // it'll be filled with the given data
+  assert(self != nil);
+  assert(self.err == "x");
+}
+
+// "init function failed for type <type>"
+let ts = TestStruct("x")/* or e {
+  assert(e.substr(0, 19) == "init function failed");
+  nil
+}*/;
+

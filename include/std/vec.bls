@@ -11,7 +11,7 @@ impl Vec.==(other) {
 }
 
 // stores in the type - NOT object
-impl Vec.find(obj) {
+impl Vec.contains(obj) {
 	for data in self.each() {
 		if data == obj { return true; }
 	}
@@ -38,4 +38,20 @@ impl Vec.slice(start, end = -1) {
 impl Vec.sub(start, end = -1) {
 	if end == -1 { end = self.len(); }
 	return self.sub_native(start, end);
+}
+
+impl Vec.reverse() {
+	if self.len() == 0 {
+		return self;
+	}
+
+	let mid = self.len() / 2;
+
+	for let i = 0; i < mid; ++i {
+		let tmp = self[ i ];
+		self[ i ] = self[ self.len() - i - 1 ];
+		self[ self.len() - i - 1 ] = tmp;
+	}
+	
+	return self;
 }

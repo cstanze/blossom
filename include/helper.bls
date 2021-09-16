@@ -1,0 +1,83 @@
+import "std/io" with (cprintln, scan);
+import "std/os" as os;
+import "std/fmt" as fmt;
+import "std/sys" as sys;
+import "std/vec" as vec;
+import "std/fs" as fs;
+import "std/stat" as stat;
+
+let commands = vec.new(
+  "t", "test",
+  "b", "build",
+  "i", "install",
+  "p", "print_info",
+  "e", "exit"
+);
+
+let opt = "";
+let last_invalid = false;
+while true {
+
+  if !last_invalid {
+    println();
+    cprintln("{g}Blossom Helper{0}");
+    cprintln("  {b}Test{0} (t, test)");
+    cprintln("  {b}Build{0} (b, build)");
+    cprintln("  {b}Install{0} (i, install)");
+    cprintln("  {b}Print Info{0} (p, print_info)");
+    cprintln("  {r}Exit{0} (e, exit)");
+  }
+
+  opt = scan("\n> ").lower();
+  if opt == "e" || opt == "exit" {
+    sys.exit(0);
+  } else if !commands.contains(opt) {
+    println("Invalid option");
+    last_invalid = true;
+    continue;
+  }
+
+  last_invalid = false;
+  
+  if opt == "t" || opt == "test" {
+    let dir = scan("Test Directory: ");
+    println();
+    if !fs.exists(dir) {
+      cprintln("Given path is does {r}not{0} exist.");
+      continue;
+    }
+    let st = stat.stat(dir);
+    if !st.isdir() {
+      cprintln("Given path is {r}not{0} a directory.");
+      continue;
+    }
+    os.exec(fmt.template("blossom test #{dir}"));
+  } else if opt == "b" || opt == "build" {
+    if !fs.exists("./build.bls") {
+      cprintln("{r}Couldn't find {0}'{c}build.bls{0}' in current directory");
+      continue;
+    }
+    os.exec("blossom build");
+  } else if opt == "i" || opt == "install" {
+    if !fs.exists("./build.bls") {
+      cprintln("{r}Couldn't find {0}'{c}build.bls{0}' in current directory");
+      continue;
+    }
+    os.exec("blossom install");
+  } else if opt == "p" || opt == "print_info" {
+    let path = os.get_cwd() + "/.buildinfo.bls";
+    let buildinfo = __import__(path) or _ {
+      cprintln("{r}No Build Info Found {0}(Couldn't find '{c}.buildinfo.bls{0}' in current directory)");
+      continue;
+      nil
+    };
+    println("Name: ", buildinfo.name) or _ {
+      println("No Name Specified! Please specify a name in .buildinfo.bls!");
+      nil
+    };
+    println("Test Directory: ", buildinfo.testdir) or _ {
+      println("No Test Directory Specified");
+      nil
+    };
+  }
+}

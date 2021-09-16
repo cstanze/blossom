@@ -84,6 +84,7 @@ struct Op {
   size_t idx;
   OpCodes op;
   OpDataType dtype;
+  OpDataType rtype; // real type (for OP_LOAD with int/float as string)
   OpData data;
 };
 
@@ -96,6 +97,8 @@ public:
   void add(const size_t &idx, const OpCodes op);
   void adds(const size_t &idx, const OpCodes op, const OpDataType dtype,
             const std::string &data);
+  void addsn(const size_t &idx, const OpCodes op, const OpDataType dtype,
+            const OpDataType rtype, const std::string &data);
   void addb(const size_t &idx, const OpCodes op, const bool &data);
   void addsz(const size_t &idx, const OpCodes op, const std::string &data);
   void addsz(const size_t &idx, const OpCodes op, const size_t &data);

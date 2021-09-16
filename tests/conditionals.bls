@@ -1,5 +1,5 @@
-let vec = import('std/vec');
-let map = import('std/map');
+import "std/vec" as vec;
+import "std/map" as map;
 
 if false { assert(false); }
 if nil { assert(false); }

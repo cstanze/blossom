@@ -5,6 +5,7 @@
 .metals/
 compile_commands.json
 *.swp
+t.bls
 
 # TeX intermediate files #
 ##########################

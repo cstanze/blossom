@@ -14,7 +14,6 @@ VarBase::VarBase(const std::uintptr_t &type, const size_t &src_id,
                  const size_t &idx, const bool &callable,
                  const bool &attr_based)
     : m_type(type), m_src_id(src_id), m_idx(idx), m_ref(1), m_info(0) {
-  if (callable)
     m_info |= VI_CALLABLE;
   if (attr_based)
     m_info |= VI_ATTR_BASED;
@@ -87,8 +86,30 @@ bool VarBase::to_bool(VMState &vm, bool &data, const size_t &src_id,
   return true;
 }
 
-VarBase *
-VarBase::call(VMState &vm, const std::vector<VarBase *> &args,
+// VarBase *
+// VarBase::call(VMState &vm, const std::vector<VarBase *> &args,
+//              const std::vector<FnAssnArg> &assn_args,
+//              const std::unordered_map<std::string, size_t> &assn_args_loc,
+//              const size_t &src_id, const size_t &idx) {
+//   // check if we have a function named 'apply' for this type
+//   VarBase *apply_fn = nullptr;
+//   if (this->attr_based())
+//     apply_fn = this->attr_get("apply");
+//   if (apply_fn == nullptr)
+//     apply_fn = vm.get_typefn(this, "apply");
+//   if (apply_fn) {
+//     if (!apply_fn->call(vm, args, assn_args, assn_args_loc, src_id, idx)) {
+//       vm.fail(args[0]->src_id(), args[0]->idx(),
+//               "apply function for type: %s failed",
+//               vm.type_name(args[0]).c_str());
+//       return nullptr;
+//     }
+//     return vm.vm_stack->pop(false);
+//   }
+//   return nullptr;
+// }
+
+VarBase *VarBase::call(VMState &vm, const std::vector<VarBase *> &args,
               const std::vector<FnAssnArg> &assn_args,
               const std::unordered_map<std::string, size_t> &assn_args_loc,
               const size_t &src_id, const size_t &idx) {

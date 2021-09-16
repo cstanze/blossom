@@ -1,5 +1,3 @@
-
-
 #include <cstdio>
 #include <cstring>
 #include <fstream>
@@ -10,14 +8,18 @@
 #include "Common/String.hpp"
 #include "Compiler/Args.hpp"
 #include "Compiler/LoadFile.hpp"
+#include "Compiler/DumpFile.hpp"
 #include "VM/VM.hpp"
 
 int main(int argc, char **argv) {
   std::unordered_map<std::string, std::string> args;
   std::vector<std::string> code_args;
-  size_t flags = args::parse(argc, (const char **)argv, args, code_args);
+  Errors flags = args::parse(argc, (const char **)argv, args, code_args);
 
-  if (flags & OPT_V) {
+  if(flags != E_OK)
+    return flags;
+
+  if (args::parsedArgs->showVersion) {
     fprintf(stdout, "Blossom %d.%d.%d\nBuilt with %s\nOn %s\n",
             BLOSSOM_VERSION_MAJOR, BLOSSOM_VERSION_MINOR, BLOSSOM_VERSION_PATCH,
             BUILD_CXX_COMPILER, BUILD_DATE);
@@ -34,17 +36,15 @@ int main(int argc, char **argv) {
   // if (src_file.empty())
   //   src_file = "repl";
 
-  if ((src_file == "test" || src_file == "repl") && !FS::exists(src_file)) {
+  if (
+    (src_file == "test" || src_file == "repl" || src_file == "helper")
+    && !FS::exists(src_file)
+  ) {
     src_file = blossom_base + "/include/blossom/" + src_file + bmod_ext();
   } else if (src_file == "install" || src_file == "build") {
     if (src_file == "install")
       code_args.insert(code_args.begin(), "install");
     src_file = std::string("build") + bmod_ext();
-  }
-
-  if (src_file.empty() || flags & OPT_H) {
-    args::printUsage(argv[0]);
-    return E_FAIL;
   }
 
   if (!FS::exists(src_file)) {
@@ -57,14 +57,22 @@ int main(int argc, char **argv) {
   std::string src_dir;
   src_file = FS::absPath(src_file, &src_dir);
 
-  SrcFile *main_src = bmod_load(src_file, src_dir, flags, true, err);
+  SrcFile *main_src = bmod_load(src_file, src_dir, true, err);
   if (err != E_OK) {
     return err;
   }
 
+  if(args::parsedArgs->hasOutputFile) {
+    Errors res = bmod_dump_file(main_src->bcode(), args::parsedArgs->outputFile.c_str());
+    if(res != E_OK) {
+      fprintf(stderr, "%s\n", Err::str().c_str());
+      return res;
+    }
+  }
+
   int exec_err = 0;
-  if (!(flags & OPT_D)) {
-    VMState vm(blossom_bin, blossom_base, code_args, flags);
+  if (!(args::parsedArgs->dryRun)) {
+    VMState vm(blossom_bin, blossom_base, code_args);
     vm.set_bmod_load_fn(bmod_load);
     vm.set_bmod_read_code_fn(bmod_read_code);
     vm.push_src(main_src, 0);

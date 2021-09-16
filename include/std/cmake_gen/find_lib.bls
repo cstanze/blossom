@@ -1,19 +1,19 @@
-let vec = import('std/vec');
-let str = import('std/str');
-let sys = import('std/sys');
-let fmt = import('std/fmt');
-let lang = import('std/lang');
+import 'std/vec' as vec;
+import 'std/str';
+import 'std/sys' as sys;
+import 'std/fmt' as fmt;
+import 'std/lang' as lang;
 
 let find_lib_base =
-`include_directories({include_dirs})
-find_library({self.var_name.upper()}_LIBRARY {self.lib_name}{self.path_suffixes}{self.required}{prefix_path})
+`include_directories(#{include_dirs})
+find_library(#{self.var_name.upper()}_LIBRARY #{self.lib_name}#{self.path_suffixes}#{self.required}#{prefix_path})
 `;
 
 let reqd_line_base =
-`if(NOT {self.var_name.upper()}_LIBRARY)
-	message(FATAL_ERROR "{self.var_name} is required but missing, looked in: $\\{INCLUDE_INSTALL_DIR}")
+`if(NOT #{self.var_name.upper()}_LIBRARY)
+	message(FATAL_ERROR "#{self.var_name} is required but missing, looked in: ${INCLUDE_INSTALL_DIR}")
 else()
-	message("-- {self.var_name} found at: $\\{{self.var_name.upper()}_LIBRARY}")
+	message("-- #{self.var_name} found at: ${#{self.var_name.upper()}_LIBRARY}")
 endif()
 `;
 
@@ -29,31 +29,31 @@ let FindLib = lang.struct(
 	blossom_lib = false
 );
 
-func new(lib_name) { return find_lib_t(lib_name = lib_name); };
+func new(lib_name) { return FindLib(lib_name = lib_name); }
 
 impl FindLib.make_reqd() {
 	self.required = ' REQUIRED';
 	self.template += reqd_line_base;
 	return self;
-};
+}
 
-impl FindLib.set_var_name(var_name) { self.var_name = var_name; return self; };
+impl FindLib.set_var_name(var_name) { self.var_name = var_name; return self; }
 
-impl FindLib.add_path_suffix(path_suffix) { self.path_suffixes += path_suffix; return self; };
+impl FindLib.add_path_suffix(path_suffix) { self.path_suffixes += path_suffix; return self; }
 
 impl FindLib.name() {
 	if !self.var_name.empty() {
 		return '${' + self.var_name.upper() + '_LIBRARY}';
 	}
 	return '${' + self.lib_name.upper() + '_LIBRARY}';
-};
+}
 
-impl FindLibn.add_ext_prefix(ext_prefix) {
+impl FindLib.add_ext_prefix(ext_prefix) {
 	self.ext_prefixes.push(ext_prefix);
 	return self;
-};
+}
 
-impl FindLib.make_blossom_lib() { self.blossom_lib = true; return self; };
+impl FindLib.make_blossom_lib() { self.blossom_lib = true; return self; }
 
 impl FindLib.gen() {
 	if self.var_name == '' { self.var_name = self.lib_name; }
@@ -78,4 +78,4 @@ impl FindLib.gen() {
 		prefix_path += 'NO_DEFAULT_PATH';
 	}
 	return fmt.template(self.template);
-};
+}

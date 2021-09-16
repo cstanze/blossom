@@ -1,21 +1,21 @@
-let fmt = import('std/fmt');
-let vec = import('std/vec');
-let lang = import('std/lang');
-let find_lib = import('./find_lib');
+import 'std/fmt' as fmt;
+import 'std/vec' as vec;
+import 'std/lang' as lang;
+import './find_lib' as find_lib;
 
 let binary_base =
 `# {self.bin_name} binary
-set(mod "{self.bin_name}")
-add_executable($\\{mod} "$\\{PROJECT_SOURCE_DIR}/{self.src_path}/{self.main_src}" {self.other_srcs})
-target_link_libraries($\\{mod}{dep_names})
-set_target_properties($\\{mod}
+set(mod "#{self.bin_name}")
+add_executable(${mod} "${PROJECT_SOURCE_DIR}/#{self.src_path}/#{self.main_src}" #{self.other_srcs})
+target_link_libraries(${mod}{dep_names})
+set_target_properties(${mod}
 	PROPERTIES
 	OUTPUT_NAME {self.bin_name}
-	LINK_FLAGS "$\\{EXTRA_LD_FLAGS}"
-	RUNTIME_OUTPUT_DIRECTORY "$\\{CMAKE_BINARY_DIR}/bin"
+	LINK_FLAGS "${EXTRA_LD_FLAGS}"
+	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 	INSTALL_RPATH_USE_LINK_PATH TRUE
 )
-install(TARGETS $\\{mod}
+install(TARGETS ${mod}
 	RUNTIME
 	  DESTINATION bin
 	  COMPONENT Binaries
@@ -29,13 +29,13 @@ let Binary = lang.struct(
 	main_src = 'Main.cpp'
 );
 
-func new(name) { return binary_t(bin_name = name); };
+func new(name) { return Binary(bin_name = name); }
 
-func add_src(src) { self.other_srcs += ' ' + src; return self; };
+func add_src(src) { self.other_srcs += ' ' + src; return self; }
 
-impl Binary.add_dep(dep) { self.deps.push(dep); return self; };
-impl Binary.set_src_path(path) { self.src_path = path; return self; };
-impl Binary.set_main_src(main_src) { self.main_src = main_src; return self; };
+impl Binary.add_dep(dep) { self.deps.push(dep); return self; }
+impl Binary.set_src_path(path) { self.src_path = path; return self; }
+impl Binary.set_main_src(main_src) { self.main_src = main_src; return self; }
 
 impl Binary.gen() {
 	let dep_names = ' ';

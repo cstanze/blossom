@@ -1,11 +1,11 @@
-let io = import('std/io');
+import "std/io" as io;
 
 func f(m) {
-	m.println();
+	m.cprintln();
 }
 
-io.println();
+io.cprintln();
 let x = io;
-x.println();
+x.cprintln();
 
 f(io);

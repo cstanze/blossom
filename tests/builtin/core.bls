@@ -1,4 +1,4 @@
-let sys = import('std/sys');
+import "std/sys" as sys;
 
 // using the function __type__ is also a way to get the type of a variable
 assert('some string'._typestr_() == 'String');

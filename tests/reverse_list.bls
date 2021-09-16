@@ -1,15 +1,17 @@
+// implemented in include/std/vec.bls
+// test in tests/std/vec.bls
 
-let vec = import('std/vec');
+// import "std/vec" as vec;
 
-let list = vec.new(1, 2, 3, 4, 5);
+// let list = vec.new(1, 2, 3, 4, 5);
 
-let mid = list.len() / 2;
+// let mid = list.len() / 2;
 
-for let i = 0; i < mid; ++i {
-	let tmp = list[ i ];
-	list[ i ] = list[ list.len() - i - 1 ];
-	list[ list.len() - i - 1 ] = tmp;
-}
+// for let i = 0; i < mid; ++i {
+// 	let tmp = list[ i ];
+// 	list[ i ] = list[ list.len() - i - 1 ];
+// 	list[ list.len() - i - 1 ] = tmp;
+// }
 
-// println('reversed list is ', list);
-assert(list == vec.new(5, 4, 3, 2, 1));
+// // println('reversed list is ', list);
+// assert(list == vec.new(5, 4, 3, 2, 1));

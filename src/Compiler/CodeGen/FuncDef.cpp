@@ -1,5 +1,3 @@
-
-
 #include "Compiler/CodeGen/Internal.hpp"
 
 std::vector<std::string> fn_args;

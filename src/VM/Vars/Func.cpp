@@ -15,12 +15,24 @@ VarFn::VarFn(const std::string &src_name, const std::string &kw_arg,
              const size_t &idx)
     : VarBase(type_id<VarFn>(), src_id, idx, true, false), m_src_name(src_name),
       m_kw_arg(kw_arg), m_var_arg(var_arg), m_args(args),
-      m_assn_args(assn_args), m_body(body), m_is_native(is_native) {}
+      m_assn_args(assn_args), m_body(body), m_is_native(is_native),
+      m_fn_name(src_name) {}
+VarFn::VarFn(const std::string &src_name, const std::string &kw_arg,
+             const std::string &var_arg, const std::vector<std::string> &args,
+             const std::unordered_map<std::string, VarBase *> &assn_args,
+             const FnBody &body, const bool is_native,
+             const std::string &fn_name, const size_t &src_id,
+             const size_t &idx)
+    : VarBase(type_id<VarFn>(), src_id, idx, true, false), m_src_name(src_name),
+      m_kw_arg(kw_arg), m_var_arg(var_arg), m_args(args),
+      m_assn_args(assn_args), m_body(body), m_is_native(is_native),
+      m_fn_name(fn_name) {}
 VarFn::VarFn(const std::string &src_name, const std::vector<std::string> &args,
              const std::unordered_map<std::string, VarBase *> &assn_args,
              const FnBody &body, const size_t &src_id, const size_t &idx)
     : VarBase(type_id<VarFn>(), src_id, idx, true, false), m_src_name(src_name),
-      m_args(args), m_assn_args(assn_args), m_body(body), m_is_native(true) {}
+      m_args(args), m_assn_args(assn_args), m_body(body), m_is_native(true),
+      m_fn_name(src_name) {}
 VarFn::~VarFn() {
   for (auto &aa : m_assn_args)
     var_dref(aa.second);
@@ -37,6 +49,7 @@ VarBase *VarFn::copy(const size_t &src_id, const size_t &idx) {
 std::string &VarFn::src_name() { return m_src_name; }
 std::string &VarFn::kw_arg() { return m_kw_arg; }
 std::string &VarFn::var_arg() { return m_var_arg; }
+std::string &VarFn::fn_name() { return m_fn_name; }
 std::vector<std::string> &VarFn::args() { return m_args; }
 std::unordered_map<std::string, VarBase *> &VarFn::assn_args() {
   return m_assn_args;

@@ -1,35 +1,41 @@
-
-
 #ifndef COMPILER_ARGS_HPP
 #define COMPILER_ARGS_HPP
 
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include "Common/Errors.hpp"
 
-// Option bit masks
-extern const size_t OPT_A;
-extern const size_t OPT_B; // show byte code
-extern const size_t OPT_C; // (byte) compile
-extern const size_t OPT_D; // dry run (no execute)
-extern const size_t OPT_E; // REPL (eval)
-extern const size_t OPT_F; // fallback to classic compiler
-extern const size_t OPT_G;
-extern const size_t OPT_H;
-extern const size_t OPT_I;
-extern const size_t OPT_L;
-extern const size_t OPT_P; // show parse tree
-extern const size_t OPT_R; // recursively show everything (ex.
-                           // FrontEnd->VM->Import->FrontEnd...)
-extern const size_t OPT_S;
-extern const size_t OPT_T; // show tokens
-extern const size_t OPT_V; // show version
-extern const size_t OPT_1;
+struct Args {
+  bool showBytecode;
+  bool dryRun;
+  bool repl;
+  bool classic;
+  bool showParseTree;
+  bool showTokens;
+  bool showVersion;
+  bool showRecursive;
+  bool hasOutputFile;
+  std::string outputFile;
+
+  Args(bool showBytecode, bool dryRun, bool repl, bool classic,
+       bool showParseTree, bool showTokens, bool showVersion,
+       bool showRecursive, std::string outputFile)
+    : showBytecode(showBytecode), dryRun(dryRun), repl(repl), classic(classic),
+      showParseTree(showParseTree), showTokens(showTokens),
+      showVersion(showVersion), showRecursive(showRecursive),
+      hasOutputFile(!outputFile.empty()), outputFile(outputFile) {}
+  Args()
+    : showBytecode(false), dryRun(false), repl(false), classic(false),
+      showParseTree(false), showTokens(false), showVersion(false),
+      showRecursive(false), hasOutputFile(false), outputFile("") {}
+  ~Args() {}
+};
 
 namespace args {
-extern size_t parsedFlags;
-void printUsage(char *argv0);
-size_t parse(const int argc, const char **argv,
+extern Args *parsedArgs;
+void printUsage(const char *argv0);
+Errors parse(const int argc, const char **argv,
              std::unordered_map<std::string, std::string> &args,
              std::vector<std::string> &code_args);
 }

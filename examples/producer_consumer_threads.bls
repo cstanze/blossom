@@ -4,7 +4,7 @@
 // it uses mutex (mtx) to ensure the vector isn't corrupted.
 
 let io = import('std/io');
-let rng = import('std/rng');
+let rng = import('std/random');
 let vec = import('std/vec');
 let mutex = import('std/mutex');
 let threads = import('std/threads');

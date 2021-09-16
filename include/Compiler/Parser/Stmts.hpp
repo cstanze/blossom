@@ -143,12 +143,28 @@ public:
   const std::vector<const StmtVarDeclBase *> &decls() const;
 };
 
+
+class ImportWith : public StmtBase {
+  const lex::tok_t *m_name;
+  const lex::tok_t *m_alias;
+
+public:
+  ImportWith(const lex::tok_t *name, const lex::tok_t *alias, const size_t &idx);
+  ~ImportWith();
+
+  void disp(const bool hasNext) const;
+  bool codegen(Bytecode &bc) const;
+
+  const lex::tok_t *name() const;
+  const lex::tok_t *alias() const;
+};
 class StmtImportBase : public StmtBase {
   const StmtSimple *m_mod;
   const StmtSimple *m_name;
+  const std::vector<ImportWith*> m_with;
 
 public:
-  StmtImportBase(const StmtSimple *mod, const StmtSimple *name, const size_t &idx);
+  StmtImportBase(const StmtSimple *mod, const StmtSimple *name, const std::vector<ImportWith*>& with, const size_t &idx);
   ~StmtImportBase();
 
   void disp(const bool has_next) const;
@@ -157,6 +173,7 @@ public:
 
   const StmtSimple *mod() const;
   const StmtSimple *name() const;
+  const std::vector<ImportWith*> &with() const;
 };
 
 class StmtImport : public StmtBase {

@@ -1,5 +1,5 @@
 mload('std/rng');
-let time = import('std/time');
+import 'std/time' as time;
 
 seed(time.now().int());
 
@@ -9,3 +9,4 @@ func get(from, to) {
 	let res = get_native(to - from + 1); // [0, to - from]
 	return res + from;
 }
+

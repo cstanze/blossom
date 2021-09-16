@@ -6,16 +6,13 @@ Errors parse_expr_cols(ParseHelper &ph, StmtBase *&loc) {
   if (parse_expr(ph, loc) != E_OK) {
     goto fail;
   }
-  if (ph.accept(TOK_COLS)) {
-    // allow no ';' at the end, probably do something else idk
-
-    // Err::set(E_PARSE_FAIL, ph.peak()->pos,
-    //          "expected semicolon at the end of expression, found: '%s'",
-    //          TokStrs[ph.peakt()]);
-    // goto fail;
-    ph.next();
+  if (!ph.accept(TOK_COLS)) {
+    Err::set(E_PARSE_FAIL, ph.peak()->pos,
+             "expected semicolon at the end of expression, found: '%s'",
+             TokStrs[ph.peakt()]);
+    goto fail;
   }
-  // ph.next();
+  ph.next();
   return E_OK;
 fail:
   if (loc) {
@@ -31,10 +28,10 @@ Errors parse_expr_cols_or_rbrace(ParseHelper &ph, StmtBase *&loc) {
     goto fail;
   }
   if (!ph.accept(TOK_COLS, TOK_RBRACE)) {
-    // Err::set(E_PARSE_FAIL, ph.peak()->pos,
-    //          "expected semicolon at the end of expression, found: '%s'",
-    //          TokStrs[ph.peakt()]);
-    // goto fail;
+    Err::set(E_PARSE_FAIL, ph.peak()->pos,
+             "expected semicolon at the end of expression, found: '%s'",
+             TokStrs[ph.peakt()]);
+    goto fail;
   }
   return E_OK;
 fail:

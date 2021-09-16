@@ -1,6 +1,67 @@
 // executes all '.bls' files in a given directory
 // ensures they all exit with return code zero
+import "std/io" with (cprintln, fflush, stdout);
+import "std/fs" as fs;
+import "std/os" as os;
+import "std/multiproc" as mp;
+import "std/vec" as vec;
+import "std/sys" as sys;
+import "std/stat" with stat;
+import "std/time" as time;
 
-let io = import("std/io");
+if sys.args.empty() {
+  println("Usage: ", sys.self_bin, ' test <directory>');
+  sys.exit(1);
+}
 
-io.cprintln("{r}Test Runner Not Implemented!{0}");
+let st = stat(sys.args[0]) or err {
+  println("stat failed: ", os.strerr(err));
+  sys.exit(1);
+  nil
+};
+
+if !st.isdir() {
+  println("Given path is not a directory");
+  sys.exit(1);
+}
+
+let files = fs.walkdir(sys.args[0], fs.WALK_RECURSE, '(.*)\\.bls');
+let passed = 0, failed = 0;
+let tpool = vec.new(refs = true);
+let mprocs = mp.nproc();
+
+func wait_procs(mprocs) {
+  while tpool.len() >= mprocs {
+    for let i = 0; i < tpool.len(); ++i {
+      if !tpool[i].done() { continue; }
+      let t = tpool[i];
+      if t.res() != 0 {
+        ++failed;
+        cprintln("{r}failed {y}", files[t.id()], "{0} {y}code{0}: {r}", t.res(), "{0}");
+      } else {
+        ++passed;
+      }
+      tpool.erase(i--);
+    }
+  }
+}
+
+let tbegin = time.now();
+
+for file in files.each() {
+  wait_procs(mprocs);
+  cprintln("{c}test{0}: {y}", file, "{0} ...");
+  fflush(stdout);
+  tpool.push(mp.new(sys.self_bin + " " + file + ">/dev/null"));
+}
+wait_procs(1);
+
+let total_time = time.now() - tbegin;
+cprintln(
+  "total: {y}", files.len(),
+  "{0}, passed: {g}", passed,
+  "{0}, failed: {r}", failed,
+  "{0}, time: {b}", time.resolve(total_time, time.milli).round(),
+  "{0} ms"
+);
+sys.exit(failed);

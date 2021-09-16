@@ -162,6 +162,7 @@ done:
     bc.updatesz(bypass_or_blk_pos, bc.size());
   }
 
+  // TODO: Find a fix for the loop stack issue
   if (m_with_cols)
     bc.add(idx(), OP_ULOAD);
   return true;
