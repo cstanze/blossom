@@ -15,6 +15,8 @@ bool exists(const std::string &loc);
 std::string absPath(const std::string &loc, std::string *dir = nullptr,
                     const bool &dir_add_double_dot = false);
 
+bool isAbsolute(const std::string &loc);
+
 std::string cwd();
 std::string home();
 

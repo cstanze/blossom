@@ -7,6 +7,7 @@
 #include <vector>
 
 namespace String {
+bool endsWith(const std::string& str, const std::string& suffix);
 std::vector<std::string> split(const std::string &data, const std::string &delim);
 std::string join(const std::vector<std::string> &data,
                               const char delim);

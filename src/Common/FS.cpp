@@ -31,6 +31,10 @@ std::string absPath(const std::string &loc, std::string *dir,
   return abs;
 }
 
+bool isAbsolute(const std::string &loc) {
+  return loc.size() > 0 && (loc[0] == '/' || loc[0] == '\\');
+}
+
 std::string cwd() {
   static char cwd[MAX_PATH_CHARS];
   if (getcwd(cwd, sizeof(cwd)) != NULL) {

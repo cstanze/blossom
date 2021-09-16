@@ -7,6 +7,11 @@
 #include <vector>
 
 namespace String {
+bool endsWith(const std::string& str, const std::string& suffix) {
+    return str.size() >= suffix.size() &&
+           str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
+}
+
 std::vector<std::string> split(const std::string &str,
                                const std::string &delim) {
   std::vector<std::string> tokens = std::vector<std::string>();

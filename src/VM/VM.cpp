@@ -257,7 +257,9 @@ bool VMState::mod_exists(const std::vector<std::string> &locs, std::string &mod,
                          const std::string &ext, std::string &dir) {
   if (mod.front() != '~' && mod.front() != '/' && mod.front() != '.') {
     for (auto &loc : locs) {
-      if (FS::exists(loc + "/" + mod + ext)) {
+      if (FS::exists(loc + "/" + mod + ext)
+          || FS::exists(loc + "/" + mod + ".blsc")
+          || FS::exists(loc + "/" + mod)) {
         mod = FS::absPath(loc + "/" + mod + ext, &dir);
         return true;
       }
@@ -273,7 +275,7 @@ bool VMState::mod_exists(const std::vector<std::string> &locs, std::string &mod,
       mod.erase(mod.begin());
       mod = src_stack.back()->src()->dir() + mod;
     }
-    if (FS::exists(mod + ext)) {
+    if (FS::exists(mod + ext) || FS::exists(mod)) {
       mod = FS::absPath(mod + ext, &dir);
       return true;
     }
@@ -329,9 +331,10 @@ bool VMState::nmod_load(const std::string &mod_str, const size_t &src_id,
 int VMState::bmod_load(std::string &mod_file, const size_t &src_id,
                        const size_t &idx) {
   std::string mod_dir;
-  if (!mod_exists(m_inc_locs, mod_file, bmod_ext(), mod_dir)) {
+  bool compiled = String::endsWith(mod_file, ".blsc");
+  if (!mod_exists(m_inc_locs, mod_file, bmod_ext(compiled), mod_dir)) {
     fail(src_id, idx, "import file: %s not found in locations: %s",
-         (mod_file + bmod_ext()).c_str(),
+         (mod_file + bmod_ext(compiled)).c_str(),
          String::stringify(m_inc_locs).c_str());
     return E_FAIL;
   }

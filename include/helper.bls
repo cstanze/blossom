@@ -65,7 +65,7 @@ while true {
     }
     os.exec("blossom install");
   } else if opt == "p" || opt == "print_info" {
-    let path = os.get_cwd() + "/.buildinfo.bls";
+    let path = os.get_cwd() + "/.buildinfo";
     let buildinfo = __import__(path) or _ {
       cprintln("{r}No Build Info Found {0}(Couldn't find '{c}.buildinfo.bls{0}' in current directory)");
       continue;
