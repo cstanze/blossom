@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="../variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="../data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="../conditionals.html"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="../loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="../functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="../imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../imports/syntax.html" class="active"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="../imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="../imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="../variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="../data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="../conditionals.html"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="../loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="../functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="../imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../imports/syntax.html" class="active"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="../imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="../imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li><li class="chapter-item expanded "><a href="../stdlib.html"><strong aria-hidden="true">11.</strong> Standard Library</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../stdlib/optionals.html"><strong aria-hidden="true">11.1.</strong> Optionals</a></li></ol></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -143,7 +143,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="learning-the-syntax"><a class="header" href="#learning-the-syntax">Learning the syntax</a></h1>
+                        <!-- markdownlint-disable MD033 -->
+<h1 id="learning-the-syntax"><a class="header" href="#learning-the-syntax">Learning the syntax</a></h1>
 <p>Imports are a vital structure for Blossom. As your project begins to grow, so will your codebase. To reduce clutter and file size, we've added support for importing modules, whether they be coded in Blossom or C++.</p>
 <h2 id="basic-imports"><a class="header" href="#basic-imports">Basic Imports</a></h2>
 <p>By default, Blossom imports the <code>core</code> and <code>utils</code> library to use. This includes many functions for primitive types. This also includes the <code>print</code> and <code>println</code> functions. Additional functions available to you are <code>import</code> and <code>mload</code> which we'll discuss in more detail. The compiler also includes a keyword <em>named</em> <code>import</code>. Notice the conflictions between the function name and keyword? We'll discuss that in more detail later.</p>
@@ -168,14 +169,57 @@ let x = &quot;xxhiyaxx&quot;;
 
 println(x.substr(2, 4)) // prints &quot;hiya&quot;
 </code></pre>
+<h2 id="attribute-imports"><a class="header" href="#attribute-imports">Attribute Imports</a></h2>
+<p>Imagine the following code:</p>
+<pre><code class="language-bls">import &quot;std/optional&quot; as optional
+
+let x = optional.Some(1)
+println(x)
+</code></pre>
+<p>It doesn't seem like much, but when it gets to a bigger scale, having to write out <code>optional.Some</code> many many many times is exhausting and somewhat unreadable. But, with attribute imports, we can simply import <code>Some</code> itself!</p>
+<pre><code class="language-bls">// with attribute imports...
+import &quot;std/optional&quot; with Some
+
+// we can import Some!
+let x = Some(1)
+println(x)
+</code></pre>
+<p>Much easier! But wait, what if we wanted to use the name <code>Some</code>? That's fine, we'll just alias <code>Some</code> to another name!</p>
+<pre><code class="language-bls">import &quot;std/optional&quot; with Some as S
+
+let x = S(1)
+println(x)
+</code></pre>
+<p>Even better. With attribute imports, importing modules, types, functions, and variables is much much easier.</p>
 <h2 id="multiple-imports"><a class="header" href="#multiple-imports">Multiple Imports</a></h2>
-<p>This section is a bit short but here is the basic rundown of importing multiple modules in one line.</p>
-<p>We can separate imports by commas! Note, we added the newlines to make it easier to read. They're obviously optional</p>
+<p>This section is a bit short but here is the basic rundown of importing multiple modules in one line: we can separate imports by commas!</p>
+<h3 id="multiple-basic-imports"><a class="header" href="#multiple-basic-imports">Multiple Basic Imports</a></h3>
 <pre><code class="language-bls">import &quot;std/str&quot;, 
        &quot;std/sys&quot; as sys,
        &quot;std/vec&quot; as vec,
        &quot;std/map&quot; as map
 </code></pre>
+<h3 id="multiple-attribute-imports"><a class="header" href="#multiple-attribute-imports">Multiple Attribute Imports</a></h3>
+<p>For attribute imports, we separate different attributes using an attribute list. We specify a parenthesized list of attributes (with support for aliases).</p>
+<pre><code class="language-bls">import &quot;std/optional&quot; with (Some as S, None)
+
+let x = Some(1)
+let y = None()
+</code></pre>
+<p>Attribute import lists with only 1 attribute is also allowed:</p>
+<pre><code class="language-bls">import &quot;std/optional&quot; with (Some as S)
+</code></pre>
+<h3 id="putting-it-all-together"><a class="header" href="#putting-it-all-together">Putting it all together</a></h3>
+<p>Below is an example of basic imports and attribute imports working together (including their other variants):</p>
+<pre><code class="language-bls">import &quot;std/optional&quot; with (Some as S, None),
+       &quot;std/lang&quot; as lang with (enum as em),
+       &quot;std/str&quot;
+</code></pre>
+<p>Note the <code>with</code> after we already assigned <code>std/lang</code> to <code>lang</code>? This is completely valid.</p>
+<details>
+<summary>Try to figure out what the final result is...</summary>
+<p>You've likely guessed by now what this does. When we import <code>std/lang</code>, it assigns the import to <code>lang</code>. But then, we reimport <code>lang</code> and extract the <code>enum</code> function into a variable alias of the name <code>em</code>. Awesome!</p>
+</details>
 
                     </main>
 

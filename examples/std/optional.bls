@@ -1,0 +1,15 @@
+import "std/optional" as optional
+
+let x = optional.Some(1)
+let y = optional.None()
+
+println(x) // Some(1)
+println(y) // None
+
+x = optional.None()
+
+if x.is_none() {
+  println("x is None")
+} else {
+  println("x is Some(" + x.unwrap() + ")")
+}

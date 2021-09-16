@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Conditionals - Blossom Lang</title>
+        <title>Optionals - Blossom Lang</title>
                 
 
         <!-- Custom HTML head -->
@@ -14,21 +14,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-                <link rel="icon" href="favicon.svg">
-                        <link rel="shortcut icon" href="favicon.png">
-                <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-                <link rel="stylesheet" href="css/print.css" media="print">
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
         
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-                <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
         
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         
@@ -36,7 +36,7 @@
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="conditionals.html" class="active"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="imports/syntax.html"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li><li class="chapter-item expanded "><a href="stdlib.html"><strong aria-hidden="true">11.</strong> Standard Library</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="stdlib/optionals.html"><strong aria-hidden="true">11.1.</strong> Optionals</a></li></ol></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../getting_started.html"><strong aria-hidden="true">3.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gs/additional-notes.html"><strong aria-hidden="true">3.1.</strong> Additional Notes</a></li></ol></li><li class="chapter-item expanded "><a href="../variables.html"><strong aria-hidden="true">4.</strong> Variables</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../naming_conventions.html"><strong aria-hidden="true">4.1.</strong> Naming Conventions</a></li></ol></li><li class="chapter-item expanded "><a href="../data_types.html"><strong aria-hidden="true">5.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="../conditionals.html"><strong aria-hidden="true">6.</strong> Conditionals</a></li><li class="chapter-item expanded "><a href="../loops.html"><strong aria-hidden="true">7.</strong> Loops</a></li><li class="chapter-item expanded "><a href="../functions.html"><strong aria-hidden="true">8.</strong> Functions</a></li><li class="chapter-item expanded "><a href="../imports.html"><strong aria-hidden="true">9.</strong> Imports</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../imports/syntax.html"><strong aria-hidden="true">9.1.</strong> Learning the syntax</a></li><li class="chapter-item expanded "><a href="../imports/standard.html"><strong aria-hidden="true">9.2.</strong> Importing the standard library</a></li><li class="chapter-item expanded "><a href="../imports/external.html"><strong aria-hidden="true">9.3.</strong> Importing external modules</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> C++ modules</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.1.</strong> Creating C++ modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.2.</strong> Loading C++ modules</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../core_funcs.html"><strong aria-hidden="true">10.</strong> Core Functions</a></li><li class="chapter-item expanded "><a href="../stdlib.html"><strong aria-hidden="true">11.</strong> Standard Library</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../stdlib/optionals.html" class="active"><strong aria-hidden="true">11.1.</strong> Optionals</a></li></ol></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -114,7 +114,7 @@
                     <h1 class="menu-title">Blossom Lang</h1>
 
                     <div class="right-buttons">
-                                                <a href="print.html" title="Print this book" aria-label="Print this book">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                                                                         
@@ -143,79 +143,56 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="conditionals"><a class="header" href="#conditionals">Conditionals</a></h1>
-<p>In Blossom, like most languages, conditionals follow the format:</p>
-<pre><code class="language-bls">if &lt;some expression&gt; {
-  // do something
-} elif &lt;maybe another expression&gt; {
-  // do something else
-} else {
-  // nothing else worked, let's fallback to this.
+                        <h1 id="optionals"><a class="header" href="#optionals">Optionals</a></h1>
+<p>In this chapter, we'll discuss Optionals and their uses across Blossom:</p>
+<h2 id="an-introduction"><a class="header" href="#an-introduction">An Introduction</a></h2>
+<p>Optional types aren't a new concept but they've been gaining popularity in computer science and computer programming due to their safety compared to traditional <code>null</code> types. In Blossom, the <code>nil</code> type is <strong>not</strong> the equivalent to Optionals. But, we had safety in mind. The <code>std/optional</code> library includes a new <code>Option</code> type and a few new functions to interact with this type.</p>
+<h2 id="option-some-and-none"><a class="header" href="#option-some-and-none"><code>Option</code>, <code>Some</code>, and <code>None</code></a></h2>
+<p>The new function <code>Option</code> provides a wrapper for the <code>OptionInner</code> type:</p>
+<pre><code class="language-bls">/// Return a new Option with the given value, or None if the value is nil.
+func Option(inner = nil) {
+  // copies the inner value, deters ptr changes
+  return OptionInner(ptr.new(_optionCopy(inner)));
 }
 </code></pre>
-<p>As of Blossom v0.1.0, the following style is also supported:</p>
-<pre><code class="language-bls">if &lt;something&gt; {
-  // do something
-} else if &lt;something else&gt; {
-  // do another thing
-} else {
-  // try one final thing
+<p><strong>Note:</strong> Despite using <code>ptr</code> for the <code>Option</code> type, we use <code>_optionCopy</code> to copy the value before storing it in a <code>ptr</code>. No need to worry about changing values.</p>
+<p>The reason for using <code>ptr</code> instead of the raw type is best explained in <a href="../data_types.html">Data Types</a>, where we cover certain type restrictions. These type restrictions also apply to structs. Using <code>ptr</code> allows us to get around these restrictions. Essentially creating a &quot;type generic&quot; for <code>OptionInner</code>.</p>
+<p>The <code>Option</code> function creates an <code>OptionInner</code> and returns it. The <code>Some</code> function does the same except the argument does not have a default. The <code>None</code> function creates an <code>OptionInner</code> without any value.</p>
+<pre><code class="language-bls">/// Return an new Option with the given value.
+func Some(inner) {
+  return Option(inner);
+</code></pre>
+<pre><code class="language-bls">/// Return an new empty Option.
+func None() {
+  return Option();
 }
 </code></pre>
-<p>Do note that the <code>elif</code>/<code>else if</code> and <code>else</code> portions are not mandatory. But, the order is absolute. A conditional can have any number <code>elif</code>/<code>else if</code> sections.</p>
-<h2 id="logical-operators"><a class="header" href="#logical-operators">Logical Operators</a></h2>
-<p>Logical Operators are operators that perform logical comparisons. They're interpreted from left to right, so if one fails (in a logical <code>and</code>), the others won't be interpreted. For example,</p>
-<pre><code class="language-bls">let x = false;
-func test() {
-  println(&quot;test!&quot;);
-  return true;
-}
+<p>More information can be found in the standard library documentation. Below is an example using Optionals:</p>
+<pre><code class="language-bls">import &quot;std/optional&quot; as optional
 
-// won't print &quot;test!&quot; to the console
-// because its not interpreted
-if x &amp;&amp; test() {
-  println(&quot;good!&quot;)
+let x = optional.Some(1)
+let y = optional.None()
+
+println(x) // Some(1)
+println(y) // None
+
+x = optional.None()
+
+if x.is_none() {
+  println(&quot;x is None&quot;)
 } else {
-  println(&quot;not good!&quot;)
+  println(&quot;x is Some(&quot; + x.unwrap() + &quot;)&quot;)
 }
 </code></pre>
-<p>Below is a short list of logical operators:</p>
-<ul>
-<li><code>&amp;&amp;</code> - Checks if both sides evaluate to the <code>true</code> boolean value.
-<ul>
-<li><code>true &amp;&amp; true</code> - True</li>
-<li><code>false &amp;&amp; true</code> - False</li>
-<li><code>true &amp;&amp; false</code> - False</li>
-<li><code>false &amp;&amp; false</code> - False</li>
-</ul>
-</li>
-<li><code>||</code> - Checks if at least one side evaluates to the <code>true</code> boolean value.
-<ul>
-<li><code>true || true</code> - True</li>
-<li><code>true || false</code> - True</li>
-<li><code>false || true</code> - True</li>
-<li><code>false || false</code> - False</li>
-</ul>
-</li>
-<li><code>!</code> - Gets the opposite boolean value.
-<ul>
-<li><code>!true</code> - False</li>
-<li><code>!false</code> - True</li>
-</ul>
-</li>
-</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                                                    <a rel="prev" href="data_types.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                                    <a rel="prev" href="../stdlib.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
-                                                    <a rel="next" href="loops.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
                         
                         <div style="clear: both"></div>
                     </nav>
@@ -223,13 +200,10 @@ if x &amp;&amp; test() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                                    <a rel="prev" href="data_types.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                    <a rel="prev" href="../stdlib.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
-                                    <a rel="next" href="loops.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
                             </nav>
 
         </div>
@@ -242,13 +216,13 @@ if x &amp;&amp; test() {
         </script>
         
         
-                <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
         
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
         

@@ -398,7 +398,7 @@ literal:["true","false"],
 built_in:"break cd continue eval exec exit export getopts hash pwd readonly return shift test times trap umask unset alias bind builtin caller command declare echo enable help let local logout mapfile printf read readarray source type typeset ulimit unalias set shopt autoload bg bindkey bye cap chdir clone comparguments compcall compctl compdescribe compfiles compgroups compquote comptags comptry compvalues dirs disable disown echotc echoti emulate fc fg float functions getcap getln history integer jobs kill limit log noglob popd print pushd pushln rehash sched setcap setopt stat suspend ttyctl unfunction unhash unlimit unsetopt vared wait whence where which zcompile zformat zftp zle zmodload zparseopts zprof zpty zregexparse zsocket zstyle ztcp"
 },contains:[o,e.SHEBANG(),l,r,e.HASH_COMMENT_MODE,i,s,{className:"",begin:/\\"/
 },{className:"string",begin:/'/,end:/'/},n]}},grmr_blossom:e=>{const n={
-keyword:["break","func","else","if", "elif","as","continue","for","import","return","let","impl","self","Bool","String","Int"],
+keyword:["break","func","else","if", "elif","as","with","continue","for","import","return","let","impl","self","Bool","String","Int"],
 literal:["true","false","nil"],built_in:["print","println","range","mload"]}
 ;return{name:"Blossom",aliases:["blossom","bls"],keywords:n,illegal:"</",
 contains:[e.SHEBANG(),e.C_LINE_COMMENT_MODE,e.C_BLOCK_COMMENT_MODE,{className:"string",
