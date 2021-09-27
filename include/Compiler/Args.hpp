@@ -6,6 +6,8 @@
 #include <vector>
 #include "Common/Errors.hpp"
 
+using namespace blossom;
+
 struct Args {
   bool showBytecode;
   bool dryRun;

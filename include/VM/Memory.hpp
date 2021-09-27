@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 
+namespace blossom {
 typedef unsigned char u8;
 
 struct __sys_align_t {
@@ -46,5 +47,5 @@ inline void free(void *ptr, size_t sz) {
   return mem_mgr_t::instance().free(ptr, sz);
 }
 } // namespace mem
-
+} // namespace blossom
 #endif // VM_MEMORY_HPP

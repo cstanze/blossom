@@ -6,6 +6,7 @@
 #include <string>
 #include <unordered_map>
 
+namespace blossom {
 /* Wrapper class for dlfcn.h library */
 class DynLib {
   std::unordered_map<std::string, void *> m_handles;
@@ -20,5 +21,5 @@ public:
     return m_handles.find(file) != m_handles.end();
   }
 };
-
+}
 #endif // VM_DYN_LIB_HPP

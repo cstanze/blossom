@@ -6,9 +6,10 @@
 
 static std::mutex mem_mtx;
 
+namespace blossom {
 namespace mem {
 size_t mult8_roundup(size_t sz) { return (sz > 512) ? sz : (sz + 7) & ~7; }
-} // namespace mem
+} // namespace blossom::mem
 
 #ifdef MEM_PROFILE
 static size_t tot_alloc = 0;
@@ -117,4 +118,5 @@ void mem_mgr_t::free(void *ptr, size_t sz) {
   fprintf(stdout, "Giving back to pool ... %zu\n", sz);
 #endif
   m_free_chunks[sz].push_front((u8 *)ptr);
+}
 }

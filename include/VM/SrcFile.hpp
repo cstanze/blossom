@@ -9,6 +9,7 @@
 #include "../Common/Errors.hpp"
 #include "OpCodes.hpp"
 
+namespace blossom {
 /**
  * \brief Defines the range of columns for a line of source code
  *
@@ -129,5 +130,5 @@ public:
    */
   void fail(const size_t &idx, const char *msg, va_list vargs) const;
 };
-
+} // namespace blossom
 #endif // VM_SRC_FILE_HPP

@@ -102,6 +102,7 @@ std::vector<std::string> additionalDllPaths(std::string base) {
   return config["dllPaths"].get<std::vector<std::string>>();
 }
 
+namespace blossom {
 // env: BLOSSOM_PATHS
 VMState::VMState(const std::string &self_bin, const std::string &self_base,
                  const std::vector<std::string> &args,
@@ -258,7 +259,6 @@ bool VMState::mod_exists(const std::vector<std::string> &locs, std::string &mod,
   if (mod.front() != '~' && mod.front() != '/' && mod.front() != '.') {
     for (auto &loc : locs) {
       if (FS::exists(loc + "/" + mod + ext)
-          || FS::exists(loc + "/" + mod + ".blsc")
           || FS::exists(loc + "/" + mod)) {
         mod = FS::absPath(loc + "/" + mod + ext, &dir);
         return true;
@@ -496,6 +496,7 @@ const char *nmod_ext() {
 
 const char *bmod_ext(const bool compiled) {
   if (compiled)
-    return ".cbl";
+    return ".blsc";
   return ".bls";
+}
 }

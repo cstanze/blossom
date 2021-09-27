@@ -7,6 +7,7 @@
 
 #include "Vars/Base.hpp"
 
+namespace blossom {
 class VMStack {
   std::vector<VarBase *> m_vec;
 
@@ -28,5 +29,6 @@ public:
 
   VMStack *thread_copy();
 };
+} // namespace blossom
 
 #endif // VM_VM_STACK_HPP

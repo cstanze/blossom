@@ -4,6 +4,8 @@
 
 #include "VM/Memory.hpp"
 
+namespace blossom {
+
 VarsFrame::VarsFrame() {}
 VarsFrame::~VarsFrame() {
   for (auto &var : m_vars)
@@ -211,4 +213,5 @@ Vars *Vars::thread_copy(const size_t &src_id, const size_t &idx) {
     v->m_fn_vars[fv.first] = fv.second->thread_copy(src_id, idx);
   }
   return v;
+}
 }

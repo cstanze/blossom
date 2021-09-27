@@ -9,6 +9,7 @@
 
 #define MAX_PATH_CHARS 4096
 
+namespace blossom {
 namespace FS {
 bool exists(const std::string &loc);
 
@@ -23,5 +24,5 @@ std::string home();
 std::string relativePath(const std::string &path, const std::string &dir = "");
 
 } // namespace FS
-
+} // namespace blossom
 #endif // COMMON_FS_HPP

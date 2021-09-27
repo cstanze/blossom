@@ -11,11 +11,10 @@
 
 #include "Common/Env.hpp"
 
-namespace FS {
-bool exists(const std::string &loc) { return access(loc.c_str(), F_OK) != -1; }
+bool blossom::FS::exists(const std::string &loc) { return access(loc.c_str(), F_OK) != -1; }
 
-std::string absPath(const std::string &loc, std::string *dir,
-                    const bool &dir_add_double_dot) {
+std::string blossom::FS::absPath(const std::string &loc, std::string *dir,
+                             const bool &dir_add_double_dot) {
   static char abs[MAX_PATH_CHARS];
   static char abs_tmp[MAX_PATH_CHARS];
   realpath(loc.c_str(), abs);
@@ -31,11 +30,11 @@ std::string absPath(const std::string &loc, std::string *dir,
   return abs;
 }
 
-bool isAbsolute(const std::string &loc) {
+bool blossom::FS::isAbsolute(const std::string &loc) {
   return loc.size() > 0 && (loc[0] == '/' || loc[0] == '\\');
 }
 
-std::string cwd() {
+std::string blossom::FS::cwd() {
   static char cwd[MAX_PATH_CHARS];
   if (getcwd(cwd, sizeof(cwd)) != NULL) {
     return cwd;
@@ -43,7 +42,7 @@ std::string cwd() {
   return "";
 }
 
-std::string home() {
+std::string blossom::FS::home() {
   static std::string _home = Env::get("HOME");
   return _home;
 }
@@ -73,7 +72,8 @@ std::string _absPath(const std::string &path) {
   return std::string(_abs);
 }
 
-std::string relativePath(const std::string &path, const std::string &d) {
+std::string blossom::FS::relativePath(const std::string &path,
+                                      const std::string &d) {
   if (path.empty())
     return "";
   std::string dir = d.empty() ? cwd() : d;
@@ -99,5 +99,3 @@ std::string relativePath(const std::string &path, const std::string &d) {
     return "./" + res;
   return res;
 }
-
-} // namespace FS

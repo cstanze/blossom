@@ -8,16 +8,16 @@
 #include <string>
 #include <unordered_map>
 
-DynLib::DynLib() {}
+blossom::DynLib::DynLib() {}
 
-DynLib::~DynLib() {
+blossom::DynLib::~DynLib() {
   for (auto &e : m_handles) {
     if (e.second != nullptr)
       dlclose(e.second);
   }
 }
 
-void *DynLib::load(const std::string &file) {
+void *blossom::DynLib::load(const std::string &file) {
   if (m_handles.find(file) == m_handles.end()) {
     // RTLD_GLOBAL is required for allowing unique type_id<>() across shared
     // library boundaries; see the following
@@ -39,14 +39,14 @@ void *DynLib::load(const std::string &file) {
   return m_handles[file];
 }
 
-void DynLib::unload(const std::string &file) {
+void blossom::DynLib::unload(const std::string &file) {
   if (m_handles.find(file) == m_handles.end())
     return;
   dlclose(m_handles[file]);
   m_handles.erase(file);
 }
 
-void *DynLib::get(const std::string &file, const std::string &sym) {
+void *blossom::DynLib::get(const std::string &file, const std::string &sym) {
   if (m_handles.find(file) == m_handles.end())
     return nullptr;
   return dlsym(m_handles[file], sym.c_str());

@@ -6,7 +6,7 @@
 
 #include "VM/Memory.hpp"
 
-const char *OpCodeStrs[_OP_LAST] = {
+const char *blossom::OpCodeStrs[blossom::_OP_LAST] = {
     "CREATE", // create a new variable
     "STORE",  // store in a name: value from stack
     "LOAD",   // load from operand, onto stack
@@ -53,7 +53,7 @@ const char *OpCodeStrs[_OP_LAST] = {
                     // expression
 };
 
-const char *OpDataTypeStrs[_ODT_LAST] = {
+const char *blossom::OpDataTypeStrs[blossom::_ODT_LAST] = {
     "INT",
 
     "FLOAT",
@@ -70,11 +70,11 @@ const char *OpDataTypeStrs[_ODT_LAST] = {
 };
 
 inline char *scpy(const std::string &str) {
-  char *res = (char *)mem::alloc(str.size() + 1);
+  char *res = (char *)blossom::mem::alloc(str.size() + 1);
   return strcpy(res, str.c_str());
 }
 
-Bytecode::~Bytecode() {
+blossom::Bytecode::~Bytecode() {
   for (auto &op : m_bcode) {
     if (op.dtype != ODT_SZ && op.dtype != ODT_BOOL && op.dtype != ODT_NIL) {
       mem::free(op.data.s, mem::mult8_roundup(strlen(op.data.s) + 1));
@@ -82,35 +82,38 @@ Bytecode::~Bytecode() {
   }
 }
 
-void Bytecode::add(const size_t &idx, const OpCodes op) {
+void blossom::Bytecode::add(const size_t &idx, const OpCodes op) {
   m_bcode.push_back(Op{0, idx, op, ODT_NIL, ODT_NIL, {.s = nullptr}});
 }
-void Bytecode::adds(const size_t &idx, const OpCodes op, const OpDataType dtype,
-                    const std::string &data) {
+void blossom::Bytecode::adds(const size_t &idx, const OpCodes op,
+                             const OpDataType dtype, const std::string &data) {
   m_bcode.push_back(Op{0, idx, op, dtype, dtype, {.s = scpy(data)}});
 }
-void Bytecode::addsn(const size_t &idx, const OpCodes op, const OpDataType dtype,
-                    const OpDataType rtype, const std::string &data) {
+void blossom::Bytecode::addsn(const size_t &idx, const OpCodes op,
+                              const OpDataType dtype, const OpDataType rtype,
+                              const std::string &data) {
   m_bcode.push_back(Op{0, idx, op, dtype, rtype, {.s = scpy(data)}});
 }
-void Bytecode::addb(const size_t &idx, const OpCodes op, const bool &data) {
+void blossom::Bytecode::addb(const size_t &idx, const OpCodes op,
+                             const bool &data) {
   m_bcode.push_back(Op{0, idx, op, ODT_BOOL, ODT_BOOL, {.b = data}});
 }
-void Bytecode::addsz(const size_t &idx, const OpCodes op,
-                     const std::string &data) {
+void blossom::Bytecode::addsz(const size_t &idx, const OpCodes op,
+                              const std::string &data) {
   m_bcode.push_back(Op{0, idx, op, ODT_SZ, ODT_SZ, {.sz = std::stoull(data)}});
 }
-void Bytecode::addsz(const size_t &idx, const OpCodes op, const size_t &data) {
+void blossom::Bytecode::addsz(const size_t &idx, const OpCodes op,
+                              const size_t &data) {
   m_bcode.push_back(Op{0, idx, op, ODT_SZ, ODT_SZ, {.sz = data}});
 }
 
-OpCodes Bytecode::at(const size_t &pos) const {
+blossom::OpCodes blossom::Bytecode::at(const size_t &pos) const {
   if (pos >= m_bcode.size())
     return _OP_LAST;
   return m_bcode[pos].op;
 }
 
-void Bytecode::updatesz(const size_t &pos, const size_t &value) {
+void blossom::Bytecode::updatesz(const size_t &pos, const size_t &value) {
   if (pos >= m_bcode.size())
     return;
   m_bcode[pos].data.sz = value;

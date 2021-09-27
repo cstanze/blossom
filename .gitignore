@@ -18,6 +18,10 @@ testbin/
 bin/
 /lib/
 build/
+build-linux/
+build-win/
+build-osx/
+install-out/
 dockerbuild/
 buildfiles/
 CMakeFiles/

@@ -15,6 +15,9 @@
 
 #include "../SrcFile.hpp"
 
+using namespace blossom;
+
+namespace blossom {
 class VarBase;
 struct FnAssnArg {
   size_t src_id;
@@ -363,5 +366,5 @@ public:
 #define SRC(x) static_cast<VarSrc *>(x)
 
 void init_typenames(VMState &vm);
-
+} // namespace blossom
 #endif // VM_VARS_BASE_HPP

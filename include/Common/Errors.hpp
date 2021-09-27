@@ -5,6 +5,7 @@
 
 #include <string>
 
+namespace blossom {
 enum Errors {
   E_OK,
 
@@ -25,6 +26,7 @@ enum Errors {
 };
 
 namespace Err {
+using namespace blossom;
 size_t &code();
 size_t &val();
 std::string &str();
@@ -32,5 +34,5 @@ std::string &str();
 // err_val is for things like idx, etc.
 void set(const size_t &err_code, const size_t &err_val, const char *msg, ...);
 } // namespace Err
-
+} // namespace blossom
 #endif // COMMON_ERRORS_HPP

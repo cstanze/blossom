@@ -3,6 +3,7 @@
 #include "VM/Consts.hpp"
 #include "VM/Vars.hpp"
 
+namespace blossom {
 struct jump_data_t {
   const char *name;
   size_t pos;
@@ -438,3 +439,4 @@ fail:
 }
 
 } // namespace vm
+}

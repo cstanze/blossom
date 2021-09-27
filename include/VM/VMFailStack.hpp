@@ -8,6 +8,7 @@
 
 #include "Vars/Base.hpp"
 
+namespace blossom {
 class vm_failstack_t {
   std::vector<std::deque<VarBase *>> m_stack;
 
@@ -29,5 +30,6 @@ public:
   inline bool empty() const { return m_stack.empty(); }
   inline bool backempty() const { return m_stack.back().empty(); }
 };
+} // namespace blossom
 
 #endif // VM_VM_FAIL_STACK_HPP

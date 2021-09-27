@@ -6,6 +6,8 @@
 #include "ParseHelper.hpp" // for all the parse function sources
 #include "Stmts.hpp"
 
+using namespace blossom;
+
 Errors parse_block(ParseHelper &ph, StmtBase *&loc,
                    const bool with_brace = true);
 

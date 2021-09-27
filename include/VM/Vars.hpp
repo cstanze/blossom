@@ -9,6 +9,7 @@
 
 #include "Vars/Base.hpp"
 
+namespace blossom {
 class VarsFrame {
   std::unordered_map<std::string, VarBase *> m_vars;
 
@@ -110,5 +111,5 @@ public:
 
   Vars *thread_copy(const size_t &src_id, const size_t &idx);
 };
-
+} // namespace blossom
 #endif // VM_VARS_HPP

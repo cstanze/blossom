@@ -15,7 +15,7 @@
 
 #define _STRINGIZE(x) #x
 #define STRINGIFY(x) _STRINGIZE(x)
-
+namespace blossom {
 typedef std::vector<VarSrc *> src_stack_t;
 
 typedef std::unordered_map<std::string, VarSrc *> all_srcs_t;
@@ -200,5 +200,5 @@ namespace vm {
 int exec(VMState &vm, const Bytecode *custom_bcode = nullptr,
          const size_t &begin = 0, const size_t &end = 0);
 } // namespace vm
-
+} // namespace blossom
 #endif // VM_VM_HPP

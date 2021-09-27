@@ -9,6 +9,8 @@
 #include "../Common/Errors.hpp"
 #include "../VM/SrcFile.hpp"
 
+using namespace blossom;
+
 /**
  * \brief All valid lexical tokens in the language
  */

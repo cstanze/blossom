@@ -6,14 +6,13 @@
 #include <string>
 #include <vector>
 
-namespace String {
-bool endsWith(const std::string& str, const std::string& suffix) {
+bool blossom::String::endsWith(const std::string& str, const std::string& suffix) {
     return str.size() >= suffix.size() &&
            str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
 }
 
-std::vector<std::string> split(const std::string &str,
-                               const std::string &delim) {
+std::vector<std::string> blossom::String::split(const std::string &str,
+                                                const std::string &delim) {
   std::vector<std::string> tokens = std::vector<std::string>();
   std::string strCopy = str;
 
@@ -34,7 +33,8 @@ std::vector<std::string> split(const std::string &str,
   return tokens;
 }
 
-std::string join(const std::vector<std::string> &data, const char delim) {
+std::string blossom::String::join(const std::vector<std::string> &data,
+                                  const char delim) {
   std::string result;
   for (auto &s : data) {
     if (!result.empty())
@@ -44,7 +44,7 @@ std::string join(const std::vector<std::string> &data, const char delim) {
   return result;
 }
 
-std::string stringify(const std::vector<std::string> &vec) {
+std::string blossom::String::stringify(const std::vector<std::string> &vec) {
   std::string res = "[";
   for (auto &e : vec) {
     res += e + ", ";
@@ -57,8 +57,8 @@ std::string stringify(const std::vector<std::string> &vec) {
   return res;
 }
 
-void replace(std::string &str, const std::string &from,
-                const std::string &to) {
+void blossom::String::replace(std::string &str, const std::string &from,
+                              const std::string &to) {
   if (from.empty())
     return;
   size_t start_pos = 0;
@@ -68,4 +68,3 @@ void replace(std::string &str, const std::string &from,
                               // 'x' with 'yx'
   }
 }
-} // namespace String

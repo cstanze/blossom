@@ -6,6 +6,8 @@
 #include "../Common/Errors.hpp"
 #include "../VM/SrcFile.hpp"
 
+using namespace blossom;
+
 Errors bmod_read_code(const std::string &data, const std::string &src_dir,
                       const std::string &src_path, Bytecode &bc, const bool is_main_src,
                       const bool &expr_only, const size_t &begin_idx = 0,

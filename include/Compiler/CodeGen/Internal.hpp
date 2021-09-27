@@ -8,6 +8,8 @@
 #include "../Parser/Internal.hpp"
 #include "../Parser/Stmts.hpp"
 
+using namespace blossom;
+
 extern std::vector<std::string> fn_call_args;
 extern std::vector<std::string> fn_args;
 

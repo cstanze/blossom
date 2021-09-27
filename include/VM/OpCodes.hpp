@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+namespace blossom {
+
 enum OpCodes {
   OP_CREATE, // create a new variable - bool operand - if true, it contains 'in'
              // part (x in y = z)
@@ -110,5 +112,6 @@ public:
   inline std::vector<Op> &getmut() { return m_bcode; }
   inline size_t size() const { return m_bcode.size(); }
 };
+} // namespace blossom
 
 #endif // VM_OPCODES_HPP

@@ -8,12 +8,15 @@
 #if defined(__FreeBSD__) || defined(__NetBSD__)
 #include <sys/endian.h>
 #define htonll(x) htobe64(x)
+#define htonl(x) htole32(x)
 #elif defined(__OpenBSD__)
 #include <sys/types.h>
 #define htonll(x) htobe64(x)
+#define htonl(x) htole32(x)
 #elif defined(__linux__)
 #include <endian.h>
 #define htonll(x) htobe64(x)
+#define htonl(x) htole32(x)
 #elif defined(__APPLE__)
 #include <libkern/OSByteOrder.h>
 #endif

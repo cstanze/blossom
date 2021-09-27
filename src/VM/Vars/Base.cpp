@@ -9,7 +9,7 @@
 /////////////////////////////////////////// VAR_BASE
 ////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
-
+namespace blossom {
 VarBase::VarBase(const std::uintptr_t &type, const size_t &src_id,
                  const size_t &idx, const bool &callable,
                  const bool &attr_based)
@@ -137,4 +137,5 @@ void init_typenames(VMState &vm) {
   vm.register_type<VarMap>("Map");
   vm.register_type<VarFn>("Func");
   vm.register_type<VarSrc>("Src");
+}
 }

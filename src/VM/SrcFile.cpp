@@ -8,6 +8,8 @@ static size_t src_id() {
   return sid++;
 }
 
+namespace blossom {
+
 SrcFile::SrcFile(const std::string &dir, const std::string &path,
                  const bool is_main)
     : m_id(src_id()), m_dir(dir), m_path(path), m_is_main(is_main) {}
@@ -108,4 +110,5 @@ void SrcFile::fail(const size_t &idx, const char *msg, va_list vargs) const {
     spcs += " ";
   }
   fprintf(stderr, "%s^\n", spcs.c_str());
+}
 }

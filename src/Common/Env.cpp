@@ -15,6 +15,7 @@
 #include "Common/Env.hpp"
 #include "Common/FS.hpp"
 
+namespace blossom {
 namespace Env {
 std::string get(const std::string &key) {
   const char *env = getenv(key.c_str());
@@ -45,3 +46,4 @@ std::string get_proc_path() {
   return path;
 }
 } // namespace Env
+}

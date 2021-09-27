@@ -9,6 +9,8 @@
 #include "../../VM/OpCodes.hpp"
 #include "../Lex.hpp"
 
+using namespace blossom;
+
 enum GramType {
   GT_SIMPLE,
   GT_EXPR,
