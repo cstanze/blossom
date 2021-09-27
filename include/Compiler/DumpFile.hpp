@@ -4,6 +4,7 @@
 #include "Common/Config.hpp"
 #include "VM/VM.hpp"
 #include "VM/OpCodes.hpp"
+#include <cstring>
 
 #if defined(__FreeBSD__) || defined(__NetBSD__)
 #include <sys/endian.h>
