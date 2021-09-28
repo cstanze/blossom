@@ -446,9 +446,9 @@ bool VMState::load_core_mods() {
   std::vector<std::string> mods = {"core", "utils"};
   std::vector<std::string> additional = additionalCoreMods(m_self_base);
 
-  for (std::string &mod : additional) {
-    printf("Found Additional mod: %s\n", mod.c_str());
-  }
+  // for (std::string &mod : additional) {
+  //   printf("Found Additional mod: %s\n", mod.c_str());
+  // }
 
   mods.insert(mods.end(), additional.begin(), additional.end());
 

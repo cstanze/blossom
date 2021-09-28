@@ -82,14 +82,6 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	message("-- Running in debug mode")
 endif()
 
-# TODO: Fix cross compiling, using VMs and Real Hardware for now...
-# if("${BLOSSOM_CROSS_COMPILE}" STREQUAL "YES")
-# 	set(CMAKE_C_COMPILER clang)
-# 	set(CMAKE_C_COMPILER_TARGET ${BLOSSOM_CROSS_TARGET})
-# 	set(CMAKE_CXX_COMPILER clang++)
-# 	set(CMAKE_CXX_COMPILER_TARGET ${BLOSSOM_CROSS_TARGET})
-# endif()
-
 # Generally, disabled for CI purposes
 if(NOT DEFINED DISABLE_MARCH_NATIVE_FLAG)
 	check_cxx_compiler_flag(-march=native COMPILER_SUPPORTS_MARCH_NATIVE)
