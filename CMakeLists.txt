@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.0)
 
 project(Blossom C CXX)
 
+set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+
 set(CMAKE_CXX_STANDARD 11)
 if(CMAKE_VERSION VERSION_LESS "3.1")
 	add_compile_options(-std=c++11)
