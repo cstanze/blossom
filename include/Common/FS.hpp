@@ -23,6 +23,9 @@ std::string home();
 
 std::string relativePath(const std::string &path, const std::string &dir = "");
 
+std::vector<std::string> search(const std::string &dir,
+                                const std::function<bool(const std::string &)> &matcher);
+
 } // namespace FS
 } // namespace blossom
 #endif // COMMON_FS_HPP

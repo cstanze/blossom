@@ -254,12 +254,79 @@ VarBase *VMState::gget(const std::string &name) {
   return m_globals[name];
 }
 
-bool VMState::mod_exists(const std::vector<std::string> &locs, std::string &mod,
+bool VMState::bmod_exists(std::string &mod,
+                         const std::string &ext, std::string &dir) {
+  if (mod.front() != '~' && mod.front() != '/' && mod.front() != '.') {
+    bool hasExt = false;
+    bool isStd = false;
+    // look for .bls extension on the end of the module name
+    if (mod.size() > ext.size() && mod.substr(mod.size() - ext.size()) == ext)
+      hasExt = true;
+    std::vector<std::string> components = String::split(mod, "/");
+    
+    if (components.size() < 1) {
+      return false;
+    }
+
+    if (components[0] == "std") {
+      isStd = true;
+      components[0] = "blossom/std";
+    }
+
+    if (!FS::exists(m_self_base + "/include/" + components[0])) {
+      return false;
+    }
+
+    if (isStd) {
+      components[0] = "blossom/std";
+    }
+
+    std::vector<std::string> files = FS::search(m_self_base + "/include/" + components[0],
+      [&](const std::string &file) -> bool {
+        std::string fabs = FS::absPath(
+          // if isStd, then we need to remove the "std" from the path
+          // otherwise, use components[0]
+          m_self_base + "/include/" + components[0] + "/" + mod.substr(isStd ? 3 : components[0].size()) + "/"
+        );
+
+        if (!hasExt) {
+          fabs += ext;
+        }
+
+        return fabs == FS::absPath(file);
+      }
+    );
+
+    if (files.empty()) {
+      return false;
+    }
+
+    mod = files[0];
+    return true;
+  } else {
+    if (mod.front() == '~') {
+      mod.erase(mod.begin());
+      std::string home = Env::get("HOME");
+      mod.insert(mod.begin(), home.begin(), home.end());
+    } else if (mod.front() == '.') {
+      // cannot have a module exists query with '.' outside all srcs
+      assert(src_stack.size() > 0);
+      mod.erase(mod.begin());
+      mod = dir + mod;
+    }
+    if (FS::exists(mod + ext) || FS::exists(mod)) {
+      mod = FS::absPath(mod + ext, &dir);
+      return true;
+    }
+  }
+  return false;
+}
+
+bool VMState::nmod_exists(const std::vector<std::string> &locs, std::string &mod,
                          const std::string &ext, std::string &dir) {
   if (mod.front() != '~' && mod.front() != '/' && mod.front() != '.') {
     for (auto &loc : locs) {
-      if (FS::exists(loc + "/" + mod + ext)
-          || FS::exists(loc + "/" + mod)) {
+      if (FS::exists(loc + "/" + mod + ext) || FS::exists(loc + "/" + mod)) {
         mod = FS::absPath(loc + "/" + mod + ext, &dir);
         return true;
       }
@@ -289,10 +356,10 @@ bool VMState::nmod_load(const std::string &mod_str, const size_t &src_id,
   std::string mod_file = mod_str;
   std::string mod_dir;
   mod_file.insert(mod_file.find_last_of('/') + 1, "libblossom");
-  if (!mod_exists(m_dll_locs, mod_file, nmod_ext(), mod_dir)) {
+  if (!nmod_exists(m_dll_locs, mod_file, nmod_ext(), mod_dir)) {
     mod_file = mod_str;
     mod_file.insert(mod_file.find_last_of('/') + 1, "lib");
-    if (!mod_exists(m_dll_locs, mod_file, nmod_ext(), mod_dir)) {
+    if (!nmod_exists(m_dll_locs, mod_file, nmod_ext(), mod_dir)) {
       fail(src_id, idx, "module file: %s not found in locations: %s",
            (mod_file + nmod_ext()).c_str(),
            String::stringify(m_dll_locs).c_str());
@@ -332,7 +399,7 @@ int VMState::bmod_load(std::string &mod_file, const size_t &src_id,
                        const size_t &idx) {
   std::string mod_dir;
   bool compiled = String::endsWith(mod_file, ".blsc");
-  if (!mod_exists(m_inc_locs, mod_file, bmod_ext(compiled), mod_dir)) {
+  if (!bmod_exists(mod_file, bmod_ext(compiled), mod_dir)) {
     fail(src_id, idx, "import file: %s not found in locations: %s",
          (mod_file + bmod_ext(compiled)).c_str(),
          String::stringify(m_inc_locs).c_str());

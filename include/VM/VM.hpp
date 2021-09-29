@@ -6,6 +6,7 @@
 #include <deque>
 #include <string>
 #include <unordered_map>
+#include <iostream>
 
 #include "DyLib.hpp"
 #include "SrcFile.hpp"
@@ -91,7 +92,9 @@ struct VMState {
   // modules & imports
   // nmod = native module
   // bmod = blossom module
-  bool mod_exists(const std::vector<std::string> &locs, std::string &mod,
+  bool bmod_exists(std::string &mod,
+                  const std::string &ext, std::string &dir);
+  bool nmod_exists(const std::vector<std::string> &locs, std::string &mod,
                   const std::string &ext, std::string &dir);
   bool nmod_load(const std::string &mod_str, const size_t &src_id,
                  const size_t &idx);
