@@ -56,6 +56,21 @@ bool blossom::FS::isAbsolute(const std::string &loc) {
   return loc.size() > 0 && (loc[0] == '/' || loc[0] == '\\');
 }
 
+bool blossom::FS::isDir(const std::string &loc) {
+  #if defined(_WIN32)
+  return _access(loc.c_str(), 0) == 0 && _access(loc.c_str(), 4) == 0;
+  #else
+  struct stat s;
+  return stat(loc.c_str(), &s) == 0 && S_ISDIR(s.st_mode);
+  #endif
+}
+
+std::string blossom::FS::dirname(const std::string &loc) {
+  std::string dir;
+  FS::absPath(loc, &dir);
+  return dir;
+}
+
 std::string blossom::FS::cwd() {
   static char cwd[MAX_PATH_CHARS];
   cwd[0] = '\0';

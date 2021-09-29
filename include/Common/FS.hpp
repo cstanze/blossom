@@ -18,6 +18,9 @@ std::string absPath(const std::string &loc, std::string *dir = nullptr,
 
 bool isAbsolute(const std::string &loc);
 
+bool isDir(const std::string &loc);
+
+std::string dirname(const std::string &loc);
 std::string cwd();
 std::string home();
 

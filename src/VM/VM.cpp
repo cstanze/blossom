@@ -289,8 +289,16 @@ bool VMState::bmod_exists(std::string &mod,
           m_self_base + "/include/" + components[0] + "/" + mod.substr(isStd ? 3 : components[0].size()) + "/"
         );
 
-        if (!hasExt) {
+        if (!hasExt && !FS::isDir(file)) {
           fabs += ext;
+        } else if (FS::isDir(file)) {
+          // if we have a directory, then we access the default file
+          // in the directory. eg. if we have a directory "foo" and
+          // we want to access "foo/bar.bls", then we access "foo/bar"
+          // otherwise, if we access "foo" from the import function,
+          // we access "foo/foo.bls" (if it exists)
+          fabs += "/" + (isStd ? "std" : components[0]) + ext;
+          fabs = FS::absPath(fabs);
         }
 
         return fabs == FS::absPath(file);
@@ -298,6 +306,10 @@ bool VMState::bmod_exists(std::string &mod,
     );
 
     if (files.empty()) {
+      return false;
+    }
+
+    if (!FS::exists(files[0])) {
       return false;
     }
 
@@ -312,7 +324,7 @@ bool VMState::bmod_exists(std::string &mod,
       // cannot have a module exists query with '.' outside all srcs
       assert(src_stack.size() > 0);
       mod.erase(mod.begin());
-      mod = dir + mod;
+      mod = FS::dirname(src_stack.back()->src()->path()) + mod;
     }
     if (FS::exists(mod + ext) || FS::exists(mod)) {
       mod = FS::absPath(mod + ext, &dir);
