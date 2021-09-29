@@ -256,14 +256,14 @@ VarBase *VMState::gget(const std::string &name) {
 
 bool VMState::bmod_exists(std::string &mod,
                          const std::string &ext, std::string &dir) {
+  bool hasExt = false;
+  // look for .bls extension on the end of the module name
+  if (mod.size() > ext.size() && mod.substr(mod.size() - ext.size()) == ext)
+    hasExt = true;
   if (mod.front() != '~' && mod.front() != '/' && mod.front() != '.') {
-    bool hasExt = false;
     bool isStd = false;
-    // look for .bls extension on the end of the module name
-    if (mod.size() > ext.size() && mod.substr(mod.size() - ext.size()) == ext)
-      hasExt = true;
     std::vector<std::string> components = String::split(mod, "/");
-    
+
     if (components.size() < 1) {
       return false;
     }
@@ -277,10 +277,6 @@ bool VMState::bmod_exists(std::string &mod,
       return false;
     }
 
-    if (isStd) {
-      components[0] = "blossom/std";
-    }
-
     std::vector<std::string> files = FS::search(m_self_base + "/include/" + components[0],
       [&](const std::string &file) -> bool {
         std::string fabs = FS::absPath(
@@ -289,16 +285,8 @@ bool VMState::bmod_exists(std::string &mod,
           m_self_base + "/include/" + components[0] + "/" + mod.substr(isStd ? 3 : components[0].size()) + "/"
         );
 
-        if (!hasExt && !FS::isDir(file)) {
+        if (!hasExt) {
           fabs += ext;
-        } else if (FS::isDir(file)) {
-          // if we have a directory, then we access the default file
-          // in the directory. eg. if we have a directory "foo" and
-          // we want to access "foo/bar.bls", then we access "foo/bar"
-          // otherwise, if we access "foo" from the import function,
-          // we access "foo/foo.bls" (if it exists)
-          fabs += "/" + (isStd ? "std" : components[0]) + ext;
-          fabs = FS::absPath(fabs);
         }
 
         return fabs == FS::absPath(file);
@@ -306,6 +294,24 @@ bool VMState::bmod_exists(std::string &mod,
     );
 
     if (files.empty()) {
+      if (FS::isDir(m_self_base + "/include/" + mod)) {
+        dir = FS::absPath(
+          // {base}/include/mod/sub
+          // {base}/include/mod
+          m_self_base + 
+          "/include/" + 
+          mod
+        );
+        mod = FS::absPath(
+          // {base}/include/mod/sub/sub.bls
+          // {base}/include/mod/mod.bls
+          m_self_base + "/include/" +
+          mod + "/" + components.back() +
+          (hasExt ? "" : ext)
+        );
+        return true;
+      }
+
       return false;
     }
 
@@ -326,8 +332,14 @@ bool VMState::bmod_exists(std::string &mod,
       mod.erase(mod.begin());
       mod = FS::dirname(src_stack.back()->src()->path()) + mod;
     }
-    if (FS::exists(mod + ext) || FS::exists(mod)) {
-      mod = FS::absPath(mod + ext, &dir);
+
+    if (FS::exists(mod + (hasExt ? "" : ext)) &&
+        !FS::isDir(mod)) {
+      mod = FS::absPath(mod + (hasExt ? "" : ext), &dir);
+      return true;
+    } else if (FS::isDir(mod)) {
+      std::vector<std::string> components = String::split(mod, "/");
+      mod = FS::absPath(mod + "/" + components.back() + ext, &dir);
       return true;
     }
   }
@@ -410,10 +422,9 @@ bool VMState::nmod_load(const std::string &mod_str, const size_t &src_id,
 int VMState::bmod_load(std::string &mod_file, const size_t &src_id,
                        const size_t &idx) {
   std::string mod_dir;
-  bool compiled = String::endsWith(mod_file, ".blsc");
-  if (!bmod_exists(mod_file, bmod_ext(compiled), mod_dir)) {
-    fail(src_id, idx, "import file: %s not found in locations: %s",
-         (mod_file + bmod_ext(compiled)).c_str(),
+  if (!bmod_exists(mod_file, bmod_ext(), mod_dir)) {
+    fail(src_id, idx, "import module: %s not found",
+         (mod_file + bmod_ext()).c_str(),
          String::stringify(m_inc_locs).c_str());
     return E_FAIL;
   }
