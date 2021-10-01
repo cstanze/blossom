@@ -234,7 +234,7 @@ func parse(toks, i = 0) {
 		
 		while toks[i].type != tok_type.RBRACK {
 			if j > 0 { expect(toks, sz, i, tok_type.COMMA); ++i; }
-			parse_map(toks, sz, m, i);
+			parse_vec(toks, sz, v, i);
 			++i;
 		}
 		expect(toks, sz, i, tok_type.RBRACK);

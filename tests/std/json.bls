@@ -22,6 +22,8 @@ let json_pretty =
 let js = json.loads(json_pretty);
 assert(js['first']['one'] == 'two');
 assert(js['second'][0] == 'a');
+import "std/io" with (fprintln, stderr);
+fprintln(stderr, js['second']);
 assert(js['second'][1] == 'b');
 assert(js['second'][2] == 1.27);
 assert(js['second'][3] == true);
