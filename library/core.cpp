@@ -339,7 +339,7 @@ INIT_MODULE(core) {
   vm.add_native_typefn<VarString>("trim", str_trim, 0, src_id, idx);
   vm.add_native_typefn<VarString>("upper", str_upper, 0, src_id, idx);
   vm.add_native_typefn<VarString>("lower", str_lower, 0, src_id, idx);
-  vm.add_native_typefn<VarString>("split", str_split, 1, src_id, idx);
+  vm.add_native_typefn<VarString>("split", str_split, 0, src_id, idx, true);
   vm.add_native_typefn<VarString>("repeat", str_mul, 1, src_id, idx);
 
   vm.add_native_typefn<VarString>("byte", byt, 0, src_id, idx);

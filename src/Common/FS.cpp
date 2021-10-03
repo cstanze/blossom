@@ -153,6 +153,9 @@ blossom::FS::search(const std::string &dir,
   std::vector<std::string> files;
   std::vector<std::string> dirs;
 
+  if (!FS::exists(dir))
+    return {};
+
   dirs.push_back(dir);
   while (!dirs.empty()) {
     std::string cur = dirs.back();

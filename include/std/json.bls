@@ -236,6 +236,7 @@ func parse(toks, i = 0) {
 			if j > 0 { expect(toks, sz, i, tok_type.COMMA); ++i; }
 			parse_vec(toks, sz, v, i);
 			++i;
+			++j;
 		}
 		expect(toks, sz, i, tok_type.RBRACK);
 		return v;

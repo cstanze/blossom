@@ -348,13 +348,82 @@ bool VMState::bmod_exists(std::string &mod,
 
 bool VMState::nmod_exists(const std::vector<std::string> &locs, std::string &mod,
                          const std::string &ext, std::string &dir) {
+  std::string orig = mod;
+  String::replace(orig, "libblossom", "");
+  String::replace(orig, "lib", "");
+  bool hasExt = false;
+  // look for extension on the end of the module name
+  if (mod.size() > ext.size() && mod.substr(mod.size() - ext.size()) == ext)
+    hasExt = true;
   if (mod.front() != '~' && mod.front() != '/' && mod.front() != '.') {
-    for (auto &loc : locs) {
-      if (FS::exists(loc + "/" + mod + ext) || FS::exists(loc + "/" + mod)) {
-        mod = FS::absPath(loc + "/" + mod + ext, &dir);
+    int compZero = -1;
+    std::vector<std::string> components = String::split(mod, "/");
+
+    if (components.size() < 1) {
+      return false;
+    }
+
+    if (components[0] == "std") {
+      compZero = 3;
+      components[0] = "blossom/std";
+    }
+
+    if (
+      !FS::exists(m_self_base + "/lib/" + components[0])
+      && !FS::exists(m_self_base + "/lib/" + orig)
+    ) {
+      return false;
+    }
+
+    std::vector<std::string> files = FS::search(m_self_base + "/lib/" + components[0],
+      [&](const std::string &file) -> bool {
+        std::string fabs = FS::absPath(
+            // if compZero, then we need to remove compZero 
+            // length from the path otherwise, use components[0]
+            m_self_base + "/lib/" + components[0] + "/" +
+            mod.substr(compZero >= 0 ? compZero : components[0].size()) + "/");
+
+        if (!hasExt) {
+          fabs += ext;
+        }
+
+        return fabs == FS::absPath(file);
+      });
+
+    if (files.empty()) {
+      if (FS::isDir(m_self_base + "/lib/" + mod)) {
+        // fprintf(stderr, "is dir\n");
+        dir = FS::absPath(
+            // {base}/lib/mod/sub
+            // {base}/lib/mod
+            m_self_base + "/lib/" + mod);
+        mod = FS::absPath(
+            // {base}/lib/mod/sub/sub.<ext>
+            // {base}/lib/mod/mod.<ext>
+            m_self_base + "/lib/" + mod + "/" + components.back() +
+            (hasExt ? "" : ext));
+        return true;
+      } else if (FS::isDir(m_self_base + "/lib/" + orig)) {
+        // fprintf(stderr, "orig is dir\n");
+        dir = FS::absPath(
+          m_self_base + "/lib/" + orig
+        );
+        mod = FS::absPath(
+          m_self_base + "/lib/" + orig + "/" + components.back() +
+          (hasExt ? "" : ext)
+        );
         return true;
       }
+
+      return false;
     }
+
+    if (!FS::exists(files[0])) {
+      return false;
+    }
+
+    mod = files[0];
+    return true;
   } else {
     if (mod.front() == '~') {
       mod.erase(mod.begin());
@@ -364,10 +433,14 @@ bool VMState::nmod_exists(const std::vector<std::string> &locs, std::string &mod
       // cannot have a module exists query with '.' outside all srcs
       assert(src_stack.size() > 0);
       mod.erase(mod.begin());
-      mod = src_stack.back()->src()->dir() + mod;
+      mod = FS::dirname(src_stack.back()->src()->path()) + mod;
     }
-    if (FS::exists(mod + ext) || FS::exists(mod)) {
-      mod = FS::absPath(mod + ext, &dir);
+    if (FS::exists(mod + (hasExt ? "" : ext)) && !FS::isDir(mod)) {
+      mod = FS::absPath(mod + (hasExt ? "" : ext), &dir);
+      return true;
+    } else if (FS::isDir(mod)) {
+      std::vector<std::string> components = String::split(mod, "/");
+      mod = FS::absPath(mod + "/" + components.back() + ext, &dir);
       return true;
     }
   }
@@ -380,11 +453,13 @@ bool VMState::nmod_load(const std::string &mod_str, const size_t &src_id,
   std::string mod_file = mod_str;
   std::string mod_dir;
   mod_file.insert(mod_file.find_last_of('/') + 1, "libblossom");
+  // fprintf(stderr, "mod file: %s\n", mod_file.c_str());
   if (!nmod_exists(m_dll_locs, mod_file, nmod_ext(), mod_dir)) {
     mod_file = mod_str;
+    // fprintf(stderr, "mod file (pre-lib): %s\n", mod_file.c_str());
     mod_file.insert(mod_file.find_last_of('/') + 1, "lib");
     if (!nmod_exists(m_dll_locs, mod_file, nmod_ext(), mod_dir)) {
-      fail(src_id, idx, "module file: %s not found in locations: %s",
+      fail(src_id, idx, "module file: %s not found",
            (mod_file + nmod_ext()).c_str(),
            String::stringify(m_dll_locs).c_str());
       return false;
@@ -533,7 +608,7 @@ std::vector<std::string> additionalCoreMods(std::string base) {
 }
 
 bool VMState::load_core_mods() {
-  std::vector<std::string> mods = {"core", "utils"};
+  std::vector<std::string> mods = {"blossom/core", "blossom/utils"};
   std::vector<std::string> additional = additionalCoreMods(m_self_base);
 
   // for (std::string &mod : additional) {

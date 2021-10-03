@@ -20,6 +20,7 @@ a = 'abcde';
 assert(a.upper() == 'ABCDE');
 
 assert(s.split('3') == vec.new('12', '45'));
+assert(s.split('') == vec.new('1', '2', '3', '4', '5'));
 
 assert('A'.byte() == 65);
 assert(66.char() == 'B');

@@ -331,7 +331,7 @@ VarBase *str_find(VMState &vm, const FnData &fd) {
 VarBase *str_substr(VMState &vm, const FnData &fd) {
   if (!fd.args[1]->istype<VarInt>()) {
     vm.fail(fd.src_id, fd.idx,
-            "expected begin argument to be of type integer for string.erase(), "
+            "expected begin argument to be of type integer for string.substr(), "
             "found: %s",
             vm.type_name(fd.args[1]).c_str());
     return nullptr;
@@ -379,13 +379,9 @@ VarBase *str_split(VMState &vm, const FnData &fd) {
             vm.type_name(fd.args[1]).c_str());
     return nullptr;
   }
-  if (STR(fd.args[1])->get().size() == 0) {
-    vm.fail(fd.src_id, fd.idx, "found empty delimiter for String.split()");
-    return nullptr;
-  }
   std::string delim = STR(fd.args[1])->get();
   std::vector<VarBase *> res_vec =
-      _str_split(str->get(), delim, fd.src_id, fd.src_id);
+      _str_split(str->get(), delim, fd.src_id, fd.idx);
   return make<VarVec>(res_vec, false);
 }
 
@@ -409,6 +405,15 @@ std::vector<VarBase *> _str_split(const std::string &data, const std::string &de
   std::string tmp = data;
 
   std::string token;
+
+  if (delim.empty()) {
+    // split all characters
+    for (size_t i = 0; i < tmp.size(); i++) {
+      token = tmp.substr(i, 1);
+      vec.push_back(new VarString(token, src_id, idx));
+    }
+    return vec;
+  }
 
   size_t pos = tmp.find(delim);
   while (pos != std::string::npos) {
